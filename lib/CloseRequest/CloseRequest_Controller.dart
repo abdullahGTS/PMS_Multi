@@ -14,6 +14,7 @@ import '../Models/transactiontable.dart';
 import '../models/database_helper.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter/services.dart';
 
 class CloseRequestController extends GetxController {
   var isLoading = true.obs;
@@ -36,6 +37,8 @@ class CloseRequestController extends GetxController {
     // fetchToken();
     print("init->>>>>>");
     startPeriodicFetch();
+    startWIFIBackgroundService();
+    startBackgroundService();
 
     // Repeat the drop animation indefinitely
   }
@@ -132,5 +135,17 @@ class CloseRequestController extends GetxController {
       print("Running periodic fetchToken...");
       await checkthelastpos();
     });
+  }
+
+  startWIFIBackgroundService() async {
+    const _channel = MethodChannel('com.example.pms/method');
+    var response = await _channel.invokeMethod('enableWifi');
+    // Wait for the transaction result
+    print('startWIFIBackgroundService---> ${response}');
+  }
+
+  startBackgroundService() async {
+    const _channel = MethodChannel('com.example.pms/method');
+    await _channel.invokeMethod('startService');
   }
 }

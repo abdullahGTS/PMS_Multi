@@ -9,6 +9,7 @@ import '../CustomAppbar/CustomAppbar_Controller.dart';
 import '../Shared/drawer.dart';
 import 'package:intl/intl.dart';
 
+import '../Theme/Theme_Controller.dart';
 import 'Shift_Controller.dart';
 import 'shift_Input.dart';
 
@@ -16,6 +17,7 @@ class ShiftPage extends StatelessWidget {
   ShiftPage({super.key});
   final customController = Get.find<CustomAppbarController>();
   final shiftController = Get.put(ShiftController());
+  var themeController = Get.find<ThemeController>();
 
   // final verifyController = Get.find<VerifyController>();
   final List<TextEditingController> _otpControllers =
@@ -32,160 +34,202 @@ class ShiftPage extends StatelessWidget {
       onWillPop: () async {
         return false;
       },
-      child: Scaffold(
-        backgroundColor: const Color(0xFF2B2B2B),
-        appBar: const CustomAppBar(),
-        body: SafeArea(
-          child: SingleChildScrollView(
-            child: Container(
-              margin: const EdgeInsets.only(left: 14),
-              width: MediaQuery.of(context).size.width * 0.93,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16), // Rounded corners
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min, // Allow flexible height
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  // const SizedBox(height: 20), // Space between AppBar and body
-
-                  // Combined Icon and OTP Input Container
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(7),
-                      color: const Color.fromARGB(255, 24, 24, 24),
-                    ),
-                    margin: const EdgeInsets.symmetric(vertical: 10),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            IconButton(
-                                tooltip: 'check_shift'.tr,
-                                onPressed: () async {
-                                  // Add your desired functionality here
-                                  // Example: Navigate to another page or perform an action
-
-                                  await customController.fetchToken();
-                                  if (customController.isconnect.value) {
-                                    Fluttertoast.showToast(
-                                      msg: "You_are_connected"
-                                          .tr, // Message to display
-                                      toastLength: Toast
-                                          .LENGTH_SHORT, // Duration: LENGTH_SHORT or LENGTH_LONG
-                                      gravity: ToastGravity
-                                          .BOTTOM, // Position: TOP, CENTER, or BOTTOM
-                                      backgroundColor:
-                                          Colors.black, // Background color
-                                      textColor: Colors.white, // Text color
-                                      fontSize: 16.0, // Font size
-                                    );
-                                  } else {
-                                    Fluttertoast.showToast(
-                                      msg: "No_Connection"
-                                          .tr, // Message to display
-                                      toastLength: Toast
-                                          .LENGTH_SHORT, // Duration: LENGTH_SHORT or LENGTH_LONG
-                                      gravity: ToastGravity
-                                          .BOTTOM, // Position: TOP, CENTER, or BOTTOM
-                                      backgroundColor:
-                                          Colors.red, // Background color
-                                      textColor: Colors.white, // Text color
-                                      fontSize: 16.0, // Font size
-                                    );
-                                  }
-                                },
-                                icon: Icon(
-                                  Icons.admin_panel_settings_rounded,
-                                  color: Colors.white,
-                                  size: 100,
-                                )),
-                            SizedBox(width: 8),
-                          ],
+      child: Obx(() {
+        return Scaffold(
+          backgroundColor: themeController.isDarkMode.value
+              ? Color(0xFF2B2B2B)
+              : Color(0xFFE9ECEF),
+          // appBar: const CustomAppBar(),
+          body: SafeArea(
+            child: Stack(
+              children: [
+                Positioned(
+                  right: 100,
+                  top: 0,
+                  bottom: 0,
+                  child: Transform.rotate(
+                    angle: 45 * (3.14159265359 / 180),
+                    child: Container(
+                      height: 500,
+                      width: 150, // Width of the red background
+                      decoration: BoxDecoration(
+                        color: Color(0x35576E38).withOpacity(0.6),
+                        borderRadius: BorderRadius.only(
+                          topLeft:
+                              Radius.circular(10), // Top-left corner rounded
+                          topRight: Radius.circular(
+                              0), // Top-right corner not rounded
+                          bottomLeft: Radius.circular(
+                              0), // Bottom-left corner not rounded
+                          bottomRight: Radius.circular(0),
                         ),
-                        const SizedBox(
-                            height: 20.0), // Space between title and OTP input
-
-                        // OtpInput widget
-                        ShiftInput(
-                          controllers: _otpControllers,
-                          focusNodes: _focusNodes,
-                          onSubmit: (otp) {
-                            if (otp.isNotEmpty) {
-                              print("Submitted OTP: $otp");
-                              Get.toNamed('/Home');
-                            } else {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content: Text('Please enter your OTP')),
-                              );
-                            }
-                          },
-                        ),
-                        const SizedBox(height: 10.0),
-                      ],
+                      ),
                     ),
                   ),
+                ),
+                SizedBox(
+                  child: CustomAppBar(),
+                  width: MediaQuery.of(context).size.width * 0.99,
+                ),
+                Container(
+                  margin: const EdgeInsets.only(left: 14),
+                  width: MediaQuery.of(context).size.width * 0.93,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16), // Rounded corners
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min, // Allow flexible height
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 195),
+                      // const SizedBox(height: 20), // Space between AppBar and body
 
-                  const SizedBox(
-                      height: 10.0), // Space between OTP input and keypad
+                      // Combined Icon and OTP Input Container
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(7),
+                          color: themeController.isDarkMode.value
+                              ? Color.fromARGB(255, 24, 24, 24)
+                              : Colors.white,
+                        ),
+                        margin: const EdgeInsets.symmetric(vertical: 10),
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                IconButton(
+                                    tooltip: 'check_shift'.tr,
+                                    onPressed: () async {
+                                      // Add your desired functionality here
+                                      // Example: Navigate to another page or perform an action
 
-                  // Updated layout for Numeric Keypad
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(7),
-                      color: const Color.fromARGB(255, 24, 24, 24),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const SizedBox(height: 5),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            _buildNumberButton("1"),
-                            _buildNumberButton("2"),
-                            _buildNumberButton("3"),
+                                      await customController.fetchToken();
+                                      if (customController.isconnect.value) {
+                                        Fluttertoast.showToast(
+                                          msg: "You_are_connected"
+                                              .tr, // Message to display
+                                          toastLength: Toast
+                                              .LENGTH_SHORT, // Duration: LENGTH_SHORT or LENGTH_LONG
+                                          gravity: ToastGravity
+                                              .BOTTOM, // Position: TOP, CENTER, or BOTTOM
+                                          backgroundColor:
+                                              Colors.black, // Background color
+                                          textColor: Colors.white, // Text color
+                                          fontSize: 16.0, // Font size
+                                        );
+                                      } else {
+                                        Fluttertoast.showToast(
+                                          msg: "No_Connection"
+                                              .tr, // Message to display
+                                          toastLength: Toast
+                                              .LENGTH_SHORT, // Duration: LENGTH_SHORT or LENGTH_LONG
+                                          gravity: ToastGravity
+                                              .BOTTOM, // Position: TOP, CENTER, or BOTTOM
+                                          backgroundColor:
+                                              Colors.red, // Background color
+                                          textColor: Colors.white, // Text color
+                                          fontSize: 16.0, // Font size
+                                        );
+                                      }
+                                    },
+                                    icon: Icon(
+                                      Icons.admin_panel_settings_rounded,
+                                      color: themeController.isDarkMode.value
+                                          ? Colors.white
+                                          : Color.fromARGB(255, 24, 24, 24),
+                                      size: 100,
+                                    )),
+                                SizedBox(width: 8),
+                              ],
+                            ),
+                            const SizedBox(
+                                height:
+                                    5.0), // Space between title and OTP input
+
+                            // OtpInput widget
+                            ShiftInput(
+                              controllers: _otpControllers,
+                              focusNodes: _focusNodes,
+                              onSubmit: (otp) {
+                                if (otp.isNotEmpty) {
+                                  print("Submitted OTP: $otp");
+                                  Get.toNamed('/Home');
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        content: Text('Please enter your OTP')),
+                                  );
+                                }
+                              },
+                            ),
+                            const SizedBox(height: 10.0),
                           ],
                         ),
-                        const SizedBox(height: 10),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      ),
+
+                      const SizedBox(
+                          height: 10.0), // Space between OTP input and keypad
+
+                      // Updated layout for Numeric Keypad
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(7),
+                          color: themeController.isDarkMode.value
+                              ? Color.fromARGB(255, 24, 24, 24)
+                              : Colors.white,
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            _buildNumberButton("4"),
-                            _buildNumberButton("5"),
-                            _buildNumberButton("6"),
+                            const SizedBox(height: 5),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                _buildNumberButton("1"),
+                                _buildNumberButton("2"),
+                                _buildNumberButton("3"),
+                              ],
+                            ),
+                            const SizedBox(height: 10),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                _buildNumberButton("4"),
+                                _buildNumberButton("5"),
+                                _buildNumberButton("6"),
+                              ],
+                            ),
+                            const SizedBox(height: 10),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                _buildNumberButton("7"),
+                                _buildNumberButton("8"),
+                                _buildNumberButton("9"),
+                              ],
+                            ),
+                            const SizedBox(height: 10),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                _buildBackButton(), // Custom back button
+                                _buildNumberButton("0"),
+                                _buildConfirmButton(), // Custom confirm button
+                              ],
+                            ),
+                            const SizedBox(height: 5),
                           ],
                         ),
-                        const SizedBox(height: 10),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            _buildNumberButton("7"),
-                            _buildNumberButton("8"),
-                            _buildNumberButton("9"),
-                          ],
-                        ),
-                        const SizedBox(height: 10),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            _buildBackButton(), // Custom back button
-                            _buildNumberButton("0"),
-                            _buildConfirmButton(), // Custom confirm button
-                          ],
-                        ),
-                        const SizedBox(height: 5),
-                      ],
-                    ),
-                  )
-                ],
-              ),
+                      )
+                    ],
+                  ),
+                ),
+              ],
             ),
           ),
-        ),
-      ),
+        );
+      }),
     );
   }
 

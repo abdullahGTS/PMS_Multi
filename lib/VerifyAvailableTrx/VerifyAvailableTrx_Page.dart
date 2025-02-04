@@ -8,12 +8,15 @@ import '../CustomAppbar/CustomAppbar_Controller.dart';
 import '../Shared/drawer.dart';
 import 'package:intl/intl.dart';
 
+import '../Theme/Theme_Controller.dart';
 import 'VerifyAvailableTrx_Input.dart';
 
 class VerifyavailabletrxPage extends StatelessWidget {
   VerifyavailabletrxPage({super.key});
   // final customController = Get.put(CustomAppbarController());
   final customController = Get.find<CustomAppbarController>();
+  var themeController = Get.find<ThemeController>();
+
   // final verifyController = Get.find<VerifyController>();
   final List<TextEditingController> _otpControllers =
       List.generate(4, (index) => TextEditingController());
@@ -29,126 +32,171 @@ class VerifyavailabletrxPage extends StatelessWidget {
       onWillPop: () async {
         return false;
       },
-      child: Scaffold(
-        backgroundColor: const Color(0xFF2B2B2B),
-        appBar: const CustomAppBar(),
-        drawer: CustomDrawer(),
-        body: SafeArea(
-          child: SingleChildScrollView(
-            child: Container(
-              margin: const EdgeInsets.only(left: 14),
-              width: MediaQuery.of(context).size.width * 0.93,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16), // Rounded corners
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min, // Allow flexible height
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 20), // Space between AppBar and body
-
-                  // Combined Icon and OTP Input Container
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(7),
-                      color: const Color.fromARGB(255, 24, 24, 24),
-                    ),
-                    margin: const EdgeInsets.symmetric(vertical: 10),
-                    child: Column(
-                      children: [
-                        const Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.admin_panel_settings_rounded,
-                              color: Colors.white,
-                              size: 100,
-                            ),
-                            SizedBox(width: 8),
-                          ],
+      child: Obx(() {
+        return Scaffold(
+          backgroundColor: themeController.isDarkMode.value
+              ? Color(0xFF2B2B2B)
+              : Color(0xFFE9ECEF),
+          // appBar: const CustomAppBar(),
+          drawer: CustomDrawer(),
+          body: SafeArea(
+            child: Stack(
+              children: [
+                Positioned(
+                  right: 100,
+                  top: 0,
+                  bottom: 0,
+                  child: Transform.rotate(
+                    angle: 45 * (3.14159265359 / 180),
+                    child: Container(
+                      height: 500,
+                      width: 150, // Width of the red background
+                      decoration: BoxDecoration(
+                        color: Color(0x35576E38).withOpacity(0.6),
+                        borderRadius: BorderRadius.only(
+                          topLeft:
+                              Radius.circular(10), // Top-left corner rounded
+                          topRight: Radius.circular(
+                              0), // Top-right corner not rounded
+                          bottomLeft: Radius.circular(
+                              0), // Bottom-left corner not rounded
+                          bottomRight: Radius.circular(0),
                         ),
-                        const SizedBox(
-                            height: 20.0), // Space between title and OTP input
-
-                        // OtpInput widget
-                        VerifyavailabletrxInput(
-                          controllers: _otpControllers,
-                          focusNodes: _focusNodes,
-                          onSubmit: (otp) {
-                            if (otp.isNotEmpty) {
-                              print("Submitted OTP: $otp");
-                              // Get.toNamed('/Home');
-                            } else {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content: Text('Please enter your OTP')),
-                              );
-                            }
-                          },
-                        ),
-                        const SizedBox(height: 10.0),
-                      ],
+                      ),
                     ),
                   ),
+                ),
+                SizedBox(
+                  child: CustomAppBar(),
+                  width: MediaQuery.of(context).size.width * 0.99,
+                ),
+                SizedBox(
+                  height: 672,
+                ),
+                Container(
+                  margin: const EdgeInsets.only(left: 14),
+                  width: MediaQuery.of(context).size.width * 0.93,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16), // Rounded corners
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min, // Allow flexible height
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      const SizedBox(
+                          height: 195), // Space between AppBar and body
 
-                  const SizedBox(
-                      height: 10.0), // Space between OTP input and keypad
+                      // Combined Icon and OTP Input Container
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(7),
+                          color: themeController.isDarkMode.value
+                              ? Color.fromARGB(255, 24, 24, 24)
+                              : Colors.white,
+                        ),
+                        margin: const EdgeInsets.symmetric(vertical: 10),
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.admin_panel_settings_rounded,
+                                  color: themeController.isDarkMode.value
+                                      ? Colors.white
+                                      : Color.fromARGB(255, 24, 24, 24),
+                                  size: 100,
+                                ),
+                                SizedBox(width: 8),
+                              ],
+                            ),
+                            const SizedBox(
+                                height:
+                                    20.0), // Space between title and OTP input
 
-                  // Updated layout for Numeric Keypad
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(7),
-                      color: const Color.fromARGB(255, 24, 24, 24),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const SizedBox(height: 5),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            _buildNumberButton("1"),
-                            _buildNumberButton("2"),
-                            _buildNumberButton("3"),
+                            // OtpInput widget
+                            VerifyavailabletrxInput(
+                              controllers: _otpControllers,
+                              focusNodes: _focusNodes,
+                              onSubmit: (otp) {
+                                if (otp.isNotEmpty) {
+                                  print("Submitted OTP: $otp");
+                                  // Get.toNamed('/Home');
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        content: Text('Please enter your OTP')),
+                                  );
+                                }
+                              },
+                            ),
+                            const SizedBox(height: 10.0),
                           ],
                         ),
-                        const SizedBox(height: 10),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      ),
+
+                      const SizedBox(
+                          height: 5.0), // Space between OTP input and keypad
+
+                      // Updated layout for Numeric Keypad
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(7),
+                          color: themeController.isDarkMode.value
+                              ? Color.fromARGB(255, 24, 24, 24)
+                              : Colors.white,
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            _buildNumberButton("4"),
-                            _buildNumberButton("5"),
-                            _buildNumberButton("6"),
+                            const SizedBox(height: 5),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                _buildNumberButton("1"),
+                                _buildNumberButton("2"),
+                                _buildNumberButton("3"),
+                              ],
+                            ),
+                            const SizedBox(height: 10),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                _buildNumberButton("4"),
+                                _buildNumberButton("5"),
+                                _buildNumberButton("6"),
+                              ],
+                            ),
+                            const SizedBox(height: 10),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                _buildNumberButton("7"),
+                                _buildNumberButton("8"),
+                                _buildNumberButton("9"),
+                              ],
+                            ),
+                            const SizedBox(height: 10),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                _buildBackButton(), // Custom back button
+                                _buildNumberButton("0"),
+                                _buildConfirmButton(), // Custom confirm button
+                              ],
+                            ),
+                            const SizedBox(height: 5),
                           ],
                         ),
-                        const SizedBox(height: 10),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            _buildNumberButton("7"),
-                            _buildNumberButton("8"),
-                            _buildNumberButton("9"),
-                          ],
-                        ),
-                        const SizedBox(height: 10),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            _buildBackButton(), // Custom back button
-                            _buildNumberButton("0"),
-                            _buildConfirmButton(), // Custom confirm button
-                          ],
-                        ),
-                        const SizedBox(height: 5),
-                      ],
-                    ),
-                  )
-                ],
-              ),
+                      )
+                    ],
+                  ),
+                ),
+              ],
             ),
           ),
-        ),
-      ),
+        );
+      }),
     );
   }
 
@@ -168,7 +216,8 @@ class VerifyavailabletrxPage extends StatelessWidget {
         alignment: Alignment.center,
         child: Text(
           number,
-          style: const TextStyle(fontSize: 24), // Adjust font size
+          style: const TextStyle(
+              fontSize: 24, color: Colors.black), // Adjust font size
         ),
       ),
     );
@@ -264,7 +313,7 @@ class VerifyavailabletrxPage extends StatelessWidget {
           color: Colors.white,
         ),
         alignment: Alignment.center,
-        child: const Icon(Icons.arrow_back, size: 24),
+        child: const Icon(Icons.arrow_back, size: 24, color: Colors.black),
       ),
     );
   }
@@ -346,7 +395,7 @@ class VerifyavailabletrxPage extends StatelessWidget {
         alignment: Alignment.center,
         child: Text(
           "OK".tr,
-          style: TextStyle(fontSize: 20),
+          style: TextStyle(fontSize: 20, color: Colors.black),
         ),
       ),
     );

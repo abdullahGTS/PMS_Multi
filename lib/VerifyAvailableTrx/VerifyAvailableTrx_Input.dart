@@ -28,7 +28,8 @@ class VerifyavailabletrxInput extends StatelessWidget {
                 textAlign: TextAlign.center,
                 readOnly: true, // Disable keyboard input
                 maxLength: 1,
-                style: const TextStyle(fontSize: 30), // Set font size to 30
+                style: const TextStyle(
+                    fontSize: 30, color: Colors.black), // Set font size to 30
 
                 decoration: InputDecoration(
                   counterText: '', // Hide the counter text
