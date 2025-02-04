@@ -1,0 +1,24 @@
+-FIXED-
+-add background service
+-add settlement request
+-add fleet,bankpoint
+-add edit tipsvalue as total
+-add tootl tips in trxstatusdetails
+-edit close shift ,check for pump status in avaliable trx
+-edit pump calibration to work as single pump
+-multi pump added 
+-check wifi 
+-add translation
+-fix reset transaction tip value
+-translate close shift check page
+-edit totals font size
+-open shift page icon will check opened shift
+
+-NEED TO BE FIXED-
+-check void transactions before close the shift
+-when pos wait for shift to be closed i need to force check not to go out from this page
+	[solution](syncing middleware redirect to check close shift instead of shift)
+-keep track which page open in drawer
+
+
+version: 2.0.0+3
