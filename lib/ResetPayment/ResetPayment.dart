@@ -83,7 +83,7 @@ class ResetPayment extends StatelessWidget {
                             MainAxisAlignment.start, // Start from the top
                         children: [
                           const SizedBox(
-                              height: 10), // Space between AppBar and content
+                              height: 220), // Space between AppBar and content
                           // Total Amount Card
                           Container(
                             width: MediaQuery.of(context).size.width *
@@ -104,8 +104,8 @@ class ResetPayment extends StatelessWidget {
                                       "Total_Amount".tr,
                                       style: TextStyle(
                                         color: themeController.isDarkMode.value
-                                            ? Colors.white
-                                            : color,
+                                            ? color
+                                            : Colors.white,
                                         fontSize: 20,
                                         fontWeight: FontWeight
                                             .bold, // Adjust font size as needed
@@ -117,8 +117,8 @@ class ResetPayment extends StatelessWidget {
                                       "${choosePaymentController.customController.amountVal.value + double.parse(choosePaymentController.customController.TipsValue.value)}",
                                       style: TextStyle(
                                         color: themeController.isDarkMode.value
-                                            ? Colors.white
-                                            : color,
+                                            ? color
+                                            : Colors.white,
                                         fontSize: 25,
                                         fontWeight: FontWeight
                                             .bold, // Adjust font size as needed
@@ -235,7 +235,7 @@ class ResetPayment extends StatelessWidget {
               // ),
               // const SizedBox(height: 10), // Space between icon and text
               // Text(
-              //   title, 
+              //   title,
               //   style: const TextStyle(
               //     fontSize: 25,
               //     color: Colors.white, // White text color

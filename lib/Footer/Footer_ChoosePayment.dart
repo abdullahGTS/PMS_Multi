@@ -2,61 +2,84 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../CustomAppbar/CustomAppbar_Controller.dart';
+import '../Theme/Theme_Controller.dart';
 
 class FooterChoosePayment extends StatelessWidget {
   final customController = Get.find<CustomAppbarController>();
+  var themeController = Get.find<ThemeController>();
+  var color = Color.fromARGB(255, 24, 24, 24);
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: const Color.fromARGB(255, 24, 24, 24),
-      width: double.infinity,
-      padding: const EdgeInsets.all(16.0), // Add padding if needed
-      child: Row(
-        mainAxisAlignment:
-            MainAxisAlignment.center, // Center the content in the Row
-        children: [
-          GestureDetector(
-            onTap: () {
-              Get.snackbar(
-                'Payment_Alert'.tr,
-                "sorry".tr + ", " + "you_have_to_choose_a_payment_method".tr,
-                snackPosition: SnackPosition.TOP,
-                backgroundColor: Colors.red,
-                colorText: Colors.white,
-              );
-            },
-            child: _buildCircleIcon(Icons.arrow_back_rounded, Colors.white),
-            // Fuel on the right
+    return Stack(
+      children: [
+        Positioned(
+          // height: 30,
+          right: 0,
+          left: 0,
+          top: 60,
+          bottom: 0,
+          // left: 0,
+          child: Container(
+            color: themeController.isDarkMode.value
+                ? color
+                : Color(0x35576E38).withOpacity(0.6),
           ),
-          const Spacer(), // Spacer to push the logo to the center
-          _buildCircleImage('media/new_logo.png'), // New logo in the center
-          const Spacer(), // Spacer to push the fuel icon to the right
-          GestureDetector(
-            onTap: () {
-              Get.snackbar(
-                'Amount_Details'.tr,
-                " " +
-                    "Amount".tr +
+        ),
+        Container(
+          color: Colors.white.withOpacity(0),
+          // width: double.infinity,
+          padding: const EdgeInsets.all(16.0), // Add padding if needed
+          child: Row(
+            mainAxisAlignment:
+                MainAxisAlignment.center, // Center the content in the Row
+            children: [
+              GestureDetector(
+                onTap: () {
+                  Get.snackbar(
+                    'Payment_Alert'.tr,
+                    "sorry".tr +
+                        ", " +
+                        "you_have_to_choose_a_payment_method".tr,
+                    snackPosition: SnackPosition.TOP,
+                    backgroundColor: Colors.red,
+                    colorText: Colors.white,
+                  );
+                },
+                child: _buildCircleIcon(Icons.arrow_back_rounded, Colors.white),
+                // Fuel on the right
+              ),
+              const Spacer(), // Spacer to push the logo to the center
+              _buildCircleImage('media/new_logo.png'), // New logo in the center
+              const Spacer(), // Spacer to push the fuel icon to the right
+              GestureDetector(
+                onTap: () {
+                  Get.snackbar(
+                    'Amount_Details'.tr,
                     " " +
-                    "${customController.amountVal.value.toStringAsFixed(2)} " +
-                    'EGP'.tr +
-                    " " +
-                    ' |  ' +
-                    'Tips'.tr +
-                    " " +
-                    '${customController.TipsValue.value} ' +
-                    " " +
-                    'EGP'.tr,
-                snackPosition: SnackPosition.TOP,
-                backgroundColor: Colors.green,
-                colorText: Colors.white,
-              );
-            },
-            child: _buildCircleIcon(
-                Icons.numbers_rounded, Colors.white), // Fuel on the right
+                        "Amount".tr +
+                        " " +
+                        "${customController.amountVal.value.toStringAsFixed(2)} " +
+                        'EGP'.tr +
+                        " " +
+                        ' |  ' +
+                        'Tips'.tr +
+                        " " +
+                        '${customController.TipsValue.value} ' +
+                        " " +
+                        'EGP'.tr,
+                    snackPosition: SnackPosition.TOP,
+                    backgroundColor: Colors.green,
+                    colorText: Colors.white,
+                  );
+                },
+                child: _buildCircleIcon(
+                    Icons.numbers_rounded, Colors.white), // Fuel on the right
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 

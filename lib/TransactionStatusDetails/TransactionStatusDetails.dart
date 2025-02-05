@@ -129,8 +129,8 @@ class TransactionStatusDetails extends StatelessWidget {
                                                         color: themeController
                                                                 .isDarkMode
                                                                 .value
-                                                            ? Colors.white
-                                                            : color,
+                                                            ? color
+                                                            : Colors.white,
                                                         size: 20,
                                                       ),
                                                     )),
@@ -149,8 +149,8 @@ class TransactionStatusDetails extends StatelessWidget {
                                                           color: themeController
                                                                   .isDarkMode
                                                                   .value
-                                                              ? Colors.white
-                                                              : color,
+                                                              ? color
+                                                              : Colors.white,
                                                           fontSize: 16),
                                                     ),
                                                   ),
@@ -167,8 +167,8 @@ class TransactionStatusDetails extends StatelessWidget {
                                                   style: TextStyle(
                                                       color: themeController
                                                               .isDarkMode.value
-                                                          ? Colors.white
-                                                          : color,
+                                                          ? color
+                                                          : Colors.white,
                                                       fontSize: 16)),
                                             ),
                                           )
@@ -186,8 +186,8 @@ class TransactionStatusDetails extends StatelessWidget {
                                                       Icons.local_gas_station,
                                                       color: themeController
                                                               .isDarkMode.value
-                                                          ? Colors.white
-                                                          : color,
+                                                          ? color
+                                                          : Colors.white,
                                                       size: 20,
                                                     )),
                                                 SizedBox(
@@ -202,8 +202,8 @@ class TransactionStatusDetails extends StatelessWidget {
                                                         color: themeController
                                                                 .isDarkMode
                                                                 .value
-                                                            ? Colors.white
-                                                            : color,
+                                                            ? color
+                                                            : Colors.white,
                                                       ),
                                                     )),
                                               ],
@@ -218,8 +218,8 @@ class TransactionStatusDetails extends StatelessWidget {
                                                       Icons.local_gas_station,
                                                       color: themeController
                                                               .isDarkMode.value
-                                                          ? Colors.white
-                                                          : color,
+                                                          ? color
+                                                          : Colors.white,
                                                       size: 20,
                                                     )),
                                                 SizedBox(
@@ -234,8 +234,8 @@ class TransactionStatusDetails extends StatelessWidget {
                                                         color: themeController
                                                                 .isDarkMode
                                                                 .value
-                                                            ? Colors.white
-                                                            : color,
+                                                            ? color
+                                                            : Colors.white,
                                                       ),
                                                     )),
                                               ],
@@ -255,8 +255,8 @@ class TransactionStatusDetails extends StatelessWidget {
                                                       Icons.water_drop_rounded,
                                                       color: themeController
                                                               .isDarkMode.value
-                                                          ? Colors.white
-                                                          : color,
+                                                          ? color
+                                                          : Colors.white,
                                                       size: 20,
                                                     )),
                                                 SizedBox(
@@ -271,8 +271,8 @@ class TransactionStatusDetails extends StatelessWidget {
                                                         color: themeController
                                                                 .isDarkMode
                                                                 .value
-                                                            ? Colors.white
-                                                            : color,
+                                                            ? color
+                                                            : Colors.white,
                                                       ),
                                                     )),
                                               ],
@@ -287,8 +287,8 @@ class TransactionStatusDetails extends StatelessWidget {
                                                       Icons.numbers_rounded,
                                                       color: themeController
                                                               .isDarkMode.value
-                                                          ? Colors.white
-                                                          : color,
+                                                          ? color
+                                                          : Colors.white,
                                                       size: 20,
                                                     )),
                                                 SizedBox(
@@ -303,8 +303,8 @@ class TransactionStatusDetails extends StatelessWidget {
                                                         color: themeController
                                                                 .isDarkMode
                                                                 .value
-                                                            ? Colors.white
-                                                            : color,
+                                                            ? color
+                                                            : Colors.white,
                                                       ),
                                                     )),
                                               ],
@@ -324,8 +324,8 @@ class TransactionStatusDetails extends StatelessWidget {
                                                       Icons.payments_outlined,
                                                       color: themeController
                                                               .isDarkMode.value
-                                                          ? Colors.white
-                                                          : color,
+                                                          ? color
+                                                          : Colors.white,
                                                       size: 20,
                                                     )),
                                                 SizedBox(
@@ -341,8 +341,8 @@ class TransactionStatusDetails extends StatelessWidget {
                                                         color: themeController
                                                                 .isDarkMode
                                                                 .value
-                                                            ? Colors.white
-                                                            : color,
+                                                            ? color
+                                                            : Colors.white,
                                                       ),
                                                     )),
                                               ],
@@ -357,8 +357,8 @@ class TransactionStatusDetails extends StatelessWidget {
                                                       Icons.water_rounded,
                                                       color: themeController
                                                               .isDarkMode.value
-                                                          ? Colors.white
-                                                          : color,
+                                                          ? color
+                                                          : Colors.white,
                                                       size: 20,
                                                     )),
                                                 SizedBox(
@@ -374,8 +374,8 @@ class TransactionStatusDetails extends StatelessWidget {
                                                         color: themeController
                                                                 .isDarkMode
                                                                 .value
-                                                            ? Colors.white
-                                                            : color,
+                                                            ? color
+                                                            : Colors.white,
                                                       ),
                                                     )),
                                               ],
@@ -395,8 +395,8 @@ class TransactionStatusDetails extends StatelessWidget {
                                                       Icons.payments_outlined,
                                                       color: themeController
                                                               .isDarkMode.value
-                                                          ? Colors.white
-                                                          : color,
+                                                          ? color
+                                                          : Colors.white,
                                                       size: 20,
                                                     )),
                                                 SizedBox(
@@ -412,8 +412,8 @@ class TransactionStatusDetails extends StatelessWidget {
                                                         color: themeController
                                                                 .isDarkMode
                                                                 .value
-                                                            ? Colors.white
-                                                            : color,
+                                                            ? color
+                                                            : Colors.white,
                                                       ),
                                                     )),
                                               ],
@@ -429,8 +429,8 @@ class TransactionStatusDetails extends StatelessWidget {
                                                           .phone_android_rounded,
                                                       color: themeController
                                                               .isDarkMode.value
-                                                          ? Colors.white
-                                                          : color,
+                                                          ? color
+                                                          : Colors.white,
                                                       size: 20,
                                                     )),
                                                 SizedBox(
@@ -445,8 +445,8 @@ class TransactionStatusDetails extends StatelessWidget {
                                                         color: themeController
                                                                 .isDarkMode
                                                                 .value
-                                                            ? Colors.white
-                                                            : color,
+                                                            ? color
+                                                            : Colors.white,
                                                       ),
                                                     )),
                                               ],
@@ -478,8 +478,8 @@ class TransactionStatusDetails extends StatelessWidget {
                                                         color: themeController
                                                                 .isDarkMode
                                                                 .value
-                                                            ? Colors.white
-                                                            : color,
+                                                            ? color
+                                                            : Colors.white,
                                                         size: 20,
                                                       ),
                                                     )),
@@ -498,8 +498,8 @@ class TransactionStatusDetails extends StatelessWidget {
                                                           color: themeController
                                                                   .isDarkMode
                                                                   .value
-                                                              ? Colors.white
-                                                              : color,
+                                                              ? color
+                                                              : Colors.white,
                                                           fontSize: 16),
                                                     ),
                                                   ),
@@ -516,8 +516,8 @@ class TransactionStatusDetails extends StatelessWidget {
                                                   style: TextStyle(
                                                       color: themeController
                                                               .isDarkMode.value
-                                                          ? Colors.white
-                                                          : color,
+                                                          ? color
+                                                          : Colors.white,
                                                       fontSize: 16)),
                                             ),
                                           ),
@@ -554,8 +554,8 @@ class TransactionStatusDetails extends StatelessWidget {
                                         hintStyle: TextStyle(
                                             color:
                                                 themeController.isDarkMode.value
-                                                    ? Colors.white
-                                                    : color,
+                                                    ? color
+                                                    : Colors.white,
                                             fontSize: 15),
                                         filled: true,
                                         fillColor: const Color(0xFF176E38),
@@ -567,8 +567,8 @@ class TransactionStatusDetails extends StatelessWidget {
                                       ),
                                       style: TextStyle(
                                         color: themeController.isDarkMode.value
-                                            ? Colors.white
-                                            : color,
+                                            ? color
+                                            : Colors.white,
                                       ),
                                       enabled: !availabletrxdetailsController
                                           .isInputTips.value,
@@ -597,8 +597,8 @@ class TransactionStatusDetails extends StatelessWidget {
                                         hintStyle: TextStyle(
                                             color:
                                                 themeController.isDarkMode.value
-                                                    ? Colors.white
-                                                    : color,
+                                                    ? color
+                                                    : Colors.white,
                                             fontSize: 15),
                                         filled: true,
                                         fillColor: const Color(0xFF176E38),
