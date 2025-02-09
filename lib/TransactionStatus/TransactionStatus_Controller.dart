@@ -110,7 +110,7 @@ xsi:noNamespaceSchemaLocation="FDC_GetAvailableFuelSaleTrxs_Request.xsd">
               if (!transactionExists) {
                 AvailableTrxTempList.add({
                   // 'Type': Type,
-                  'NozzleNo': deviceID,
+                  // 'NozzleNo': deviceID,
                   'PumpNo': PumpNo,
                   'TransactionSeqNo': TransactionSeqNo,
                   // 'FusionSaleId': FusionSaleId,

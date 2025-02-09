@@ -250,6 +250,47 @@ class TransactionStatus extends StatelessWidget {
                                                             SizedBox(
                                                               height: 10,
                                                             ),
+                                                            // Row(
+                                                            //   children: [
+                                                            //     Expanded(
+                                                            //         flex: 1,
+                                                            //         child: Icon(
+                                                            //           Icons
+                                                            //               .pending_actions_rounded,
+                                                            //           color: themeController
+                                                            //                   .isDarkMode
+                                                            //                   .value
+                                                            //               ? Colors
+                                                            //                   .white
+                                                            //                   .withOpacity(0.8)
+                                                            //               : color,
+                                                            //           size: 20,
+                                                            //         )),
+                                                            //     SizedBox(
+                                                            //       width: 5,
+                                                            //     ),
+                                                            //     Expanded(
+                                                            //         flex: 4,
+                                                            //         child: Text(
+                                                            //           "State".tr +
+                                                            //               ' ' +
+                                                            //               "${(transaction['State'])}"
+                                                            //                   .tr,
+                                                            //           style:
+                                                            //               TextStyle(
+                                                            //             color: themeController.isDarkMode.value
+                                                            //                 ? Colors.white.withOpacity(0.8)
+                                                            //                 : color,
+                                                            //           ),
+                                                            //         )),
+                                                            //   ],
+                                                            // ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      Expanded(
+                                                        child: Column(
+                                                          children: [
                                                             Row(
                                                               children: [
                                                                 Expanded(
@@ -276,45 +317,6 @@ class TransactionStatus extends StatelessWidget {
                                                                           ' ' +
                                                                           "${(transaction['State'])}"
                                                                               .tr,
-                                                                      style:
-                                                                          TextStyle(
-                                                                        color: themeController.isDarkMode.value
-                                                                            ? Colors.white.withOpacity(0.8)
-                                                                            : color,
-                                                                      ),
-                                                                    )),
-                                                              ],
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      Expanded(
-                                                        child: Column(
-                                                          children: [
-                                                            Row(
-                                                              children: [
-                                                                Expanded(
-                                                                    flex: 1,
-                                                                    child: Icon(
-                                                                      Icons
-                                                                          .local_gas_station,
-                                                                      color: themeController
-                                                                              .isDarkMode
-                                                                              .value
-                                                                          ? Colors
-                                                                              .white
-                                                                              .withOpacity(0.8)
-                                                                          : color,
-                                                                      size: 20,
-                                                                    )),
-                                                                SizedBox(
-                                                                  width: 5,
-                                                                ),
-                                                                Expanded(
-                                                                    flex: 4,
-                                                                    child: Text(
-                                                                      "Nozzle".tr +
-                                                                          " ${transaction['NozzleNo']}",
                                                                       style:
                                                                           TextStyle(
                                                                         color: themeController.isDarkMode.value

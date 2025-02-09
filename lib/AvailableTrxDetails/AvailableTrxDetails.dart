@@ -646,10 +646,13 @@ class Availabletrxdetails extends StatelessWidget {
       IconData icon) {
     return Obx(() {
       // Determine the background color based on selection
-      Color backgroundColor =
-          (availabletrxdetailsController.selectedPaymentOption.value == title)
-              ? const Color(0xFF166E36) // Change to green when selected
-              : const Color.fromARGB(255, 24, 24, 24);
+      Color backgroundColor = (availabletrxdetailsController
+                  .selectedPaymentOption.value ==
+              title)
+          ? themeController.isDarkMode.value
+              ? color
+              : Colors.white.withOpacity(0.5) // Change to green when selected
+          : const Color.fromARGB(255, 24, 24, 24);
 
       return GestureDetector(
         onTap: () {
@@ -662,7 +665,9 @@ class Availabletrxdetails extends StatelessWidget {
               0.45, // Set width to 40% of screen width
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(7),
-            color: backgroundColor, // Set dynamic background color
+            color: themeController.isDarkMode.value
+                ? color
+                : Colors.white.withOpacity(0.5), // Set dynamic background color
           ),
           child: Row(
             children: [
@@ -670,7 +675,9 @@ class Availabletrxdetails extends StatelessWidget {
                 flex: 1,
                 child: Icon(
                   icon,
-                  color: Colors.white, // Set icon color
+                  color: themeController.isDarkMode.value
+                      ? Colors.white
+                      : color, // Set icon color
                   size: 30, // Adjust icon size as needed
                 ),
               ),
@@ -678,9 +685,11 @@ class Availabletrxdetails extends StatelessWidget {
                 flex: 2,
                 child: Text(
                   title,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 20,
-                    color: Colors.white, // White text color
+                    color: themeController.isDarkMode.value
+                        ? Colors.white
+                        : color, // White text color
                   ),
                 ),
               ),

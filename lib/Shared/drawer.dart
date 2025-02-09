@@ -30,7 +30,9 @@ class CustomDrawer extends StatelessWidget {
     print(
         " customController.managershift.value${customController.managershift.value}");
     return Drawer(
-      backgroundColor: const Color(0xFF166E36),
+      backgroundColor: themeController.isDarkMode.value
+          ? Color(0xFF166E36)
+          : Color(0xFF1a2035),
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
@@ -346,17 +348,26 @@ class CustomDrawer extends StatelessWidget {
           Container(
             margin: EdgeInsets.only(right: 6, left: 6),
             decoration: BoxDecoration(
-                color: Colors.black, borderRadius: BorderRadius.circular(10)),
+                color: themeController.isDarkMode.value
+                    ? Colors.black
+                    : Colors.white,
+                borderRadius: BorderRadius.circular(10)),
 
             // Set your desired background color
             child: ListTile(
               trailing: Icon(
                 Icons.logout_rounded,
-                color: Colors.white,
+                color: themeController.isDarkMode.value
+                    ? Colors.white
+                    : Color(0xFF2B2B2B),
               ),
               title: Text(
                 'Close_Shift'.tr,
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(
+                  color: themeController.isDarkMode.value
+                      ? Colors.white
+                      : Color(0xFF2B2B2B),
+                ),
               ),
               onTap: () async {
                 final prefs = await SharedPreferences.getInstance();

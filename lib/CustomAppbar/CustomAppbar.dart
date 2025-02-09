@@ -98,30 +98,33 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                       onTap: () async {
                         // Add your desired functionality here
                         // Example: Navigate to another page or perform an action
-
-                        await customController.fetchToken();
-                        if (customController.isconnect.value) {
-                          Fluttertoast.showToast(
-                            msg: "You_are_connected".tr, // Message to display
-                            toastLength: Toast
-                                .LENGTH_SHORT, // Duration: LENGTH_SHORT or LENGTH_LONG
-                            gravity: ToastGravity
-                                .BOTTOM, // Position: TOP, CENTER, or BOTTOM
-                            backgroundColor: Colors.black, // Background color
-                            textColor: Colors.white, // Text color
-                            fontSize: 16.0, // Font size
-                          );
+                        if (Get.currentRoute == '/Availabletransactions') {
+                          Get.offAllNamed('/Availabletransactions');
                         } else {
-                          Fluttertoast.showToast(
-                            msg: "No_Connection".tr, // Message to display
-                            toastLength: Toast
-                                .LENGTH_SHORT, // Duration: LENGTH_SHORT or LENGTH_LONG
-                            gravity: ToastGravity
-                                .BOTTOM, // Position: TOP, CENTER, or BOTTOM
-                            backgroundColor: Colors.red, // Background color
-                            textColor: Colors.white, // Text color
-                            fontSize: 16.0, // Font size
-                          );
+                          await customController.fetchToken();
+                          if (customController.isconnect.value) {
+                            Fluttertoast.showToast(
+                              msg: "You_are_connected".tr, // Message to display
+                              toastLength: Toast
+                                  .LENGTH_SHORT, // Duration: LENGTH_SHORT or LENGTH_LONG
+                              gravity: ToastGravity
+                                  .BOTTOM, // Position: TOP, CENTER, or BOTTOM
+                              backgroundColor: Colors.black, // Background color
+                              textColor: Colors.white, // Text color
+                              fontSize: 16.0, // Font size
+                            );
+                          } else {
+                            Fluttertoast.showToast(
+                              msg: "No_Connection".tr, // Message to display
+                              toastLength: Toast
+                                  .LENGTH_SHORT, // Duration: LENGTH_SHORT or LENGTH_LONG
+                              gravity: ToastGravity
+                                  .BOTTOM, // Position: TOP, CENTER, or BOTTOM
+                              backgroundColor: Colors.red, // Background color
+                              textColor: Colors.white, // Text color
+                              fontSize: 16.0, // Font size
+                            );
+                          }
                         }
                       },
                       child: Container(
