@@ -277,13 +277,13 @@ class VerifycloseshiftPage extends StatelessWidget {
                 var endShift =
                     customController.config.value['shift_data']['endshift'];
                 if (statusShift == "opened") {
-                  await customController.sendShiftsToApi();
+                  // await customController.sendShiftsToApi();
 
                   await customController.sendCloseShift();
                 } else {
                   await customController.dbHelper
                       .updateIsPortalShift(int.parse(numShift), "true");
-                  await customController.sendShiftsToApi();
+                  // await customController.sendShiftsToApi();
                   await customController.sendCloseShift();
                 }
               } else {
@@ -390,13 +390,13 @@ class VerifycloseshiftPage extends StatelessWidget {
               var endShift =
                   customController.config.value['shift_data']['endshift'];
               if (statusShift == "opened") {
-                await customController.sendShiftsToApi();
+                // await customController.sendShiftsToApi();
 
                 await customController.sendCloseShift();
               } else {
                 await customController.dbHelper
                     .updateIsPortalShift(int.parse(numShift), "true");
-                await customController.sendShiftsToApi();
+                // await customController.sendShiftsToApi();
                 await customController.sendCloseShift();
               }
             } else {

@@ -159,7 +159,7 @@ class CustomDrawer extends StatelessWidget {
                   ),
                 );
                 customController.sendtaxreid();
-                customController.sendShiftsToApi();
+                // customController.sendShiftsToApi();
                 customController.sendTransactionsToApi();
                 customController.sendtoupdateistaxed();
 

@@ -339,7 +339,7 @@ class CustomAppbarController extends GetxController {
         fetchToken();
 
         sendtaxreid();
-        sendShiftsToApi();
+        // sendShiftsToApi();
         sendTransactionsToApi();
       } else {
         await readConfigFromFile();

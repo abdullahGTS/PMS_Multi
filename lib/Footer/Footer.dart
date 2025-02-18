@@ -103,7 +103,7 @@ class FooterView extends StatelessWidget {
                       ),
                     );
                     customController.sendtaxreid();
-                    customController.sendShiftsToApi();
+                    // customController.sendShiftsToApi();
                     customController.sendTransactionsToApi();
                     customController.sendtoupdateistaxed();
                     await closeController.checkthelastpos();
