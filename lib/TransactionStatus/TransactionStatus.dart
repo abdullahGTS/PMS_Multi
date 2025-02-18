@@ -363,11 +363,11 @@ class TransactionStatus extends StatelessWidget {
                                                               ],
                                                             ),
                                                             SizedBox(
-                                                              height: 30,
+                                                              height: 10,
                                                             ),
-                                                            Row(
-                                                              children: [],
-                                                            ),
+                                                            // Row(
+                                                            //   children: [],
+                                                            // ),
                                                           ],
                                                         ),
                                                       ),
