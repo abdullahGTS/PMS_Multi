@@ -174,7 +174,7 @@ class Availabletransactions extends StatelessWidget {
                                                       alignment:
                                                           Alignment.centerRight,
                                                       child: Text(
-                                                          "${transaction['Start_Date']}",
+                                                          "${alltransController.customController.startTimeStamp.value}",
                                                           style: TextStyle(
                                                               color: themeController
                                                                       .isDarkMode
