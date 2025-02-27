@@ -334,13 +334,20 @@ class Reportshift extends StatelessWidget {
                       },
                     ),
                     ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: themeController.isDarkMode.value
+                            ? Colors.white
+                            : const Color(0xED166E36),
+
+                        // Set the background color
+                      ),
                       onPressed: shiftreprotController.printReceipt,
                       child: Text(
                         "Print_Receipt".tr,
                         style: TextStyle(
                           color: themeController.isDarkMode.value
-                              ? Colors.white
-                              : color,
+                              ? color
+                              : Colors.white,
                         ),
                       ),
                     ),

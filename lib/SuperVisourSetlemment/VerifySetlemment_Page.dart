@@ -3,9 +3,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../CustomAppbar/CustomAppbar.dart';
 import '../CustomAppbar/CustomAppbar_Controller.dart';
+import '../Local/Local_Controller.dart';
 import '../Shared/drawer.dart';
 import 'package:intl/intl.dart';
 
@@ -18,6 +20,7 @@ class VerifySetlemmentPage extends StatelessWidget {
   final customController = Get.find<CustomAppbarController>();
   final verifySetlemmentController = Get.put(VerifySetlemmentController());
   var themeController = Get.find<ThemeController>();
+  final localController = Get.find<LocalController>();
 
   // final verifyController = Get.find<VerifyController>();
   final List<TextEditingController> _otpControllers =
@@ -73,7 +76,9 @@ class VerifySetlemmentPage extends StatelessWidget {
                   width: MediaQuery.of(context).size.width * 0.99,
                 ),
                 Container(
-                  margin: const EdgeInsets.only(left: 14),
+                  margin: localController.getCurrentLang()?.languageCode == "ar"
+                      ? EdgeInsets.only(right: 14,left: 14)
+                      : EdgeInsets.only(left: 14),
                   width: MediaQuery.of(context).size.width * 0.93,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16), // Rounded corners
@@ -215,7 +220,8 @@ class VerifySetlemmentPage extends StatelessWidget {
         alignment: Alignment.center,
         child: Text(
           number,
-          style: const TextStyle(fontSize: 24), // Adjust font size
+          style: const TextStyle(
+              fontSize: 24, color: Colors.black), // Adjust font size
         ),
       ),
     );
@@ -256,37 +262,72 @@ class VerifySetlemmentPage extends StatelessWidget {
               isOtpValid = false;
             }
             print("isOtpValid--------??${isOtpValid}");
-
             if (isOtpValid) {
               await customController.fetchToken();
-              const _channel = MethodChannel('com.example.pms/method');
 
-              final String response =
-                  await _channel.invokeMethod<String>('settlementTrans') ??
-                      'No response';
-              print("settlementTrans${response}");
+              // print("settlementTrans${response}");
 
               if (customController.isconnect.value) {
-                print(
-                    "customController.isconnect.value????${customController.isconnect.value}");
+                final prefs = await SharedPreferences.getInstance();
 
-                const _channel = MethodChannel('com.example.pms/method');
+                var transactions =
+                    await customController.fetchTransactionsByshiftchecking(
+                        prefs.getInt('shift_id') ?? 0);
 
-                await _channel.invokeMethod<String>('settlementTrans');
-                _channel.setMethodCallHandler((call) async {
-                  if (call.method == "onTransactionResult") {
-                    final Map<String, dynamic> response =
-                        Map<String, dynamic>.from(call.arguments);
+// Check if any transaction has a status of 'void'
+                bool hasVoidTransaction = transactions.any(
+                    (transaction) => transaction['statusvoid'] == 'progress');
 
-                    // Handle transaction result
-                    if (response.containsKey("error")) {
-                      print("Transaction Error: ${response['error']}");
-                    } else {
-                      print("Transaction Successful: $response");
-                      // Get.toNamed('/Home');
+                print("hasVoidTransaction${hasVoidTransaction}");
+                if (hasVoidTransaction) {
+                  Get.snackbar(
+                    "Error".tr,
+                    "You_have_to_pay_the_void_transactions_first".tr,
+                    backgroundColor: Colors.red,
+                    colorText: Colors.white,
+                  );
+                  await Future.delayed(Duration(milliseconds: 500));
+                  Get.offAllNamed('/Home');
+                } else {
+                  const _channel = MethodChannel('com.example.pms/method');
+
+                  // final String response =
+                  //     await _channel.invokeMethod<String>('settlementTrans') ??
+                  //         'No response';
+                  print(
+                      "customController.isconnect.value????${customController.isconnect.value}");
+
+                  // const _channel = MethodChannel('com.example.pms/method');
+
+                  await _channel.invokeMethod<String>('settlementTrans');
+                  _channel.setMethodCallHandler((call) async {
+                    if (call.method == "onTransactionResult") {
+                      final Map<String, dynamic> response =
+                          Map<String, dynamic>.from(call.arguments);
+
+                      // Handle transaction result
+                      if (response.containsKey("error")) {
+                        print("Transaction Error: ${response['error']}");
+                        Get.offAllNamed('/Home');
+                      } else {
+                        if (response['rspCode'] == 0) {
+                          print("Transaction Successful: $response");
+                          Get.offAllNamed('/Home');
+                        } else {
+                          Get.snackbar(
+                            'Transaction Fail',
+                            '[${response['rspCode']}]' +
+                                ' - ' +
+                                '${response['rspMsg']}',
+                            snackPosition: SnackPosition.TOP,
+                            backgroundColor: Colors.red,
+                            colorText: Colors.white,
+                          );
+                        }
+                      }
                     }
-                  }
-                });
+                  });
+                }
               } else {
                 print("abdulla--------");
 
@@ -327,7 +368,7 @@ class VerifySetlemmentPage extends StatelessWidget {
           color: Colors.white,
         ),
         alignment: Alignment.center,
-        child: const Icon(Icons.arrow_back, size: 24),
+        child: const Icon(Icons.arrow_back, size: 24, color: Colors.black),
       ),
     );
   }
@@ -374,34 +415,60 @@ class VerifySetlemmentPage extends StatelessWidget {
 
           if (isOtpValid) {
             await customController.fetchToken();
-            const _channel = MethodChannel('com.example.pms/method');
 
-            final String response =
-                await _channel.invokeMethod<String>('settlementTrans') ??
-                    'No response';
-            print("settlementTrans${response}");
+            // print("settlementTrans${response}");
 
             if (customController.isconnect.value) {
-              print(
-                  "customController.isconnect.value????${customController.isconnect.value}");
+              final prefs = await SharedPreferences.getInstance();
 
-              const _channel = MethodChannel('com.example.pms/method');
+              var transactions =
+                  await customController.fetchTransactionsByshiftchecking(
+                      prefs.getInt('shift_id') ?? 0);
 
-              await _channel.invokeMethod<String>('settlementTrans');
-              _channel.setMethodCallHandler((call) async {
-                if (call.method == "onTransactionResult") {
-                  final Map<String, dynamic> response =
-                      Map<String, dynamic>.from(call.arguments);
+// Check if any transaction has a status of 'void'
+              bool hasVoidTransaction = transactions.any(
+                  (transaction) => transaction['statusvoid'] == 'progress');
 
-                  // Handle transaction result
-                  if (response.containsKey("error")) {
-                    print("Transaction Error: ${response['error']}");
-                  } else {
-                    print("Transaction Successful: $response");
-                    // Get.toNamed('/Home');
+              print("hasVoidTransaction${hasVoidTransaction}");
+              if (hasVoidTransaction) {
+                Get.snackbar(
+                  "Error".tr,
+                  "You_have_to_pay_the_void_transactions_first".tr,
+                  backgroundColor: Colors.red,
+                  colorText: Colors.white,
+                );
+                await Future.delayed(Duration(milliseconds: 500));
+                Get.offAllNamed('/Home');
+              } else {
+                const _channel = MethodChannel('com.example.pms/method');
+
+                final String response =
+                    await _channel.invokeMethod<String>('settlementTrans') ??
+                        'No response';
+                print(
+                    "customController.isconnect.value????${customController.isconnect.value}");
+
+                // const _channel = MethodChannel('com.example.pms/method');
+
+                await _channel.invokeMethod<String>('settlementTrans');
+                _channel.setMethodCallHandler((call) async {
+                  if (call.method == "onTransactionResult") {
+                    final Map<String, dynamic> response =
+                        Map<String, dynamic>.from(call.arguments);
+
+                    // Handle transaction result
+                    if (response.containsKey("error")) {
+                      print("Transaction Error: ${response['error']}");
+
+                      Get.offAllNamed('/Home');
+                    } else {
+                      print("Transaction Successful: $response");
+
+                      Get.offAllNamed('/Home');
+                    }
                   }
-                }
-              });
+                });
+              }
             } else {
               print("abdulla--------");
 
@@ -433,7 +500,7 @@ class VerifySetlemmentPage extends StatelessWidget {
         alignment: Alignment.center,
         child: Text(
           "OK".tr,
-          style: TextStyle(fontSize: 20),
+          style: TextStyle(fontSize: 20, color: Colors.black),
         ),
       ),
     );

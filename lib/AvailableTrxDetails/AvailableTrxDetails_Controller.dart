@@ -117,29 +117,38 @@ class AvailabletrxdetailsController extends GetxController {
           } else {
             print("Transaction Successful: $response");
             customController.paymentType.value = 2;
-
-            if (response['cardNo'] == 'Unknown') {
-              customController.stanNumber.value = 0;
-              return false;
+            if (response['rspCode'] == 0) {
+              if (response['cardNo'] == 'Unknown') {
+                customController.stanNumber.value = 0;
+                return false;
+              } else {
+                print('customController.stanNumber.value ${response['stan']}');
+                print(
+                    'customController.voucherNo.value ${response['voucherNo']}');
+                print('customController.ecrRef.value ${response['ecrRef']}');
+                print('customController.stanNumber.value ${response}');
+                customController.stanNumber.value = response['stan'];
+                customController.voucherNo.value = response['voucherNo'];
+                customController.ecrRef.value = response['ecrRef'];
+                customController.batchNo.value = response['batchNo'];
+                print(
+                    'customController.stanNumber.value ${customController.stanNumber.value}');
+                print(
+                    'customController.voucherNo.value ${customController.voucherNo.value}');
+                print(
+                    'customController.ecrRef.value ${customController.ecrRef.value}');
+                customController.saveTransaction(2);
+                // got to receipt
+                Get.toNamed('/Receipt');
+              }
             } else {
-              print('customController.stanNumber.value ${response['stan']}');
-              print(
-                  'customController.voucherNo.value ${response['voucherNo']}');
-              print('customController.ecrRef.value ${response['ecrRef']}');
-              print('customController.stanNumber.value ${response}');
-              customController.stanNumber.value = response['stan'];
-              customController.voucherNo.value = response['voucherNo'];
-              customController.ecrRef.value = response['ecrRef'];
-              customController.batchNo.value = response['batchNo'];
-              print(
-                  'customController.stanNumber.value ${customController.stanNumber.value}');
-              print(
-                  'customController.voucherNo.value ${customController.voucherNo.value}');
-              print(
-                  'customController.ecrRef.value ${customController.ecrRef.value}');
-              customController.saveTransaction(2);
-              // got to receipt
-              Get.toNamed('/Receipt');
+              Get.snackbar(
+                'Transaction Fail',
+                '[${response['rspCode']}]' + ' - ' + '${response['rspMsg']}',
+                snackPosition: SnackPosition.TOP,
+                backgroundColor: Colors.red,
+                colorText: Colors.white,
+              );
             }
           }
         }
@@ -308,10 +317,23 @@ xsi:noNamespaceSchemaLocation="FDC_GetFuelSaleTrxDetailsByNo_Request.xsd">
           customController.blendRatio.value =
               int.tryParse(document.findAllElements('BlendRatio').first.text) ??
                   0;
-          customController.startTimeStamp.value =
-              document.findAllElements('StartTimeStamp').first.text ?? "";
-          customController.endTimeStamp.value =
-              document.findAllElements('EndTimeStamp').first.text ?? "";
+          customController.productName.value =
+              document.findAllElements('ProductName').first.text;
+
+          customController.startTimeStamp.value = document
+                  .findAllElements('DeviceClass')
+                  .first
+                  .findAllElements('StartTimeStamp')
+                  .first
+                  .text ??
+              '';
+          customController.endTimeStamp.value = document
+                  .findAllElements('DeviceClass')
+                  .first
+                  .findAllElements('EndTimeStamp')
+                  .first
+                  .text ??
+              '';
         }
       }
     });

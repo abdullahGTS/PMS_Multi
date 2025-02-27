@@ -188,10 +188,10 @@ class ResetPayment extends StatelessWidget {
       ResetPaymentController paymentController, String title, IconData icon) {
     return Obx(() {
       // Determine the background color based on selection
-      Color backgroundColor =
-          (paymentController.selectedPaymentOption.value == title)
-              ? const Color(0xFF166E36) // Change to green when selected
-              : const Color.fromARGB(255, 24, 24, 24);
+      Color backgroundColor = themeController.isDarkMode.value
+          ? color
+          : Colors.white.withOpacity(0.5);
+      Color fontColor = themeController.isDarkMode.value ? Colors.white : color;
 
       return GestureDetector(
         onTap: () {
@@ -214,7 +214,7 @@ class ResetPayment extends StatelessWidget {
                 flex: 2,
                 child: Icon(
                   icon,
-                  color: Colors.white, // Set icon color
+                  color: fontColor, // Set icon color
                   size: 40, // Adjust icon size as needed
                 ),
               ),
@@ -222,9 +222,9 @@ class ResetPayment extends StatelessWidget {
                 flex: 4,
                 child: Text(
                   title,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 20,
-                    color: Colors.white, // White text color
+                    color: fontColor, // White text color
                   ),
                 ),
               ),

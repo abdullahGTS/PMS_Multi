@@ -378,14 +378,21 @@ class Report extends StatelessWidget {
                       height: 10,
                     ),
                     ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: themeController.isDarkMode.value
+                            ? Colors.white
+                            : const Color(0xED166E36),
+
+                        // Set the background color
+                      ),
                       onPressed: reprotController
                           .printReceipt, // Call printReceipt on button press
                       child: Text(
                         "Print_Receipt".tr,
                         style: TextStyle(
                           color: themeController.isDarkMode.value
-                              ? Colors.white
-                              : color,
+                              ? color
+                              : Colors.white,
                         ),
                       ),
                     ),

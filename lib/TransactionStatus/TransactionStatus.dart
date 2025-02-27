@@ -36,48 +36,350 @@ class TransactionStatus extends StatelessWidget {
           // appBar: const CustomAppBar(),
           drawer: CustomDrawer(),
           body: Obx(() {
-            return transactionStatusController.AvailableTrxList.isEmpty
-                ? transactionStatusController.NoAvailableTrx.value != ""
-                    ? Stack(
-                        children: [
-                          Positioned(
-                            right: 100,
-                            top: 0,
-                            bottom: 0,
-                            child: Transform.rotate(
-                              angle: 45 * (3.14159265359 / 180),
-                              child: Container(
-                                height: 500,
-                                width: 150, // Width of the red background
-                                decoration: BoxDecoration(
-                                  color: Color(0x35576E38).withOpacity(0.6),
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(
-                                        10), // Top-left corner rounded
-                                    topRight: Radius.circular(
-                                        0), // Top-right corner not rounded
-                                    bottomLeft: Radius.circular(
-                                        0), // Bottom-left corner not rounded
-                                    bottomRight: Radius.circular(0),
-                                  ),
+            return Stack(
+              children: [
+                Positioned(
+                  right: 100,
+                  top: 0,
+                  bottom: 0,
+                  child: Transform.rotate(
+                    angle: 45 * (3.14159265359 / 180),
+                    child: Container(
+                      height: 500,
+                      width: 150, // Width of the red background
+                      decoration: BoxDecoration(
+                        color: Color(0x35576E38).withOpacity(0.6),
+                        borderRadius: BorderRadius.only(
+                          topLeft:
+                              Radius.circular(10), // Top-left corner rounded
+                          topRight: Radius.circular(
+                              0), // Top-right corner not rounded
+                          bottomLeft: Radius.circular(
+                              0), // Bottom-left corner not rounded
+                          bottomRight: Radius.circular(0),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  child: CustomAppBar(),
+                  width: MediaQuery.of(context).size.width * 0.99,
+                ),
+                SizedBox(
+                  height: 672,
+                ),
+                Positioned(
+                  // right: 100,
+                  // top: 0,
+                  bottom: 0,
+                  child: SizedBox(
+                    child: FooterTrxStatus(),
+                    width: MediaQuery.of(context).size.width * 0.99,
+                  ),
+                ),
+                transactionStatusController.AvailableTrxList.isNotEmpty
+                    ? SizedBox(
+                        height: 600,
+                        child: Container(
+                          child: Column(
+                            children: [
+                              SizedBox(height: 180),
+                              Expanded(
+                                child: ListView.builder(
+                                  itemCount: transactionStatusController
+                                      .AvailableTrxList[0].length,
+                                  itemBuilder: (context, index) {
+                                    final transaction =
+                                        transactionStatusController
+                                            .AvailableTrxList[0][index];
+                                    return Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Card(
+                                        color: themeController.isDarkMode.value
+                                            ? Color(0xED166E36)
+                                            : Colors.white.withOpacity(0.8),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                        ),
+                                        elevation: 5,
+                                        child: Column(
+                                          children: [
+                                            Row(children: [
+                                              Expanded(
+                                                // flex: 4,
+                                                child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            10.0),
+                                                    child: Row(
+                                                      children: [
+                                                        Expanded(
+                                                          child: Column(
+                                                            children: [
+                                                              Row(
+                                                                children: [
+                                                                  Expanded(
+                                                                      flex: 1,
+                                                                      child:
+                                                                          Icon(
+                                                                        Icons
+                                                                            .local_gas_station,
+                                                                        color: themeController.isDarkMode.value
+                                                                            ? Colors.white.withOpacity(0.8)
+                                                                            : color,
+                                                                        size:
+                                                                            20,
+                                                                      )),
+                                                                  SizedBox(
+                                                                    width: 5,
+                                                                  ),
+                                                                  Expanded(
+                                                                      flex: 4,
+                                                                      child:
+                                                                          Text(
+                                                                        "Pump".tr +
+                                                                            " ${transaction['PumpNo']}",
+                                                                        style:
+                                                                            TextStyle(
+                                                                          color: themeController.isDarkMode.value
+                                                                              ? Colors.white.withOpacity(0.8)
+                                                                              : color,
+                                                                        ),
+                                                                      )),
+                                                                ],
+                                                              ),
+                                                              // SizedBox(
+                                                              //   height: 10,
+                                                              // ),
+                                                              // Row(
+                                                              //   children: [
+                                                              //     Expanded(
+                                                              //         flex: 1,
+                                                              //         child:
+                                                              //             Icon(
+                                                              //           Icons
+                                                              //               .numbers_rounded,
+                                                              //           color: themeController.isDarkMode.value
+                                                              //               ? Colors.white.withOpacity(0.8)
+                                                              //               : color,
+                                                              //           size:
+                                                              //               20,
+                                                              //         )),
+                                                              //     SizedBox(
+                                                              //       width: 5,
+                                                              //     ),
+                                                              //     Expanded(
+                                                              //         flex: 4,
+                                                              //         child:
+                                                              //             Text(
+                                                              //           "TRX".tr +
+                                                              //               " ${transaction['TransactionSeqNo']}",
+                                                              //           style:
+                                                              //               TextStyle(
+                                                              //             color: themeController.isDarkMode.value
+                                                              //                 ? Colors.white.withOpacity(0.8)
+                                                              //                 : color,
+                                                              //           ),
+                                                              //         )),
+                                                              //   ],
+                                                              // ),
+                                                              // Row(
+                                                              //   children: [
+                                                              //     Expanded(
+                                                              //         flex: 1,
+                                                              //         child:
+                                                              //             Icon(
+                                                              //           Icons
+                                                              //               .water_drop_rounded,
+                                                              //           color: themeController.isDarkMode.value
+                                                              //               ? Colors.white.withOpacity(0.8)
+                                                              //               : color,
+                                                              //           size:
+                                                              //               20,
+                                                              //         )),
+                                                              //     SizedBox(
+                                                              //       width: 5,
+                                                              //     ),
+                                                              //     Expanded(
+                                                              //         flex: 4,
+                                                              //         child:
+                                                              //             Text(
+                                                              //           ("${transaction['ProductName']}"
+                                                              //               .tr),
+                                                              //           style:
+                                                              //               TextStyle(
+                                                              //             color: themeController.isDarkMode.value
+                                                              //                 ? Colors.white.withOpacity(0.8)
+                                                              //                 : color,
+                                                              //           ),
+                                                              //         )),
+                                                              //   ],
+                                                              // ),
+                                                              SizedBox(
+                                                                height: 10,
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        Expanded(
+                                                          child: Column(
+                                                            children: [
+                                                              Row(
+                                                                children: [
+                                                                  Expanded(
+                                                                      flex: 1,
+                                                                      child:
+                                                                          Icon(
+                                                                        Icons
+                                                                            .numbers_rounded,
+                                                                        color: themeController.isDarkMode.value
+                                                                            ? Colors.white.withOpacity(0.8)
+                                                                            : color,
+                                                                        size:
+                                                                            20,
+                                                                      )),
+                                                                  SizedBox(
+                                                                    width: 5,
+                                                                  ),
+                                                                  Expanded(
+                                                                      flex: 4,
+                                                                      child:
+                                                                          Text(
+                                                                        "TRX".tr +
+                                                                            " ${transaction['TransactionSeqNo']}",
+                                                                        style:
+                                                                            TextStyle(
+                                                                          color: themeController.isDarkMode.value
+                                                                              ? Colors.white.withOpacity(0.8)
+                                                                              : color,
+                                                                        ),
+                                                                      )),
+                                                                ],
+                                                              ),
+                                                              // Row(
+                                                              //   children: [
+                                                              //     Expanded(
+                                                              //         flex: 1,
+                                                              //         child:
+                                                              //             Icon(
+                                                              //           Icons
+                                                              //               .pending_actions_rounded,
+                                                              //           color: themeController.isDarkMode.value
+                                                              //               ? Colors.white.withOpacity(0.8)
+                                                              //               : color,
+                                                              //           size:
+                                                              //               20,
+                                                              //         )),
+                                                              //     SizedBox(
+                                                              //       width: 5,
+                                                              //     ),
+                                                              //     Expanded(
+                                                              //         flex: 4,
+                                                              //         child:
+                                                              //             Text(
+                                                              //           "State".tr +
+                                                              //               ' ' +
+                                                              //               "${(transaction['State'])}".tr,
+                                                              //           style:
+                                                              //               TextStyle(
+                                                              //             color: themeController.isDarkMode.value
+                                                              //                 ? Colors.white.withOpacity(0.8)
+                                                              //                 : color,
+                                                              //           ),
+                                                              //         )),
+                                                              //   ],
+                                                              // ),
+                                                              // SizedBox(
+                                                              //   height: 10,
+                                                              // ),
+                                                              // Row(
+                                                              //   children: [
+                                                              //     Expanded(
+                                                              //         flex: 1,
+                                                              //         child:
+                                                              //             Icon(
+                                                              //           Icons
+                                                              //               .numbers_rounded,
+                                                              //           color: themeController.isDarkMode.value
+                                                              //               ? Colors.white.withOpacity(0.8)
+                                                              //               : color,
+                                                              //           size:
+                                                              //               20,
+                                                              //         )),
+                                                              //     SizedBox(
+                                                              //       width: 5,
+                                                              //     ),
+                                                              //     Expanded(
+                                                              //         flex: 4,
+                                                              //         child:
+                                                              //             Text(
+                                                              //           "TRX".tr +
+                                                              //               " ${transaction['TransactionSeqNo']}",
+                                                              //           style:
+                                                              //               TextStyle(
+                                                              //             color: themeController.isDarkMode.value
+                                                              //                 ? Colors.white.withOpacity(0.8)
+                                                              //                 : color,
+                                                              //           ),
+                                                              //         )),
+                                                              //   ],
+                                                              // ),
+                                                              SizedBox(
+                                                                height: 10,
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    )),
+                                              ),
+                                            ]),
+                                            Row(
+                                              children: [
+                                                Expanded(
+                                                    child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 10.0,
+                                                          right: 10.0,
+                                                          bottom: 10.0),
+                                                  child: ElevatedButton(
+                                                      onPressed: () async {
+                                                        await transactionStatusController
+                                                            .TransactionDetails(
+                                                                transaction[
+                                                                    'TransactionSeqNo']);
+                                                      },
+                                                      style: ElevatedButton
+                                                          .styleFrom(
+                                                        backgroundColor:
+                                                            const Color(
+                                                                0xFF2B2B2B),
+                                                      ),
+                                                      child: Text(
+                                                        'Details'.tr,
+                                                        style: TextStyle(
+                                                            color:
+                                                                Colors.white),
+                                                      )),
+                                                )),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  },
                                 ),
                               ),
-                            ),
+                            ],
                           ),
-                          SizedBox(
-                            child: CustomAppBar(),
-                            width: MediaQuery.of(context).size.width * 0.99,
-                          ),
-                          Positioned(
-                            // right: 100,
-                            // top: 0,
-                            bottom: 0,
-                            child: SizedBox(
-                              child: FooterTrxStatus(),
-                              width: MediaQuery.of(context).size.width * 0.99,
-                            ),
-                          ),
-                          SizedBox(
+                        ),
+                      )
+                    : transactionStatusController.NoAvailableTrx.value != ""
+                        ? SizedBox(
                             child: Center(
                                 child: Padding(
                               padding: const EdgeInsets.all(8.0),
@@ -90,408 +392,16 @@ class TransactionStatus extends StatelessWidget {
                                     fontSize: 24),
                               ),
                             )),
-                          ),
-                        ],
-                      )
-                    : Center(
-                        child: CircularProgressIndicator(
-                          color: themeController.isDarkMode.value
-                              ? Colors.white.withOpacity(0.5)
-                              : color,
-                        ),
-                      )
-                : Stack(
-                    children: [
-                      Positioned(
-                        right: 100,
-                        top: 0,
-                        bottom: 0,
-                        child: Transform.rotate(
-                          angle: 45 * (3.14159265359 / 180),
-                          child: Container(
-                            height: 500,
-                            width: 150, // Width of the red background
-                            decoration: BoxDecoration(
-                              color: Color(0x35576E38).withOpacity(0.6),
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(
-                                    10), // Top-left corner rounded
-                                topRight: Radius.circular(
-                                    0), // Top-right corner not rounded
-                                bottomLeft: Radius.circular(
-                                    0), // Bottom-left corner not rounded
-                                bottomRight: Radius.circular(0),
-                              ),
+                          )
+                        : Center(
+                            child: CircularProgressIndicator(
+                              color: themeController.isDarkMode.value
+                                  ? Colors.white.withOpacity(0.5)
+                                  : color,
                             ),
                           ),
-                        ),
-                      ),
-                      SizedBox(
-                        child: CustomAppBar(),
-                        width: MediaQuery.of(context).size.width * 0.99,
-                      ),
-                      SizedBox(
-                        height: 672,
-                      ),
-                      Positioned(
-                        // right: 100,
-                        // top: 0,
-                        bottom: 0,
-                        child: SizedBox(
-                          child: FooterTrxStatus(),
-                          width: MediaQuery.of(context).size.width * 0.99,
-                        ),
-                      ),
-                      Container(
-                        child: Column(
-                          children: [
-                            SizedBox(height: 180),
-                            Expanded(
-                              child: ListView.builder(
-                                itemCount: transactionStatusController
-                                    .AvailableTrxList[0].length,
-                                itemBuilder: (context, index) {
-                                  final transaction =
-                                      transactionStatusController
-                                          .AvailableTrxList[0][index];
-                                  return Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Card(
-                                      color: themeController.isDarkMode.value
-                                          ? Color(0xED166E36)
-                                          : Colors.white.withOpacity(0.8),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10.0),
-                                      ),
-                                      elevation: 5,
-                                      child: Column(
-                                        children: [
-                                          Row(children: [
-                                            Expanded(
-                                              // flex: 4,
-                                              child: Padding(
-                                                  padding: const EdgeInsets.all(
-                                                      10.0),
-                                                  child: Row(
-                                                    children: [
-                                                      Expanded(
-                                                        child: Column(
-                                                          children: [
-                                                            Row(
-                                                              children: [
-                                                                Expanded(
-                                                                    flex: 1,
-                                                                    child: Icon(
-                                                                      Icons
-                                                                          .local_gas_station,
-                                                                      color: themeController
-                                                                              .isDarkMode
-                                                                              .value
-                                                                          ? Colors
-                                                                              .white
-                                                                              .withOpacity(0.8)
-                                                                          : color,
-                                                                      size: 20,
-                                                                    )),
-                                                                SizedBox(
-                                                                  width: 5,
-                                                                ),
-                                                                Expanded(
-                                                                    flex: 4,
-                                                                    child: Text(
-                                                                      "Pump".tr +
-                                                                          " ${transaction['PumpNo']}",
-                                                                      style:
-                                                                          TextStyle(
-                                                                        color: themeController.isDarkMode.value
-                                                                            ? Colors.white.withOpacity(0.8)
-                                                                            : color,
-                                                                      ),
-                                                                    )),
-                                                              ],
-                                                            ),
-                                                            SizedBox(
-                                                              height: 10,
-                                                            ),
-                                                            Row(
-                                                              children: [
-                                                                Expanded(
-                                                                    flex: 1,
-                                                                    child: Icon(
-                                                                      Icons
-                                                                          .water_drop_rounded,
-                                                                      color: themeController
-                                                                              .isDarkMode
-                                                                              .value
-                                                                          ? Colors
-                                                                              .white
-                                                                              .withOpacity(0.8)
-                                                                          : color,
-                                                                      size: 20,
-                                                                    )),
-                                                                SizedBox(
-                                                                  width: 5,
-                                                                ),
-                                                                Expanded(
-                                                                    flex: 4,
-                                                                    child: Text(
-                                                                      ("${transaction['ProductName']}"
-                                                                          .tr),
-                                                                      style:
-                                                                          TextStyle(
-                                                                        color: themeController.isDarkMode.value
-                                                                            ? Colors.white.withOpacity(0.8)
-                                                                            : color,
-                                                                      ),
-                                                                    )),
-                                                              ],
-                                                            ),
-                                                            SizedBox(
-                                                              height: 10,
-                                                            ),
-                                                            // Row(
-                                                            //   children: [
-                                                            //     Expanded(
-                                                            //         flex: 1,
-                                                            //         child: Icon(
-                                                            //           Icons
-                                                            //               .pending_actions_rounded,
-                                                            //           color: themeController
-                                                            //                   .isDarkMode
-                                                            //                   .value
-                                                            //               ? Colors
-                                                            //                   .white
-                                                            //                   .withOpacity(0.8)
-                                                            //               : color,
-                                                            //           size: 20,
-                                                            //         )),
-                                                            //     SizedBox(
-                                                            //       width: 5,
-                                                            //     ),
-                                                            //     Expanded(
-                                                            //         flex: 4,
-                                                            //         child: Text(
-                                                            //           "State".tr +
-                                                            //               ' ' +
-                                                            //               "${(transaction['State'])}"
-                                                            //                   .tr,
-                                                            //           style:
-                                                            //               TextStyle(
-                                                            //             color: themeController.isDarkMode.value
-                                                            //                 ? Colors.white.withOpacity(0.8)
-                                                            //                 : color,
-                                                            //           ),
-                                                            //         )),
-                                                            //   ],
-                                                            // ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      Expanded(
-                                                        child: Column(
-                                                          children: [
-                                                            Row(
-                                                              children: [
-                                                                Expanded(
-                                                                    flex: 1,
-                                                                    child: Icon(
-                                                                      Icons
-                                                                          .pending_actions_rounded,
-                                                                      color: themeController
-                                                                              .isDarkMode
-                                                                              .value
-                                                                          ? Colors
-                                                                              .white
-                                                                              .withOpacity(0.8)
-                                                                          : color,
-                                                                      size: 20,
-                                                                    )),
-                                                                SizedBox(
-                                                                  width: 5,
-                                                                ),
-                                                                Expanded(
-                                                                    flex: 4,
-                                                                    child: Text(
-                                                                      "State".tr +
-                                                                          ' ' +
-                                                                          "${(transaction['State'])}"
-                                                                              .tr,
-                                                                      style:
-                                                                          TextStyle(
-                                                                        color: themeController.isDarkMode.value
-                                                                            ? Colors.white.withOpacity(0.8)
-                                                                            : color,
-                                                                      ),
-                                                                    )),
-                                                              ],
-                                                            ),
-                                                            SizedBox(
-                                                              height: 10,
-                                                            ),
-                                                            Row(
-                                                              children: [
-                                                                Expanded(
-                                                                    flex: 1,
-                                                                    child: Icon(
-                                                                      Icons
-                                                                          .numbers_rounded,
-                                                                      color: themeController
-                                                                              .isDarkMode
-                                                                              .value
-                                                                          ? Colors
-                                                                              .white
-                                                                              .withOpacity(0.8)
-                                                                          : color,
-                                                                      size: 20,
-                                                                    )),
-                                                                SizedBox(
-                                                                  width: 5,
-                                                                ),
-                                                                Expanded(
-                                                                    flex: 4,
-                                                                    child: Text(
-                                                                      "TRX".tr +
-                                                                          " ${transaction['TransactionSeqNo']}",
-                                                                      style:
-                                                                          TextStyle(
-                                                                        color: themeController.isDarkMode.value
-                                                                            ? Colors.white.withOpacity(0.8)
-                                                                            : color,
-                                                                      ),
-                                                                    )),
-                                                              ],
-                                                            ),
-                                                            SizedBox(
-                                                              height: 30,
-                                                            ),
-                                                            Row(
-                                                              children: [],
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  )),
-                                            ),
-                                          ]),
-                                          Row(
-                                            children: [
-                                              Expanded(
-                                                  child: Padding(
-                                                padding: const EdgeInsets.only(
-                                                    left: 10.0,
-                                                    right: 10.0,
-                                                    bottom: 10.0),
-                                                child: ElevatedButton(
-                                                    onPressed: () async {
-                                                      await transactionStatusController
-                                                          .TransactionDetails(
-                                                              transaction[
-                                                                  'TransactionSeqNo']);
-                                                    },
-                                                    style: ElevatedButton
-                                                        .styleFrom(
-                                                      backgroundColor:
-                                                          const Color(
-                                                              0xFF2B2B2B),
-                                                    ),
-                                                    child: Text(
-                                                      'Details'.tr,
-                                                      style: TextStyle(
-                                                          color: Colors.white),
-                                                    )),
-                                              )),
-                                            ],
-                                          ),
-                                          //   Row(
-                                          //     children: [
-                                          //       Expanded(
-                                          //         child: transaction['payment_type'] ==
-                                          //                 'Bank'
-                                          //             ? transaction['statusvoid'] ==
-                                          //                     "complete"
-                                          //                 ? Padding(
-                                          //                     padding: const EdgeInsets
-                                          //                         .symmetric(
-                                          //                         horizontal: 20,
-                                          //                         vertical: 5),
-                                          //                     child: ElevatedButton(
-                                          //                       style: ElevatedButton
-                                          //                           .styleFrom(
-                                          //                         backgroundColor:
-                                          //                             const Color(
-                                          //                                 0xFF2B2B2B),
-                                          //                       ),
-                                          //                       onPressed: () {
-                                          //                         alltransController
-                                          //                             .showVoidConfirmationDialog(
-                                          //                           context,
-                                          //                           transaction[
-                                          //                               'Stannumber'],
-                                          //                           double.parse(
-                                          //                               transaction[
-                                          //                                   'amount']),
-                                          //                           transaction[
-                                          //                               'transactionSeqNo'],
-                                          //                         );
-                                          //                       },
-                                          //                       child: const Text(
-                                          //                         "Void",
-                                          //                         style: TextStyle(
-                                          //                             color: Colors.white),
-                                          //                       ),
-                                          //                     ),
-                                          //                   )
-                                          //                 : transaction['statusvoid'] ==
-                                          //                         "progress"
-                                          //                     ? Padding(
-                                          //                         padding: const EdgeInsets
-                                          //                             .symmetric(
-                                          //                             horizontal: 20,
-                                          //                             vertical: 5),
-                                          //                         child: ElevatedButton(
-                                          //                           style: ElevatedButton
-                                          //                               .styleFrom(
-                                          //                             backgroundColor:
-                                          //                                 const Color(
-                                          //                                     0xFF2B2B2B),
-                                          //                           ),
-                                          //                           onPressed: () {
-                                          //                             // Initialize the PreSaleValueController
-
-                                          //                             // Navigate to the /ChoosePaymentaftervoid page and pass presalecontroller.value as an argument
-                                          //                             alltransController
-                                          //                                 .resetTransaction(
-                                          //                                     transaction);
-                                          //                             Get.toNamed(
-                                          //                                 '/ResetPayment');
-                                          //                           },
-                                          //                           child: const Text(
-                                          //                             "Set Transaction", // Or any other label you'd prefer
-                                          //                             style: TextStyle(
-                                          //                                 color:
-                                          //                                     Colors.white),
-                                          //                           ),
-                                          //                         ),
-                                          //                       )
-                                          //                     : SizedBox()
-                                          //             : SizedBox(),
-                                          //       )
-                                          //     ],
-                                          //   ),
-                                        ],
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  );
+              ],
+            );
 
             // Stop loading and show actual content when condition is met
             // return
@@ -846,3 +756,73 @@ class TransactionStatus extends StatelessWidget {
     );
   }
 }
+
+
+
+
+// transactionStatusController.AvailableTrxList.isEmpty
+//                 ? transactionStatusController.NoAvailableTrx.value != ""
+//                     ? Stack(
+//                         children: [
+//                           Positioned(
+//                             right: 100,
+//                             top: 0,
+//                             bottom: 0,
+//                             child: Transform.rotate(
+//                               angle: 45 * (3.14159265359 / 180),
+//                               child: Container(
+//                                 height: 500,
+//                                 width: 150, // Width of the red background
+//                                 decoration: BoxDecoration(
+//                                   color: Color(0x35576E38).withOpacity(0.6),
+//                                   borderRadius: BorderRadius.only(
+//                                     topLeft: Radius.circular(
+//                                         10), // Top-left corner rounded
+//                                     topRight: Radius.circular(
+//                                         0), // Top-right corner not rounded
+//                                     bottomLeft: Radius.circular(
+//                                         0), // Bottom-left corner not rounded
+//                                     bottomRight: Radius.circular(0),
+//                                   ),
+//                                 ),
+//                               ),
+//                             ),
+//                           ),
+//                           SizedBox(
+//                             child: CustomAppBar(),
+//                             width: MediaQuery.of(context).size.width * 0.99,
+//                           ),
+//                           Positioned(
+//                             // right: 100,
+//                             // top: 0,
+//                             bottom: 0,
+//                             child: SizedBox(
+//                               child: FooterTrxStatus(),
+//                               width: MediaQuery.of(context).size.width * 0.99,
+//                             ),
+//                           ),
+                          
+//                           SizedBox(
+//                             child: Center(
+//                                 child: Padding(
+//                               padding: const EdgeInsets.all(8.0),
+//                               child: Text(
+//                                 "${transactionStatusController.NoAvailableTrx.value}",
+//                                 style: TextStyle(
+//                                     color: themeController.isDarkMode.value
+//                                         ? Colors.white.withOpacity(0.5)
+//                                         : color,
+//                                     fontSize: 24),
+//                               ),
+//                             )),
+//                           ),
+//                         ],
+//                       )
+//                     : Center(
+//                         child: CircularProgressIndicator(
+//                           color: themeController.isDarkMode.value
+//                               ? Colors.white.withOpacity(0.5)
+//                               : color,
+//                         ),
+//                       )
+//                 :

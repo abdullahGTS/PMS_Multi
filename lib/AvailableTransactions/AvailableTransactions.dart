@@ -6,6 +6,8 @@ import '../Local/Local_Controller.dart';
 import '../Shared/drawer.dart';
 import '../Theme/Theme_Controller.dart';
 import 'AvailableTransactions_Controller.dart';
+import 'package:intl/intl.dart';
+import 'package:xml/xml.dart';
 
 class Availabletransactions extends StatelessWidget {
   Availabletransactions({super.key});
@@ -22,6 +24,14 @@ class Availabletransactions extends StatelessWidget {
       },
       child: Obx(() {
         return Scaffold(
+          floatingActionButton: FloatingActionButton(
+            onPressed: () async {
+              alltransController.showExtractedValuesPopup(context);
+
+              // Get the current time formatted for the XML
+            },
+            child: Icon(Icons.plus_one),
+          ),
           backgroundColor: themeController.isDarkMode.value
               ? Color(0xFF2B2B2B)
               : Color(0xFFE9ECEF),
@@ -69,7 +79,10 @@ class Availabletransactions extends StatelessWidget {
                     Expanded(
                       child: Obx(
                         () {
-                          return alltransController.AvailableTrxList.length <= 0
+                          return alltransController.AvailableTrxList.length <=
+                                      0 ||
+                                  alltransController.AvailableTrxList.length <
+                                      alltransController.SeqNoList.length
                               ? alltransController.NoAvailableTrx.value != ""
                                   ? Center(
                                       child: Padding(
@@ -95,8 +108,12 @@ class Availabletransactions extends StatelessWidget {
                                   itemCount: alltransController
                                       .AvailableTrxList.length,
                                   itemBuilder: (context, index) {
+                                    int reverseIndex = alltransController
+                                            .AvailableTrxList.length -
+                                        1 -
+                                        index;
                                     final transaction = alltransController
-                                        .AvailableTrxList[index];
+                                        .AvailableTrxList[reverseIndex];
                                     return Padding(
                                       padding: const EdgeInsets.only(
                                           top: 8.0, left: 8.0, right: 8.0),
@@ -132,12 +149,8 @@ class Availabletransactions extends StatelessWidget {
                                                               child: Icon(
                                                                 Icons
                                                                     .calendar_month_rounded,
-                                                                color: themeController
-                                                                        .isDarkMode
-                                                                        .value
-                                                                    ? color
-                                                                    : Colors
-                                                                        .white,
+                                                                color: Colors
+                                                                    .white,
                                                                 size: 20,
                                                               ),
                                                             )),
@@ -155,12 +168,8 @@ class Availabletransactions extends StatelessWidget {
                                                             child: Text(
                                                               "Start_Date".tr,
                                                               style: TextStyle(
-                                                                  color: themeController
-                                                                          .isDarkMode
-                                                                          .value
-                                                                      ? color
-                                                                      : Colors
-                                                                          .white,
+                                                                  color: Colors
+                                                                      .white,
                                                                   fontSize: 16),
                                                             ),
                                                           ),
@@ -176,12 +185,8 @@ class Availabletransactions extends StatelessWidget {
                                                       child: Text(
                                                           "${transaction['Start_Date']}",
                                                           style: TextStyle(
-                                                              color: themeController
-                                                                      .isDarkMode
-                                                                      .value
-                                                                  ? color
-                                                                  : Colors
-                                                                      .white,
+                                                              color:
+                                                                  Colors.white,
                                                               fontSize: 16)),
                                                     ),
                                                   )
@@ -198,12 +203,8 @@ class Availabletransactions extends StatelessWidget {
                                                             child: Icon(
                                                               Icons
                                                                   .local_gas_station,
-                                                              color: themeController
-                                                                      .isDarkMode
-                                                                      .value
-                                                                  ? color
-                                                                  : Colors
-                                                                      .white,
+                                                              color:
+                                                                  Colors.white,
                                                               size: 20,
                                                             )),
                                                         SizedBox(
@@ -215,12 +216,8 @@ class Availabletransactions extends StatelessWidget {
                                                               "Pump".tr +
                                                                   " ${transaction['pumpNo']}",
                                                               style: TextStyle(
-                                                                color: themeController
-                                                                        .isDarkMode
-                                                                        .value
-                                                                    ? color
-                                                                    : Colors
-                                                                        .white,
+                                                                color: Colors
+                                                                    .white,
                                                               ),
                                                             )),
                                                       ],
@@ -234,12 +231,8 @@ class Availabletransactions extends StatelessWidget {
                                                             child: Icon(
                                                               Icons
                                                                   .local_gas_station,
-                                                              color: themeController
-                                                                      .isDarkMode
-                                                                      .value
-                                                                  ? color
-                                                                  : Colors
-                                                                      .white,
+                                                              color:
+                                                                  Colors.white,
                                                               size: 20,
                                                             )),
                                                         SizedBox(
@@ -251,12 +244,8 @@ class Availabletransactions extends StatelessWidget {
                                                               "Nozzle".tr +
                                                                   " ${transaction['nozzleNo']}",
                                                               style: TextStyle(
-                                                                color: themeController
-                                                                        .isDarkMode
-                                                                        .value
-                                                                    ? color
-                                                                    : Colors
-                                                                        .white,
+                                                                color: Colors
+                                                                    .white,
                                                               ),
                                                             )),
                                                       ],
@@ -275,12 +264,8 @@ class Availabletransactions extends StatelessWidget {
                                                             child: Icon(
                                                               Icons
                                                                   .water_drop_rounded,
-                                                              color: themeController
-                                                                      .isDarkMode
-                                                                      .value
-                                                                  ? color
-                                                                  : Colors
-                                                                      .white,
+                                                              color:
+                                                                  Colors.white,
                                                               size: 20,
                                                             )),
                                                         SizedBox(
@@ -292,12 +277,8 @@ class Availabletransactions extends StatelessWidget {
                                                               "${transaction['productName']}"
                                                                   .tr,
                                                               style: TextStyle(
-                                                                color: themeController
-                                                                        .isDarkMode
-                                                                        .value
-                                                                    ? color
-                                                                    : Colors
-                                                                        .white,
+                                                                color: Colors
+                                                                    .white,
                                                               ),
                                                             )),
                                                       ],
@@ -311,12 +292,8 @@ class Availabletransactions extends StatelessWidget {
                                                             child: Icon(
                                                               Icons
                                                                   .numbers_rounded,
-                                                              color: themeController
-                                                                      .isDarkMode
-                                                                      .value
-                                                                  ? color
-                                                                  : Colors
-                                                                      .white,
+                                                              color:
+                                                                  Colors.white,
                                                               size: 20,
                                                             )),
                                                         SizedBox(
@@ -328,12 +305,8 @@ class Availabletransactions extends StatelessWidget {
                                                               "TRX".tr +
                                                                   " ${transaction['transactionSeqNo']}",
                                                               style: TextStyle(
-                                                                color: themeController
-                                                                        .isDarkMode
-                                                                        .value
-                                                                    ? color
-                                                                    : Colors
-                                                                        .white,
+                                                                color: Colors
+                                                                    .white,
                                                               ),
                                                             )),
                                                       ],
@@ -352,12 +325,8 @@ class Availabletransactions extends StatelessWidget {
                                                             child: Icon(
                                                               Icons
                                                                   .payments_outlined,
-                                                              color: themeController
-                                                                      .isDarkMode
-                                                                      .value
-                                                                  ? color
-                                                                  : Colors
-                                                                      .white,
+                                                              color:
+                                                                  Colors.white,
                                                               size: 20,
                                                             )),
                                                         SizedBox(
@@ -370,12 +339,8 @@ class Availabletransactions extends StatelessWidget {
                                                                   " ${transaction['amountVal']} " +
                                                                   "EGP".tr,
                                                               style: TextStyle(
-                                                                color: themeController
-                                                                        .isDarkMode
-                                                                        .value
-                                                                    ? color
-                                                                    : Colors
-                                                                        .white,
+                                                                color: Colors
+                                                                    .white,
                                                               ),
                                                             )),
                                                       ],
@@ -389,12 +354,8 @@ class Availabletransactions extends StatelessWidget {
                                                             child: Icon(
                                                               Icons
                                                                   .water_rounded,
-                                                              color: themeController
-                                                                      .isDarkMode
-                                                                      .value
-                                                                  ? color
-                                                                  : Colors
-                                                                      .white,
+                                                              color:
+                                                                  Colors.white,
                                                               size: 20,
                                                             )),
                                                         SizedBox(
@@ -407,12 +368,8 @@ class Availabletransactions extends StatelessWidget {
                                                                   " ${transaction['volume']} " +
                                                                   "LTR".tr,
                                                               style: TextStyle(
-                                                                color: themeController
-                                                                        .isDarkMode
-                                                                        .value
-                                                                    ? color
-                                                                    : Colors
-                                                                        .white,
+                                                                color: Colors
+                                                                    .white,
                                                               ),
                                                             )),
                                                       ],
@@ -431,12 +388,8 @@ class Availabletransactions extends StatelessWidget {
                                                             child: Icon(
                                                               Icons
                                                                   .payments_outlined,
-                                                              color: themeController
-                                                                      .isDarkMode
-                                                                      .value
-                                                                  ? color
-                                                                  : Colors
-                                                                      .white,
+                                                              color:
+                                                                  Colors.white,
                                                               size: 20,
                                                             )),
                                                         SizedBox(
@@ -449,12 +402,8 @@ class Availabletransactions extends StatelessWidget {
                                                                   " ${transaction['unitPrice']} " +
                                                                   "EGP".tr,
                                                               style: TextStyle(
-                                                                color: themeController
-                                                                        .isDarkMode
-                                                                        .value
-                                                                    ? color
-                                                                    : Colors
-                                                                        .white,
+                                                                color: Colors
+                                                                    .white,
                                                               ),
                                                             )),
                                                       ],
@@ -468,12 +417,8 @@ class Availabletransactions extends StatelessWidget {
                                                             child: Icon(
                                                               Icons
                                                                   .phone_android_rounded,
-                                                              color: themeController
-                                                                      .isDarkMode
-                                                                      .value
-                                                                  ? color
-                                                                  : Colors
-                                                                      .white,
+                                                              color:
+                                                                  Colors.white,
                                                               size: 20,
                                                             )),
                                                         SizedBox(
@@ -485,12 +430,8 @@ class Availabletransactions extends StatelessWidget {
                                                               "POS".tr +
                                                                   " ${transaction['AuthorisationApplicationSender'] == '' ? 'Unknown'.tr : transaction['AuthorisationApplicationSender']}",
                                                               style: TextStyle(
-                                                                color: themeController
-                                                                        .isDarkMode
-                                                                        .value
-                                                                    ? color
-                                                                    : Colors
-                                                                        .white,
+                                                                color: Colors
+                                                                    .white,
                                                               ),
                                                             )),
                                                       ],
@@ -519,12 +460,8 @@ class Availabletransactions extends StatelessWidget {
                                                               child: Icon(
                                                                 Icons
                                                                     .calendar_month_rounded,
-                                                                color: themeController
-                                                                        .isDarkMode
-                                                                        .value
-                                                                    ? color
-                                                                    : Colors
-                                                                        .white,
+                                                                color: Colors
+                                                                    .white,
                                                                 size: 20,
                                                               ),
                                                             )),
@@ -542,12 +479,8 @@ class Availabletransactions extends StatelessWidget {
                                                             child: Text(
                                                               "End_Date".tr,
                                                               style: TextStyle(
-                                                                  color: themeController
-                                                                          .isDarkMode
-                                                                          .value
-                                                                      ? color
-                                                                      : Colors
-                                                                          .white,
+                                                                  color: Colors
+                                                                      .white,
                                                                   fontSize: 16),
                                                             ),
                                                           ),
@@ -561,14 +494,10 @@ class Availabletransactions extends StatelessWidget {
                                                       alignment:
                                                           Alignment.centerRight,
                                                       child: Text(
-                                                          "${alltransController.customController.endTimeStamp.value}",
+                                                          "${transaction['End_Date']}",
                                                           style: TextStyle(
-                                                              color: themeController
-                                                                      .isDarkMode
-                                                                      .value
-                                                                  ? color
-                                                                  : Colors
-                                                                      .white,
+                                                              color:
+                                                                  Colors.white,
                                                               fontSize: 16)),
                                                     ),
                                                   ),
@@ -580,15 +509,18 @@ class Availabletransactions extends StatelessWidget {
                                                       child: Padding(
                                                     padding:
                                                         const EdgeInsets.only(
-                                                            left: 10.0,
-                                                            right: 10.0,
-                                                            bottom: 10.0),
+                                                      top: 10.0,
+                                                      left: 10.0,
+                                                      right: 10.0,
+                                                    ),
                                                     child: ElevatedButton(
                                                         onPressed: () async {
+                                                          print(
+                                                              'abdullahMichaelKiro${transaction['transactionSeqNo']}');
                                                           await alltransController
                                                               .TransactionDetails(
                                                                   transaction[
-                                                                      'TransactionSeqNo']);
+                                                                      'transactionSeqNo']);
                                                         },
                                                         style: ElevatedButton
                                                             .styleFrom(

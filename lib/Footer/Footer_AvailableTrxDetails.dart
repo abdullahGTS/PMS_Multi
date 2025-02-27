@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../Theme/Theme_Controller.dart';
 
 class FooterAvailabletrxdetails extends StatelessWidget {
@@ -33,14 +32,8 @@ class FooterAvailabletrxdetails extends StatelessWidget {
                 MainAxisAlignment.center, // Center the content in the Row
             children: [
               GestureDetector(
-                onTap: () {
-                  // Navigate to the verification page
-                  // ScaffoldMessenger.of(context).showSnackBar(
-                  //   const SnackBar(
-                  //       content: Text(
-                  //           'you can not back while fueling is in progress !!')),
-                  // );
-                  Get.back();
+                onTap: () async {
+                  Get.offAllNamed('/Availabletransactions');
                 },
                 child: _buildCircleIcon(Icons.arrow_back_rounded, Colors.white),
                 // Fuel on the right

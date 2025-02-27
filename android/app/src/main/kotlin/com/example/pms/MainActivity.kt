@@ -284,6 +284,11 @@ class MainActivity: FlutterActivity(){
         try {
             // Extract response object
             val baseResponse = transAPI.onResult(requestCode, resultCode, data)
+            val rspCode = baseResponse.rspCode
+            val rspMsg = baseResponse.rspMsg ?: "No response message"
+            println("rspCode Transaction Details:${rspCode}")
+            println("rspMsg Transaction Details:${rspMsg}")
+
     
             when (baseResponse) {
                 is SaleMsg.Response -> {
@@ -311,6 +316,8 @@ class MainActivity: FlutterActivity(){
                     println("Transaction VoucherNo: $voucherNo")
                     println("Transaction ECRRef: $ecrRef")
                     println("Transaction batchNo: $batchNo")
+                    println("rspCode Transaction Details:${rspCode}")
+                    println("rspMsg Transaction Details:${rspMsg}")
     
                     // Send the response to Flutter
                     val responseDetails = mapOf(
@@ -323,7 +330,9 @@ class MainActivity: FlutterActivity(){
                         "transTime" to transTime,
                         "voucherNo" to voucherNo,
                         "ecrRef" to ecrRef,
-                        "batchNo" to batchNo
+                        "batchNo" to batchNo,
+                        "rspCode" to rspCode,
+                        "rspMsg" to rspMsg
                     )
                     flutterEngine?.dartExecutor?.binaryMessenger?.let { messenger ->
                         MethodChannel(messenger, CHANNEL).invokeMethod("onTransactionResult", responseDetails)
@@ -355,6 +364,8 @@ class MainActivity: FlutterActivity(){
                     println("Transaction VoucherNo: $voucherNo")
                     println("Transaction ECRRef: $ecrRef")
                     println("Transaction batchNo: $batchNo")
+                    println("rspCode TransactionVoid Details:${rspCode}")
+                    println("rspMsg TransactionVoid Details:${rspMsg}")
     
                     // Send the response to Flutter
                     val responseDetails = mapOf(
@@ -367,7 +378,9 @@ class MainActivity: FlutterActivity(){
                         "transTime" to transTime,
                         "voucherNo" to voucherNo,
                         "ecrRef" to ecrRef,
-                        "batchNo" to batchNo
+                        "batchNo" to batchNo,
+                        "rspCode" to rspCode,
+                        "rspMsg" to rspMsg
                     )
                     flutterEngine?.dartExecutor?.binaryMessenger?.let { messenger ->
                         MethodChannel(messenger, CHANNEL).invokeMethod("onTransactionResult", responseDetails)
@@ -411,6 +424,8 @@ class MainActivity: FlutterActivity(){
                     println("authTotalNum: $authTotalNum")
                     println("offlineTotalAmt: $offlineTotalAmt")
                     println("offlineTotalNum: $offlineTotalNum")
+                    println("rspCode TransactionSettle Details:${rspCode}")
+                    println("rspMsg TransactionSettle Details:${rspMsg}")
     
                     // Send the response to Flutter
                     val responseDetails = mapOf(
@@ -429,7 +444,9 @@ class MainActivity: FlutterActivity(){
                         "authTotalAmt" to authTotalAmt,
                         "authTotalNum" to authTotalNum,
                         "offlineTotalAmt" to offlineTotalAmt,
-                        "offlineTotalNum" to offlineTotalNum
+                        "offlineTotalNum" to offlineTotalNum,
+                        "rspCode" to rspCode,
+                        "rspMsg" to rspMsg
                     )
                     flutterEngine?.dartExecutor?.binaryMessenger?.let { messenger ->
                         MethodChannel(messenger, CHANNEL).invokeMethod("onTransactionResult", responseDetails)

@@ -21,8 +21,11 @@ class FuelingController extends GetxController
   var totalAmount = 0.0.obs; // Observable for the total amount
   // var textValue = ''.obs;
   var timer;
+  var timeoutCounterTimer;
   // var _getFuelSaleTrxDetailsByNoListener;
   var _xmlDataListener;
+  var _xmlDataListener2;
+  var timeoutCounter = 180.obs;
 
   @override
   void onInit() async {
@@ -60,6 +63,7 @@ class FuelingController extends GetxController
     // textValue.value = Get.arguments['trxSeqNum'] ?? '';
     // print("textValuetextValue ${textValue.value}");
     startPeriodicFetch();
+    // startPeriodicTimeoutCounter();
   }
 
   @override
@@ -83,6 +87,8 @@ class FuelingController extends GetxController
     // _getFuelSaleTrxDetailsByNoListener = null;
     _xmlDataListener?.cancel();
     _xmlDataListener = null;
+    _xmlDataListener2?.cancel();
+    _xmlDataListener2 = null;
 
     // Cancel any timers if applicable
     if (timer != null) {
@@ -100,6 +106,8 @@ class FuelingController extends GetxController
     // _getFuelSaleTrxDetailsByNoListener = null;
     _xmlDataListener?.cancel();
     _xmlDataListener = null;
+    _xmlDataListener2?.cancel();
+    _xmlDataListener2 = null;
 
     // Cancel any timers if applicable
     if (timer != null) {
@@ -107,7 +115,11 @@ class FuelingController extends GetxController
       timer = null;
       print("Timer cleared in dispose.");
     }
-
+    if (timeoutCounterTimer != null) {
+      timeoutCounterTimer!.cancel();
+      timeoutCounterTimer = null;
+      print("timeoutCounterTimer cleared in dispose.");
+    }
     super.dispose();
   }
 
@@ -195,6 +207,7 @@ xsi:noNamespaceSchemaLocation="FDC_GetFuelSaleTrxDetailsByNo_Request.xsd">
     //     customController.getFuelSaleTrxDetailsByNo.listen((data) async {
     // Get.toNamed('/Tips');
     var document = XmlDocument.parse(data);
+    print("documentdocument***${document}");
     var serviceResponse = document.getElement('ServiceResponse');
     if (serviceResponse != null) {
       var RequestType = serviceResponse.getAttribute('RequestType');
@@ -306,6 +319,12 @@ xsi:noNamespaceSchemaLocation="FDC_GetFuelSaleTrxDetailsByNo_Request.xsd">
         customController.blendRatio.value =
             int.tryParse(document.findAllElements('BlendRatio').first.text) ??
                 0;
+
+        customController.startTimeStamp.value =
+            document.findAllElements('StartTimeStamp').first.text ?? "";
+
+        customController.endTimeStamp.value =
+            document.findAllElements('EndTimeStamp').first.text ?? "";
         // Get.toNamed('/Tips');
         if (customController.statevalue.value == "Payable" &&
             customController.AuthorisationApplicationSender.value ==
@@ -468,11 +487,44 @@ xsi:noNamespaceSchemaLocation="FDC_GetFuelSaleTrxDetailsByNo_Request.xsd">
 
   fuellingListener() async {
     _xmlDataListener = customController.xmlData.listen((data) async {
+      var document = XmlDocument.parse(data);
+
+      var serviceResponse = document.getElement('ServiceResponse');
+      if (serviceResponse != null) {
+        var RequestType = serviceResponse.getAttribute('RequestType');
+        var overallResult = serviceResponse.getAttribute('OverallResult');
+        if (RequestType == 'GetFPState' && overallResult == "Success") {
+          if (_xmlDataListener != null) {
+            _xmlDataListener!.cancel();
+            _xmlDataListener = null;
+          }
+          var pumpNo = document
+              .findAllElements('DeviceClass')
+              .first
+              .getAttribute('DeviceID');
+          var status = document.findAllElements('DeviceState').first.text;
+          print('pumpNo-----------: $pumpNo');
+          print('status-----------: $status');
+
+          if (status == 'FDC_READY') {
+            await getTrxBySeqNum();
+            await getTrxBySeqNumListener();
+            print('FDC_READYFDC_READY${status}');
+          }
+        }
+      }
+    });
+  }
+
+  getTrxBySeqNumListener() async {
+    _xmlDataListener2 = customController.xmlData.listen((data) async {
       // GetCurrentFuellingStatus
       var document = XmlDocument.parse(data);
       var serviceResponse = document.getElement('ServiceResponse');
       var fdcMessage = document.getElement('FDCMessage');
       if (serviceResponse != null) {
+        print('kirodocumentdocument${serviceResponse}');
+
         var RequestType = serviceResponse.getAttribute('RequestType');
         var OverallResult = serviceResponse.getAttribute('OverallResult');
         if (RequestType == 'GetFuelSaleTrxDetailsByNo' &&
@@ -486,13 +538,20 @@ xsi:noNamespaceSchemaLocation="FDC_GetFuelSaleTrxDetailsByNo_Request.xsd">
           //   colorText: Colors.white,
           // );
           if (errorCode == "ERRCD_OK") {
+            print('kiroerrorCodeerrorCode${errorCode}');
             // customController.getFuelSaleTrxDetailsByNo.value = data;
             await getTrxDetails(data);
-            if (timer != null) {
-              timer!.cancel();
-              print("Timer stopped.");
-            }
+            // if (timer != null) {
+            //   timer!.cancel();
+            //   print("Timer stopped.");
+            // }
           }
+        } else {
+          if (_xmlDataListener2 != null) {
+            _xmlDataListener2!.cancel();
+            _xmlDataListener2 = null;
+          }
+          Get.offAllNamed('/Home');
         }
       }
       // } else if (fdcMessage != null) {
@@ -522,18 +581,91 @@ xsi:noNamespaceSchemaLocation="FDC_GetFuelSaleTrxDetailsByNo_Request.xsd">
   }
 
   void startPeriodicFetch() async {
-    await getTrxBySeqNum(); // await checkFueling(customController.pumpNo.value);
+    await checkFueling(); // await checkFueling(customController.pumpNo.value);
     // await Future.delayed(Duration(seconds: 5));
     await fuellingListener();
 
     timer = Timer.periodic(const Duration(seconds: 5), (timer) async {
       print("Running periodic fuellingListener...");
 
-      await getTrxBySeqNum();
+      await checkFueling();
       // await checkFueling(customController.pumpNo.value);
       // await Future.delayed(Duration(seconds: 5));
       await fuellingListener();
     });
+  }
+
+  // void startPeriodicFetch() async {
+  //   await getTrxBySeqNum(); // await checkFueling(customController.pumpNo.value);
+  //   // await Future.delayed(Duration(seconds: 5));
+  //   await fuellingListener();
+
+  //   timer = Timer.periodic(const Duration(seconds: 5), (timer) async {
+  //     print("Running periodic fuellingListener...");
+
+  //     await getTrxBySeqNum();
+  //     // await checkFueling(customController.pumpNo.value);
+  //     // await Future.delayed(Duration(seconds: 5));
+  //     await fuellingListener();
+  //   });
+  // }
+
+  // void startPeriodicTimeoutCounter() async {
+  //   timeoutCounterTimer =
+  //       Timer.periodic(const Duration(seconds: 1), (timer) async {
+  //     print("Running startPeriodicTimeoutCounter...");
+  //     timeoutCounter--;
+  //     if (timeoutCounter == 0) {
+  //       await checkFueling();
+  //       if (timeoutCounterTimer != null) {
+  //         timeoutCounterTimer!.cancel();
+  //         timeoutCounterTimer = null;
+  //       }
+  //       timeoutCounter.value = 180;
+  //       Get.offAllNamed('/Home');
+  //     }
+  //   });
+  // }
+
+  checkFueling() async {
+    final prefs = await SharedPreferences.getInstance();
+    var pumpName = await prefs.getString('pumpName');
+    print("teeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+    print("id1${customController.iD}");
+    // Increment RequestID
+    customController.iD++;
+    print("id2${customController.iD}");
+
+    // Get the current time formatted for the XML
+    String currentTime =
+        DateFormat("yyyy-MM-dd'T'HH:mm:ss").format(DateTime.now());
+
+    String xmlContentreq = '''
+<?xml version="1.0"?>
+<ServiceRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns:xsd="http://www.w3.org/2001/XMLSchema" RequestType="GetFPState"
+ApplicationSender="${customController.SerialNumber.value.substring(customController.SerialNumber.value.length - 5)}" WorkstationID="PMS" RequestID="${customController.iD}">
+ <POSdata>
+ <POSTimeStamp>$currentTime</POSTimeStamp>
+ <DeviceClass Type="FP" DeviceID="$pumpName" />
+ </POSdata>
+</ServiceRequest>
+''';
+    print("xmlContentreqcheckFueling${xmlContentreq}");
+
+    // Log the XML for debugging purposes
+    // Get.snackbar(
+    //   'Check PUMP Status',
+    //   'GetFPState Request Sent',
+    //   snackPosition: SnackPosition.TOP,
+    //   backgroundColor: Colors.green,
+    //   colorText: Colors.white,
+    // );
+    // Send the constructed XML message through socket
+    // print(customController.socketConnection);
+    // print(customController.socketConnection.runtimeType);
+    customController.socketConnection
+        .sendMessage(customController.getXmlHeader(xmlContentreq));
   }
 
   // fuellingListener() async {

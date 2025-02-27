@@ -57,17 +57,8 @@ class Availabletrxdetails extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Positioned(
-                    // right: 100,
-                    // top: 0,
-                    bottom: 0,
-                    child: SizedBox(
-                      child: FooterAvailabletrxdetails(),
-                      width: MediaQuery.of(context).size.width * 0.99,
-                    ),
-                  ),
                   SizedBox(
-                    height: 750,
+                    height: 672,
                     child: Container(
                       padding: const EdgeInsets.only(
                           top: 20.0), // No padding around the content
@@ -125,11 +116,7 @@ class Availabletrxdetails extends StatelessWidget {
                                                       child: Icon(
                                                         Icons
                                                             .calendar_month_rounded,
-                                                        color: themeController
-                                                                .isDarkMode
-                                                                .value
-                                                            ? color
-                                                            : Colors.white,
+                                                        color: Colors.white,
                                                         size: 20,
                                                       ),
                                                     )),
@@ -145,11 +132,7 @@ class Availabletrxdetails extends StatelessWidget {
                                                     child: Text(
                                                       "Start_Date".tr,
                                                       style: TextStyle(
-                                                          color: themeController
-                                                                  .isDarkMode
-                                                                  .value
-                                                              ? color
-                                                              : Colors.white,
+                                                          color: Colors.white,
                                                           fontSize: 16),
                                                     ),
                                                   ),
@@ -164,10 +147,7 @@ class Availabletrxdetails extends StatelessWidget {
                                               child: Text(
                                                   "${availabletrxdetailsController.customController.startTimeStamp.value}",
                                                   style: TextStyle(
-                                                      color: themeController
-                                                              .isDarkMode.value
-                                                          ? color
-                                                          : Colors.white,
+                                                      color: Colors.white,
                                                       fontSize: 16)),
                                             ),
                                           )
@@ -183,10 +163,7 @@ class Availabletrxdetails extends StatelessWidget {
                                                     flex: 1,
                                                     child: Icon(
                                                       Icons.local_gas_station,
-                                                      color: themeController
-                                                              .isDarkMode.value
-                                                          ? color
-                                                          : Colors.white,
+                                                      color: Colors.white,
                                                       size: 20,
                                                     )),
                                                 SizedBox(
@@ -198,11 +175,7 @@ class Availabletrxdetails extends StatelessWidget {
                                                       "Pump".tr +
                                                           " ${availabletrxdetailsController.customController.pumpNo.value}",
                                                       style: TextStyle(
-                                                        color: themeController
-                                                                .isDarkMode
-                                                                .value
-                                                            ? color
-                                                            : Colors.white,
+                                                        color: Colors.white,
                                                       ),
                                                     )),
                                               ],
@@ -215,10 +188,7 @@ class Availabletrxdetails extends StatelessWidget {
                                                     flex: 1,
                                                     child: Icon(
                                                       Icons.local_gas_station,
-                                                      color: themeController
-                                                              .isDarkMode.value
-                                                          ? color
-                                                          : Colors.white,
+                                                      color: Colors.white,
                                                       size: 20,
                                                     )),
                                                 SizedBox(
@@ -230,11 +200,7 @@ class Availabletrxdetails extends StatelessWidget {
                                                       "Nozzle".tr +
                                                           " ${availabletrxdetailsController.customController.nozzleNo.value}",
                                                       style: TextStyle(
-                                                        color: themeController
-                                                                .isDarkMode
-                                                                .value
-                                                            ? color
-                                                            : Colors.white,
+                                                        color: Colors.white,
                                                       ),
                                                     )),
                                               ],
@@ -252,10 +218,7 @@ class Availabletrxdetails extends StatelessWidget {
                                                     flex: 1,
                                                     child: Icon(
                                                       Icons.water_drop_rounded,
-                                                      color: themeController
-                                                              .isDarkMode.value
-                                                          ? color
-                                                          : Colors.white,
+                                                      color: Colors.white,
                                                       size: 20,
                                                     )),
                                                 SizedBox(
@@ -267,11 +230,7 @@ class Availabletrxdetails extends StatelessWidget {
                                                       "${availabletrxdetailsController.customController.productName.value}"
                                                           .tr,
                                                       style: TextStyle(
-                                                        color: themeController
-                                                                .isDarkMode
-                                                                .value
-                                                            ? color
-                                                            : Colors.white,
+                                                        color: Colors.white,
                                                       ),
                                                     )),
                                               ],
@@ -284,10 +243,7 @@ class Availabletrxdetails extends StatelessWidget {
                                                     flex: 1,
                                                     child: Icon(
                                                       Icons.numbers_rounded,
-                                                      color: themeController
-                                                              .isDarkMode.value
-                                                          ? color
-                                                          : Colors.white,
+                                                      color: Colors.white,
                                                       size: 20,
                                                     )),
                                                 SizedBox(
@@ -299,11 +255,7 @@ class Availabletrxdetails extends StatelessWidget {
                                                       "TRX".tr +
                                                           " ${availabletrxdetailsController.customController.transactionSeqNo.value}",
                                                       style: TextStyle(
-                                                        color: themeController
-                                                                .isDarkMode
-                                                                .value
-                                                            ? color
-                                                            : Colors.white,
+                                                        color: Colors.white,
                                                       ),
                                                     )),
                                               ],
@@ -321,10 +273,7 @@ class Availabletrxdetails extends StatelessWidget {
                                                     flex: 1,
                                                     child: Icon(
                                                       Icons.payments_outlined,
-                                                      color: themeController
-                                                              .isDarkMode.value
-                                                          ? color
-                                                          : Colors.white,
+                                                      color: Colors.white,
                                                       size: 20,
                                                     )),
                                                 SizedBox(
@@ -337,11 +286,7 @@ class Availabletrxdetails extends StatelessWidget {
                                                           " ${availabletrxdetailsController.customController.amountVal.value} " +
                                                           "EGP".tr,
                                                       style: TextStyle(
-                                                        color: themeController
-                                                                .isDarkMode
-                                                                .value
-                                                            ? color
-                                                            : Colors.white,
+                                                        color: Colors.white,
                                                       ),
                                                     )),
                                               ],
@@ -354,10 +299,7 @@ class Availabletrxdetails extends StatelessWidget {
                                                     flex: 1,
                                                     child: Icon(
                                                       Icons.water_rounded,
-                                                      color: themeController
-                                                              .isDarkMode.value
-                                                          ? color
-                                                          : Colors.white,
+                                                      color: Colors.white,
                                                       size: 20,
                                                     )),
                                                 SizedBox(
@@ -370,11 +312,7 @@ class Availabletrxdetails extends StatelessWidget {
                                                           " ${availabletrxdetailsController.customController.volume.value} " +
                                                           "LTR".tr,
                                                       style: TextStyle(
-                                                        color: themeController
-                                                                .isDarkMode
-                                                                .value
-                                                            ? color
-                                                            : Colors.white,
+                                                        color: Colors.white,
                                                       ),
                                                     )),
                                               ],
@@ -392,10 +330,7 @@ class Availabletrxdetails extends StatelessWidget {
                                                     flex: 1,
                                                     child: Icon(
                                                       Icons.payments_outlined,
-                                                      color: themeController
-                                                              .isDarkMode.value
-                                                          ? color
-                                                          : Colors.white,
+                                                      color: Colors.white,
                                                       size: 20,
                                                     )),
                                                 SizedBox(
@@ -408,11 +343,7 @@ class Availabletrxdetails extends StatelessWidget {
                                                           " ${availabletrxdetailsController.customController.unitPrice.value} " +
                                                           "EGP".tr,
                                                       style: TextStyle(
-                                                        color: themeController
-                                                                .isDarkMode
-                                                                .value
-                                                            ? color
-                                                            : Colors.white,
+                                                        color: Colors.white,
                                                       ),
                                                     )),
                                               ],
@@ -426,10 +357,7 @@ class Availabletrxdetails extends StatelessWidget {
                                                     child: Icon(
                                                       Icons
                                                           .phone_android_rounded,
-                                                      color: themeController
-                                                              .isDarkMode.value
-                                                          ? color
-                                                          : Colors.white,
+                                                      color: Colors.white,
                                                       size: 20,
                                                     )),
                                                 SizedBox(
@@ -441,11 +369,7 @@ class Availabletrxdetails extends StatelessWidget {
                                                       "POS".tr +
                                                           " ${availabletrxdetailsController.customController.AuthorisationApplicationSender.value == '' ? 'Unknown'.tr : availabletrxdetailsController.customController.AuthorisationApplicationSender.value}",
                                                       style: TextStyle(
-                                                        color: themeController
-                                                                .isDarkMode
-                                                                .value
-                                                            ? color
-                                                            : Colors.white,
+                                                        color: Colors.white,
                                                       ),
                                                     )),
                                               ],
@@ -474,11 +398,7 @@ class Availabletrxdetails extends StatelessWidget {
                                                       child: Icon(
                                                         Icons
                                                             .calendar_month_rounded,
-                                                        color: themeController
-                                                                .isDarkMode
-                                                                .value
-                                                            ? color
-                                                            : Colors.white,
+                                                        color: Colors.white,
                                                         size: 20,
                                                       ),
                                                     )),
@@ -494,11 +414,7 @@ class Availabletrxdetails extends StatelessWidget {
                                                     child: Text(
                                                       "End_Date".tr,
                                                       style: TextStyle(
-                                                          color: themeController
-                                                                  .isDarkMode
-                                                                  .value
-                                                              ? color
-                                                              : Colors.white,
+                                                          color: Colors.white,
                                                           fontSize: 16),
                                                     ),
                                                   ),
@@ -513,10 +429,7 @@ class Availabletrxdetails extends StatelessWidget {
                                               child: Text(
                                                   "${availabletrxdetailsController.customController.endTimeStamp.value}",
                                                   style: TextStyle(
-                                                      color: themeController
-                                                              .isDarkMode.value
-                                                          ? color
-                                                          : Colors.white,
+                                                      color: Colors.white,
                                                       fontSize: 16)),
                                             ),
                                           ),
@@ -527,93 +440,103 @@ class Availabletrxdetails extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            const SizedBox(height: 20),
-                            // Space between the card and the options
-                            Center(
-                              child: Text(
-                                "Choose_Payment".tr,
-                                style: TextStyle(
-                                    color: themeController.isDarkMode.value
-                                        ? Colors.white
-                                        : color,
-                                    fontSize: 24),
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: TextField(
-                                      controller: availabletrxdetailsController
-                                          .TrxDetalisTipInput,
-                                      decoration: InputDecoration(
-                                        hintText: 'Enter_Tips_Only'.tr,
-                                        hintStyle: TextStyle(
+                            Container(
+                              height: 285,
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  children: [
+                                    const SizedBox(height: 20),
+                                    // Space between the card and the options
+                                    Center(
+                                      child: Text(
+                                        "Choose_Payment".tr,
+                                        style: TextStyle(
                                             color:
                                                 themeController.isDarkMode.value
-                                                    ? color
-                                                    : Colors.white,
-                                            fontSize: 15),
-                                        filled: true,
-                                        fillColor: const Color(0xFF176E38),
-                                        border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(7),
-                                          borderSide: BorderSide.none,
-                                        ),
+                                                    ? Colors.white
+                                                    : color,
+                                            fontSize: 24),
                                       ),
-                                      style: TextStyle(
-                                        color: themeController.isDarkMode.value
-                                            ? color
-                                            : Colors.white,
-                                      ),
-                                      keyboardType: TextInputType.number,
-                                      onChanged: (value) {
-                                        availabletrxdetailsController
-                                            .updateValue();
-                                      },
                                     ),
-                                  ),
+                                    const SizedBox(height: 10),
+                                    Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: Row(
+                                        children: [
+                                          Expanded(
+                                            child: TextField(
+                                              controller:
+                                                  availabletrxdetailsController
+                                                      .TrxDetalisTipInput,
+                                              decoration: InputDecoration(
+                                                hintText: 'Enter_Tips_Only'.tr,
+                                                hintStyle: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 15),
+                                                filled: true,
+                                                fillColor:
+                                                    const Color(0xFF176E38),
+                                                border: OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(7),
+                                                  borderSide: BorderSide.none,
+                                                ),
+                                              ),
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                              ),
+                                              keyboardType:
+                                                  TextInputType.number,
+                                              onChanged: (value) {
+                                                availabletrxdetailsController
+                                                    .updateValue();
+                                              },
+                                            ),
+                                          ),
 
-                                  // Space between TextField and button
-                                ],
+                                          // Space between TextField and button
+                                        ],
+                                      ),
+                                    ),
+                                    const SizedBox(height: 16),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        _buildPaymentOption(
+                                            context,
+                                            availabletrxdetailsController,
+                                            "Cash".tr,
+                                            Icons.payments_outlined),
+                                        _buildPaymentOption(
+                                            context,
+                                            availabletrxdetailsController,
+                                            "Bank".tr,
+                                            Icons.credit_card),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 16),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        _buildPaymentOption(
+                                            context,
+                                            availabletrxdetailsController,
+                                            "Fleet".tr,
+                                            Icons.credit_card),
+                                        _buildPaymentOption(
+                                            context,
+                                            availabletrxdetailsController,
+                                            "Bank_Point".tr,
+                                            Icons.credit_card),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 16),
+                                  ],
+                                ),
                               ),
-                            ),
-                            const SizedBox(height: 16),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                _buildPaymentOption(
-                                    context,
-                                    availabletrxdetailsController,
-                                    "Cash".tr,
-                                    Icons.payments_outlined),
-                                _buildPaymentOption(
-                                    context,
-                                    availabletrxdetailsController,
-                                    "Bank".tr,
-                                    Icons.credit_card),
-                              ],
-                            ),
-                            const SizedBox(height: 16),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                _buildPaymentOption(
-                                    context,
-                                    availabletrxdetailsController,
-                                    "Fleet".tr,
-                                    Icons.credit_card),
-                                _buildPaymentOption(
-                                    context,
-                                    availabletrxdetailsController,
-                                    "Bank_Point".tr,
-                                    Icons.credit_card),
-                              ],
-                            ),
-                            const SizedBox(height: 16), // Space between rows
+                            ) // Space between rows
                             // Row(
                             //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             //   children: [
@@ -627,6 +550,16 @@ class Availabletrxdetails extends StatelessWidget {
                           ],
                         ),
                       ),
+                    ),
+                  ),
+                  Positioned(
+                    right: 0,
+                    left: 0,
+                    // top: 0,
+                    bottom: 0,
+                    child: SizedBox(
+                      child: FooterAvailabletrxdetails(),
+                      width: MediaQuery.of(context).size.width * 0.99,
                     ),
                   ),
                 ],

@@ -41,21 +41,20 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   children: [
                     // Drawer Icon
                     Get.currentRoute == "/verify"
-                        ? IconButton(
-                            icon: Icon(
+                        ? GestureDetector(
+                            child: Icon(
                               Icons.arrow_back_rounded,
                               color: themeController.isDarkMode.value
                                   ? Colors.white
                                   : color,
                               size: 40,
                             ),
-                            // Drawer icon
-                            onPressed: () {
+                            onTap: () {
                               Get.offAllNamed('/Home');
                             },
                           )
-                        : IconButton(
-                            icon: Icon(
+                        : GestureDetector(
+                            child: Icon(
                               Icons.menu,
                               color: themeController.isDarkMode.value
                                   ? Colors.white
@@ -63,9 +62,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                               size: 40,
                             ),
                             // Drawer icon
-                            onPressed: () {
-                              Scaffold.of(context)
-                                  .openDrawer(); // Open the drawer
+                            onTap: () {
+                              Scaffold.of(context).openDrawer();
+                              // Open the drawer
                             },
                           ),
 

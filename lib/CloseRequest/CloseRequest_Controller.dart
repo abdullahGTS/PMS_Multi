@@ -71,7 +71,7 @@ class CloseRequestController extends GetxController {
     print("last_shiftcheckthelastpos${last_shift}");
 
     final baseUrl =
-        'https://41.33.226.46:24433/merchantpanal/pos/shift/check/status/api/';
+        'https://41.33.226.46/merchantpanal/pos/shift/check/status/api/';
 
     try {
       final url = Uri.parse('$baseUrl?shift_num=${last_shift?['shift_num']}');

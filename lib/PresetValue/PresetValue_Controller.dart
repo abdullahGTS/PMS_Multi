@@ -43,10 +43,10 @@ class PresetvalueController extends GetxController {
         .substring(customController.SerialNumber.value.length - 5);
 
     if (customController.issupervisormaiar.value) {
-      presetvalueController.text = "20"; // Set the input text
+      presetvalueController.text = "22"; // Set the input text
       updatedropdown("Liter"); // Call the dropdown update method
       disableDropdownAndInput();
-      value = "20";
+      value = "22";
     }
     await getNozzleName();
     await getArguments();
@@ -519,9 +519,9 @@ xsi:noNamespaceSchemaLocation="FDC_GetNextTransactionSequenceNo_Request.xsd">
                     Expanded(
                       flex: 2,
                       child: Text(
-                          getFormattedTime()['minute'].toString() +
+                          getFormattedTime()['hour'].toString() +
                               " : " +
-                              getFormattedTime()['hour'].toString() +
+                              getFormattedTime()['minute'].toString() +
                               " " +
                               getFormattedTime()['format'].toString().tr,
                           style: const TextStyle(

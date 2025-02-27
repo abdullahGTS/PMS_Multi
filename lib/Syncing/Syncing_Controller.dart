@@ -66,7 +66,7 @@ class SyncingController extends GetxController {
   }
 
   Future<void> fetchToken() async {
-    final baseUrl = 'https://41.33.226.46:24433/adminpanal/pos/get/token/api/';
+    final baseUrl = 'https://41.33.226.46/adminpanal/pos/get/token/api/';
     print("Starting fetchToken...------------->");
 
     try {
@@ -124,7 +124,7 @@ class SyncingController extends GetxController {
 
   Future<void> sendAndroidIdToApi(String csrfToken) async {
     print('Token: $tokenofapi');
-    final baseUrl = 'https://41.33.226.46:24433/adminpanal/pos/config/api/';
+    final baseUrl = 'https://41.33.226.46/adminpanal/pos/config/api/';
 
     try {
       final url = Uri.parse(baseUrl);

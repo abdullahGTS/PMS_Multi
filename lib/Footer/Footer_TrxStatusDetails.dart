@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import '../CustomAppbar/CustomAppbar_Controller.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../Theme/Theme_Controller.dart';
 
-class FooterChoosePayment extends StatelessWidget {
-  final customController = Get.find<CustomAppbarController>();
+class FooterTrxStatusDetails extends StatelessWidget {
   var themeController = Get.find<ThemeController>();
   var color = Color.fromARGB(255, 24, 24, 24);
 
@@ -35,7 +33,28 @@ class FooterChoosePayment extends StatelessWidget {
                 MainAxisAlignment.center, // Center the content in the Row
             children: [
               GestureDetector(
+                onTap: () async {
+                  // Navigate to the verification page
+                  // ScaffoldMessenger.of(context).showSnackBar(
+                  //   const SnackBar(
+                  //       content: Text(
+                  //           'you can not back while fueling is in progress !!')),
+                  // );
+                  final prefs = await SharedPreferences.getInstance();
+                  var pumpnum = prefs.getString('pumpName');
+                  print("Sssssssssssssss${pumpnum}");
+                  Get.offAllNamed('/TransactionStatus',
+                      arguments: {'pumpName': pumpnum});
+                },
+                child: _buildCircleIcon(Icons.arrow_back_rounded, Colors.white),
+                // Fuel on the right
+              ),
+              const Spacer(), // Spacer to push the logo to the center
+              _buildCircleImage('media/new_logo.png'), // New logo in the center
+              const Spacer(), // Spacer to push the fuel icon to the right
+              GestureDetector(
                 onTap: () {
+                  // Navigate to the verification page
                   Get.snackbar(
                     'Payment_Alert'.tr,
                     "sorry".tr +
@@ -46,35 +65,8 @@ class FooterChoosePayment extends StatelessWidget {
                     colorText: Colors.white,
                   );
                 },
-                child: _buildCircleIcon(Icons.arrow_back_rounded, Colors.white),
-                // Fuel on the right
-              ),
-              const Spacer(), // Spacer to push the logo to the center
-              _buildCircleImage('media/new_logo.png'), // New logo in the center
-              const Spacer(), // Spacer to push the fuel icon to the right
-              GestureDetector(
-                onTap: () {
-                  Get.snackbar(
-                    'Amount_Details'.tr,
-                    " " +
-                        "Amount".tr +
-                        " " +
-                        "${customController.amountVal.value.toStringAsFixed(2)} " +
-                        'EGP'.tr +
-                        " " +
-                        ' |  ' +
-                        'Tips'.tr +
-                        " " +
-                        '${customController.TipsValue.value} ' +
-                        " " +
-                        'EGP'.tr,
-                    snackPosition: SnackPosition.TOP,
-                    backgroundColor: Colors.green,
-                    colorText: Colors.white,
-                  );
-                },
-                child: _buildCircleIcon(
-                    Icons.numbers_rounded, Colors.white), // Fuel on the right
+                child: _buildCircleIcon(Icons.mobile_friendly_rounded,
+                    Colors.white), // Fuel on the right
               ),
             ],
           ),
@@ -88,6 +80,13 @@ class FooterChoosePayment extends StatelessWidget {
       padding: const EdgeInsets.all(
           10.0), // Add 10 pixels of padding for the circular container
       decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+              color: Colors.white.withOpacity(0.3),
+              offset: Offset(0, 8),
+              blurRadius: 3,
+              spreadRadius: 0)
+        ],
         color: themeController.isDarkMode.value
             ? color
             : Colors.white
@@ -114,6 +113,13 @@ class FooterChoosePayment extends StatelessWidget {
       padding: const EdgeInsets.all(
           10.0), // Add 10 pixels of padding for the circular container
       decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+              color: Colors.white.withOpacity(0.3),
+              offset: Offset(0, 8),
+              blurRadius: 3,
+              spreadRadius: 0)
+        ],
         color: themeController.isDarkMode.value
             ? color
             : Colors.white

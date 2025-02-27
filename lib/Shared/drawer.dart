@@ -124,7 +124,8 @@ class CustomDrawer extends StatelessWidget {
             ),
             tileColor: Get.currentRoute == "/verify" ? Colors.green : null,
             onTap: () {
-              Get.offNamed("/verify");
+              customController.issupervisormaiar.value = false;
+              Get.offAllNamed("/verify");
             },
             // onTap: () {
             //   Get.offNamed("/verify");
@@ -159,7 +160,7 @@ class CustomDrawer extends StatelessWidget {
                   ),
                 );
                 customController.sendtaxreid();
-                customController.sendShiftsToApi();
+                // customController.sendShiftsToApi();
                 customController.sendTransactionsToApi();
                 customController.sendtoupdateistaxed();
 
@@ -211,7 +212,9 @@ class CustomDrawer extends StatelessWidget {
             tileColor:
                 Get.currentRoute == "/Transactions" ? Colors.green : null,
             onTap: () {
-              Get.offNamed("/Transactions");
+              customController.issupervisormaiar.value = false;
+
+              Get.offNamed("/VerifyTransactionAllPage");
             },
             // onTap: () {
             //   Get.offNamed("/Transactions");
@@ -230,6 +233,7 @@ class CustomDrawer extends StatelessWidget {
                 ? Colors.green
                 : null,
             onTap: () {
+              customController.issupervisormaiar.value = false;
               Get.offAllNamed("/Verifyavailabletrx");
             },
           ),
@@ -244,7 +248,7 @@ class CustomDrawer extends StatelessWidget {
             ),
             tileColor: Get.currentRoute == "/Report" ? Colors.green : null,
             onTap: () {
-              Get.offNamed("/Report");
+              Get.offNamed("/VerifyTransactionReprot");
             },
           ),
           ListTile(
@@ -258,7 +262,7 @@ class CustomDrawer extends StatelessWidget {
             ),
             tileColor: Get.currentRoute == "/ReportShift" ? Colors.green : null,
             onTap: () {
-              Get.offNamed("/ReportShift");
+              Get.offNamed("/VerifyShiftReprotPage");
             },
           ),
           ListTile(
@@ -272,7 +276,7 @@ class CustomDrawer extends StatelessWidget {
             ),
             tileColor: Get.currentRoute == "/Mair" ? Colors.green : null,
             onTap: () {
-              Get.toNamed("/Mair");
+              Get.offAllNamed("/Mair");
             },
           ),
           ListTile(
@@ -337,7 +341,7 @@ class CustomDrawer extends StatelessWidget {
               color: Colors.white,
             ),
             title: Text(
-              "Theme",
+              "theme".tr,
               style: TextStyle(color: Colors.white),
             ),
             onTap: () {
@@ -375,7 +379,7 @@ class CustomDrawer extends StatelessWidget {
                     await customController.fetchTransactionsByshiftchecking(
                         prefs.getInt('shift_id') ?? 0);
 
-// Check if any transaction has a status of 'void'
+                // Check if any transaction has a status of 'void'
                 bool hasVoidTransaction = transactions.any(
                     (transaction) => transaction['statusvoid'] == 'progress');
                 // print("hasVoidTransaction${hasVoidTransaction}");

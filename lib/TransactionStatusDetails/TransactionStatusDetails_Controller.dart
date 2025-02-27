@@ -18,6 +18,7 @@ class TransactionStatusDetailsController extends GetxController {
   var TrxListener;
   final TrxDetalisTipInput = TextEditingController();
   static const _channel = MethodChannel('com.example.pms/method');
+  var isLoading = true.obs;
   var isInputTips = false.obs;
   var isInputAmount = false.obs;
   final TipInput = TextEditingController();
@@ -52,10 +53,10 @@ class TransactionStatusDetailsController extends GetxController {
   void selectPaymentOption(BuildContext context, String option) async {
     selectedPaymentOption.value = option;
     print(option);
-    print(
-        "customController.TipsValue.value----${customController.TipsValue.value}");
+    // print(
+    //     "customController.TipsValue.value****${double.parse(customController.TipsValue.value)}");
     if (customController.TipsValue.value == "") {
-      customController.TipsValue.value = "0";
+      customController.TipsValue.value = "0.00";
     }
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('selectedPaymentOption', selectedPaymentOption.value);
@@ -63,6 +64,14 @@ class TransactionStatusDetailsController extends GetxController {
       Get.snackbar(
         "Error".tr,
         "not_correct_Tips_the_max_tips".tr + " 20 " + "EGP".tr,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+    } else if (double.parse(customController.TipsValue.value) < 0.00) {
+      Get.snackbar(
+        "Error".tr,
+        "Please_make_sure_the_total_amount_is_greater_than_the_fueling_amount"
+            .tr,
         backgroundColor: Colors.red,
         colorText: Colors.white,
       );
@@ -124,29 +133,38 @@ class TransactionStatusDetailsController extends GetxController {
           } else {
             print("Transaction Successful: $response");
             customController.paymentType.value = 2;
-
-            if (response['cardNo'] == 'Unknown') {
-              customController.stanNumber.value = 0;
-              return false;
+            if (response['rspCode'] == 0) {
+              if (response['cardNo'] == 'Unknown') {
+                customController.stanNumber.value = 0;
+                return false;
+              } else {
+                print('customController.stanNumber.value ${response['stan']}');
+                print(
+                    'customController.voucherNo.value ${response['voucherNo']}');
+                print('customController.ecrRef.value ${response['ecrRef']}');
+                print('customController.stanNumber.value ${response}');
+                customController.stanNumber.value = response['stan'];
+                customController.voucherNo.value = response['voucherNo'];
+                customController.ecrRef.value = response['ecrRef'];
+                customController.batchNo.value = response['batchNo'];
+                print(
+                    'customController.stanNumber.value ${customController.stanNumber.value}');
+                print(
+                    'customController.voucherNo.value ${customController.voucherNo.value}');
+                print(
+                    'customController.ecrRef.value ${customController.ecrRef.value}');
+                customController.saveTransaction(2);
+                // got to receipt
+                Get.toNamed('/Receipt');
+              }
             } else {
-              print('customController.stanNumber.value ${response['stan']}');
-              print(
-                  'customController.voucherNo.value ${response['voucherNo']}');
-              print('customController.ecrRef.value ${response['ecrRef']}');
-              print('customController.stanNumber.value ${response}');
-              customController.stanNumber.value = response['stan'];
-              customController.voucherNo.value = response['voucherNo'];
-              customController.ecrRef.value = response['ecrRef'];
-              customController.batchNo.value = response['batchNo'];
-              print(
-                  'customController.stanNumber.value ${customController.stanNumber.value}');
-              print(
-                  'customController.voucherNo.value ${customController.voucherNo.value}');
-              print(
-                  'customController.ecrRef.value ${customController.ecrRef.value}');
-              customController.saveTransaction(2);
-              // got to receipt
-              Get.toNamed('/Receipt');
+              Get.snackbar(
+                'Transaction Fail',
+                '[${response['rspCode']}]' + ' - ' + '${response['rspMsg']}',
+                snackPosition: SnackPosition.TOP,
+                backgroundColor: Colors.red,
+                colorText: Colors.white,
+              );
             }
           }
         }
@@ -382,6 +400,7 @@ xsi:noNamespaceSchemaLocation="FDC_GetFuelSaleTrxDetailsByNo_Request.xsd">
                   false, // Prevent dialog dismissal by tapping outside
             );
           }
+          isLoading.value = false;
         }
       }
     });
@@ -405,7 +424,7 @@ xsi:noNamespaceSchemaLocation="FDC_GetFuelSaleTrxDetailsByNo_Request.xsd">
   }
 
   void updateValue() {
-    print(TipInput.text);
+    print("TipInput.textTipInput.text${TipInput.text}");
 
     int texttipinput;
     if (TipInput.text != '') {
@@ -413,8 +432,10 @@ xsi:noNamespaceSchemaLocation="FDC_GetFuelSaleTrxDetailsByNo_Request.xsd">
       texttipinput = int.parse(TipInput.text);
     } else {
       texttipinput = 0;
+      customController.TipsValue.value = "0";
     }
     if (texttipinput < 0 || texttipinput > 20) {
+      customController.TipsValue.value = texttipinput.toString();
       // Get.snackbar(
       //   "Error",
       //   "not correct Tips .... Please make sure the Tips amount is greater than the 0 !",
@@ -455,6 +476,10 @@ xsi:noNamespaceSchemaLocation="FDC_GetFuelSaleTrxDetailsByNo_Request.xsd">
             "customController.TipsValue.value${customController.TipsValue.value}");
       } else {
         isInputTips.value = true;
+        print(
+            "testttttttttttttttt${double.parse(customController.AllAmountValue.value) - customController.amountVal.value}");
+        customController.TipsValue.value =
+            "${double.parse(customController.AllAmountValue.value) - customController.amountVal.value}";
         // Get.snackbar(
         //   "Error",
         //   "not correct Total .... Please make sure the total amount is greater than the fueling amount!",
@@ -463,8 +488,10 @@ xsi:noNamespaceSchemaLocation="FDC_GetFuelSaleTrxDetailsByNo_Request.xsd">
         // );
       }
     }
+
     if (AllAmountInput.text.isEmpty) {
       isInputTips.value = false;
+      customController.TipsValue.value = "0";
     }
   }
 }

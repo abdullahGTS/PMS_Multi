@@ -64,6 +64,12 @@ import 'VerifyAttendent/Verify_Binding.dart';
 import 'VerifyAttendent/Verify_Page.dart';
 import 'VerifyAvailableTrx/VerifyAvailableTrx_Binding.dart';
 import 'VerifyAvailableTrx/VerifyAvailableTrx_Page.dart';
+import 'VerifyShiftReprot/VerifyShiftReprot_Binding.dart';
+import 'VerifyShiftReprot/VerifyShiftReprot_Page.dart';
+import 'VerifyTransactionAll/VerifyTransactionAll_Binding.dart';
+import 'VerifyTransactionAll/VerifyTransactionAll_Page.dart';
+import 'VerifyTransactionReprot/VerifyTransactionReprot_Binding.dart';
+import 'VerifyTransactionReprot/VerifyTransactionReprot_Page.dart';
 import 'my_http_overrides.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_background/flutter_background.dart';
@@ -219,6 +225,18 @@ class MyApp extends StatelessWidget {
             name: "/Verifyavailabletrx",
             page: () => VerifyavailabletrxPage(),
             binding: VerifyavailabletrxBinding()),
+        GetPage(
+            name: "/VerifyTransactionAllPage",
+            page: () => VerifyTransactionAllPage(),
+            binding: VerifyTransactionAllBinding()),
+        GetPage(
+            name: "/VerifyTransactionReprot",
+            page: () => VerifyTransactionReprotPage(),
+            binding: VerifyTransactionReprotBinding()),
+        GetPage(
+            name: "/VerifyShiftReprotPage",
+            page: () => VerifyShiftReprotPage(),
+            binding: VerifyShiftReprotBinding()),
         GetPage(
           name: '/Availabletransactions',
           page: () => Availabletransactions(),

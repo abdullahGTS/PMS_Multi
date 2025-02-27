@@ -34,6 +34,8 @@ class FuelSale {
   int voucherNo;
   String ecrRef;
   int batchNo;
+  String startTimeStamp;
+  String endTimeStamp;
 
   FuelSale({
     required this.fdCTimeStamp,
@@ -69,6 +71,8 @@ class FuelSale {
     required this.voucherNo,
     required this.ecrRef,
     required this.batchNo,
+    required this.startTimeStamp,
+    required this.endTimeStamp,
   });
 
   // Convert FuelSale object to a Map
@@ -107,6 +111,8 @@ class FuelSale {
       'voucherNo': voucherNo,
       'ecrRef': ecrRef,
       'batchNo': batchNo,
+      'startTimeStamp': startTimeStamp,
+      'endTimeStamp': endTimeStamp,
     };
   }
 
@@ -146,6 +152,8 @@ class FuelSale {
       voucherNo: map['voucherNo'],
       ecrRef: map['ecrRef'],
       batchNo: map['batchNo'],
+      startTimeStamp: map['startTimeStamp'],
+      endTimeStamp: map['endTimeStamp'],
     );
   }
 }

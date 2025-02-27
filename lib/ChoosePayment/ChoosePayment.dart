@@ -188,10 +188,10 @@ class ChoosePayment extends StatelessWidget {
       ChoosePaymentController paymentController, String title, IconData icon) {
     return Obx(() {
       // Determine the background color based on selection
-      Color backgroundColor =
-          (paymentController.selectedPaymentOption.value == title)
-              ? const Color(0xFF166E36) // Change to green when selected
-              : const Color.fromARGB(255, 24, 24, 24);
+      Color backgroundColor = themeController.isDarkMode.value
+          ? color
+          : Colors.white.withOpacity(0.5);
+      Color fontColor = themeController.isDarkMode.value ? Colors.white : color;
 
       return GestureDetector(
         onTap: () {
@@ -201,7 +201,7 @@ class ChoosePayment extends StatelessWidget {
         child: Container(
           height: 100, // Increased height for better spacing
           width: MediaQuery.of(context).size.width *
-              0.45, // Set width to 40% of screen width
+              0.95, // Set width to 40% of screen width
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(7),
             color: backgroundColor, // Set dynamic background color
@@ -212,7 +212,7 @@ class ChoosePayment extends StatelessWidget {
                 flex: 2,
                 child: Icon(
                   icon,
-                  color: Colors.white, // Set icon color
+                  color: fontColor, // Set icon color
                   size: 40, // Adjust icon size as needed
                 ),
               ),
@@ -220,9 +220,9 @@ class ChoosePayment extends StatelessWidget {
                 flex: 4,
                 child: Text(
                   title,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 20,
-                    color: Colors.white, // White text color
+                    color: fontColor, // White text color
                   ),
                 ),
               ),

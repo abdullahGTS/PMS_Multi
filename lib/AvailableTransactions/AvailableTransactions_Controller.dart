@@ -12,6 +12,8 @@ class AvailabletransactionsController extends GetxController {
   var AvailableTrxTempList = [];
   var AvailableTrxListener;
   var TrxListener;
+  var SeqNoList = [].obs;
+  var messagelog = "".obs;
 
   @override
   void onInit() async {
@@ -73,6 +75,7 @@ xsi:noNamespaceSchemaLocation="FDC_GetAvailableFuelSaleTrxs_Request.xsd">
     AvailableTrxListener = customController.xmlData.listen((data) async {
       var document = XmlDocument.parse(data);
       var serviceResponse = document.getElement('ServiceResponse');
+
       if (serviceResponse != null) {
         var RequestType = serviceResponse.getAttribute('RequestType');
         var OverallResult = serviceResponse.getAttribute('OverallResult');
@@ -89,7 +92,12 @@ xsi:noNamespaceSchemaLocation="FDC_GetAvailableFuelSaleTrxs_Request.xsd">
             // var ReleaseToken = element.getAttribute('ReleaseToken');
             var errorCode = element.findAllElements('ErrorCode').first.text;
             if (errorCode == 'ERRCD_OK') {
-              await getTrxDetailsBySeqNo(TransactionSeqNo);
+              SeqNoList.add(TransactionSeqNo);
+              if (AvailableTrxListener != null) {
+                AvailableTrxListener!.cancel();
+                AvailableTrxListener = null;
+              }
+              // await getTrxDetailsBySeqNo(TransactionSeqNo);
               // AvailableTrxTempList.add({
               //   // 'Type': Type,
               //   // 'NozzleNo': deviceID,
@@ -111,7 +119,8 @@ xsi:noNamespaceSchemaLocation="FDC_GetAvailableFuelSaleTrxs_Request.xsd">
     customController.socketConnection
         .sendMessage(customController.getXmlHeader(xmlContentreq));
     await Future.delayed(Duration(seconds: 1));
-
+    print('tetstetstetste${SeqNoList.value}');
+    await getTrxDetailsBySeqNo();
     // AvailableTrxList.value = AvailableTrxTempList;
     // Get.snackbar(
     //   'AvailableTrxList',
@@ -132,19 +141,111 @@ xsi:noNamespaceSchemaLocation="FDC_GetAvailableFuelSaleTrxs_Request.xsd">
     Get.toNamed('/Availabletrxdetails', arguments: {'TrxSeqNo': TrxSeqNo});
   }
 
-  getTrxDetailsBySeqNo(TrxSeqNo) async {
+  getTrxDetailsBySeqNo() async {
+    AvailableTrxTempList = [];
+
     customController.trxAttendant.value = customController.managershift.value;
-    print("teeeeeeeeeeeeeeeeeeeeeeeeeeeee");
-    print("id1${customController.iD}");
-    // Increment RequestID
-    customController.iD++;
-    print("id2${customController.iD}");
+    // print('AbdullahSeqNoListSeqNoListMichael${SeqNoList.value}');
+    TrxListener = customController.xmlData.listen((data) async {
+      var document = XmlDocument.parse(data);
+      var serviceResponse = document.getElement('ServiceResponse');
 
-    // Get the current time formatted for the XML
-    String currentTime =
-        DateFormat("yyyy-MM-dd'T'HH:mm:ss").format(DateTime.now());
+      if (serviceResponse != null) {
+        var RequestType = serviceResponse.getAttribute('RequestType');
+        var OverallResult = serviceResponse.getAttribute('OverallResult');
+        if (RequestType == 'GetFuelSaleTrxDetailsByNo' &&
+            OverallResult == 'Success') {
+          messagelog.value += data;
+          var AuthorisationApplicationSender = document
+              .findAllElements('AuthorisationApplicationSender')
+              .first
+              .text;
+          print(
+              "AuthorisationApplicationSender${AuthorisationApplicationSender}");
 
-    String xmlContentreq = '''
+          customController.counterTrans++;
+          customController
+              .updateCounterTrans(customController.counterTrans.value);
+          var pumpNo = document
+                  .findAllElements('DeviceClass')
+                  .first
+                  .getAttribute('PumpNo') ??
+              '';
+
+          var nozzleNo = document
+                  .findAllElements('DeviceClass')
+                  .first
+                  .getAttribute('NozzleNo') ??
+              '';
+          var transactionSeqNo = document
+                  .findAllElements('DeviceClass')
+                  .first
+                  .getAttribute('TransactionSeqNo') ??
+              '';
+
+          print("pumpNo${pumpNo}");
+          print("nozzleNo${nozzleNo}");
+          print("transactionSeqNo${transactionSeqNo}");
+          var errorcode = document.findAllElements('ErrorCode').first.text;
+          print("errorcodeerrorcode-------${errorcode}");
+          var amountVal =
+              double.tryParse(document.findAllElements('Amount').first.text) ??
+                  0.0;
+          var volume =
+              double.tryParse(document.findAllElements('Volume').first.text) ??
+                  0.0;
+          var unitPrice = double.tryParse(
+                  document.findAllElements('UnitPrice').first.text) ??
+              0.0;
+          var startTimeStamp = document
+                  .findAllElements('DeviceClass')
+                  .first
+                  .findAllElements('StartTimeStamp')
+                  .first
+                  .text ??
+              '';
+          var endTimeStamp = document
+                  .findAllElements('DeviceClass')
+                  .first
+                  .findAllElements('EndTimeStamp')
+                  .first
+                  .text ??
+              '';
+          var productName = document.findAllElements('ProductName').first.text;
+
+          AvailableTrxList.add({
+            'Start_Date': "${startTimeStamp}",
+            'pumpNo': "${pumpNo}",
+            'nozzleNo': "${nozzleNo}",
+            'productName': '${productName}',
+            'transactionSeqNo': transactionSeqNo,
+            'amountVal': '${amountVal}',
+            'volume': '${volume}',
+            'unitPrice': '${unitPrice}',
+            'AuthorisationApplicationSender':
+                '${AuthorisationApplicationSender}',
+            'End_Date': '${endTimeStamp}',
+            'POS': '${AuthorisationApplicationSender}',
+          });
+        }
+      }
+    });
+
+    // AvailableTrxTempList.sort((a, b) {
+    //   final aSeq = int.tryParse(a['transactionSeqNo'] as String) ?? 0;
+    //   final bSeq = int.tryParse(b['transactionSeqNo'] as String) ?? 0;
+    //   return bSeq.compareTo(aSeq); // For descending order
+    // });
+    // AvailableTrxList.value = AvailableTrxTempList;
+    for (var TrxSeqNo in SeqNoList.value) {
+      print('TrxSeqNoTrxSeqNo${TrxSeqNo}');
+      customController.iD++;
+
+      // Get the current time formatted for the XML
+      String currentTime =
+          DateFormat("yyyy-MM-dd'T'HH:mm:ss").format(DateTime.now());
+
+      String xmlContentreq = '''
 <?xml version="1.0" encoding="utf-8" ?>
 <ServiceRequest RequestType="GetFuelSaleTrxDetailsByNo" ApplicationSender="${customController.SerialNumber.value.substring(customController.SerialNumber.value.length - 5)}"
 WorkstationID="PMS" RequestID="${customController.iD}" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -156,158 +257,12 @@ xsi:noNamespaceSchemaLocation="FDC_GetFuelSaleTrxDetailsByNo_Request.xsd">
 </POSdata>
 </ServiceRequest>
 ''';
-    print("xmlContentreqcheckFueling${xmlContentreq}");
+      customController.socketConnection
+          .sendMessage(customController.getXmlHeader(xmlContentreq));
+      await Future.delayed(Duration(seconds: 1));
+    }
 
-    // Log the XML for debugging purposes
-    // Get.snackbar(
-    //   'Check PUMP Status',
-    //   'GetFPState Request Sent',
-    //   snackPosition: SnackPosition.TOP,
-    //   backgroundColor: Colors.green,
-    //   colorText: Colors.white,
-    // );
-    // Send the constructed XML message through socket
-    // print(customController.socketConnection);
-    // print(customController.socketConnection.runtimeType);
-
-    TrxListener = customController.xmlData.listen((data) async {
-      var document = XmlDocument.parse(data);
-      var serviceResponse = document.getElement('ServiceResponse');
-      if (serviceResponse != null) {
-        var RequestType = serviceResponse.getAttribute('RequestType');
-        var OverallResult = serviceResponse.getAttribute('OverallResult');
-        if (RequestType == 'GetFuelSaleTrxDetailsByNo' &&
-            OverallResult == 'Success') {
-          customController.statevalue.value =
-              document.findAllElements('State').first.text;
-          print("statevalue${customController.statevalue}");
-
-          customController.AuthorisationApplicationSender.value = document
-              .findAllElements('AuthorisationApplicationSender')
-              .first
-              .text;
-          print(
-              "AuthorisationApplicationSender${customController.AuthorisationApplicationSender}");
-
-          customController.counterTrans++;
-          customController
-              .updateCounterTrans(customController.counterTrans.value);
-          // Send counterTrans to HomeController
-          customController.fdCTimeStamp.value =
-              document.findAllElements('FDCTimeStamp').first.text;
-
-          customController.type.value = document
-                  .findAllElements('DeviceClass')
-                  .first
-                  .getAttribute('Type') ??
-              '';
-
-          customController.deviceID.value = document
-                  .findAllElements('DeviceClass')
-                  .first
-                  .getAttribute('DeviceID') ??
-              '';
-
-          customController.pumpNo.value = document
-                  .findAllElements('DeviceClass')
-                  .first
-                  .getAttribute('PumpNo') ??
-              '';
-
-          customController.nozzleNo.value = document
-                  .findAllElements('DeviceClass')
-                  .first
-                  .getAttribute('NozzleNo') ??
-              '';
-          customController.transactionSeqNo.value = document
-                  .findAllElements('DeviceClass')
-                  .first
-                  .getAttribute('TransactionSeqNo') ??
-              '';
-          customController.fusionSaleId.value = document
-                  .findAllElements('DeviceClass')
-                  .first
-                  .getAttribute('FusionSaleId') ??
-              '';
-          print("fdCTimeStamp${customController.fdCTimeStamp.value}");
-
-          print("type${customController.type.value}");
-          print("deviceID${customController.deviceID.value}");
-          print("pumpNo${customController.pumpNo.value}");
-          print("nozzleNo${customController.nozzleNo.value}");
-          print("transactionSeqNo${customController.transactionSeqNo.value}");
-
-          // fusionSaleId.value = document
-          //         .findAllElements('DeviceClass')
-          //         .first
-          //         .getAttribute('FusionSaleId') ??
-          //     '';
-          customController.releaseToken.value =
-              document.findAllElements('ReleaseToken').first.text;
-          // completionReason.value =
-          //     document.findAllElements('CompletionReason').first.text;
-          customController.fuelMode.value = document
-                  .findAllElements('FuelMode')
-                  .first
-                  .getAttribute('ModeNo') ??
-              '';
-          customController.productUM.value =
-              document.findAllElements('ProductUM').first.text ?? '';
-
-          customController.productNo.value =
-              document.findAllElements('ProductNo').first.text;
-          customController.amountVal.value =
-              double.tryParse(document.findAllElements('Amount').first.text) ??
-                  0.0;
-          customController.volume.value =
-              double.tryParse(document.findAllElements('Volume').first.text) ??
-                  0.0;
-          customController.unitPrice.value = double.tryParse(
-                  document.findAllElements('UnitPrice').first.text) ??
-              0.0;
-          customController.volumeProduct1.value = double.tryParse(
-                  document.findAllElements('VolumeProduct1').first.text) ??
-              0.0;
-          customController.volumeProduct2.value = double.tryParse(
-                  document.findAllElements('VolumeProduct2').first.text) ??
-              0.0;
-          customController.productNo1.value =
-              int.tryParse(document.findAllElements('ProductNo1').first.text) ??
-                  0;
-          // productUM.value = document.findAllElements('ProductUM').first.text;
-          customController.productName.value = customController.getProductName(
-                  int.parse(customController.productNo.value)) ??
-              'No Product';
-          // productName.value = document.findAllElements('ProductName').first.text;
-          customController.blendRatio.value =
-              int.tryParse(document.findAllElements('BlendRatio').first.text) ??
-                  0;
-          customController.startTimeStamp.value =
-              document.findAllElements('StartTimeStamp').first.text ?? "";
-          customController.endTimeStamp.value =
-              document.findAllElements('EndTimeStamp').first.text ?? "";
-        }
-      }
-    });
-    customController.socketConnection
-        .sendMessage(customController.getXmlHeader(xmlContentreq));
-    await Future.delayed(Duration(seconds: 1));
-
-    AvailableTrxTempList.add({
-      'Start_Date': "${customController.fdCTimeStamp.value}",
-      'pumpNo': "${customController.pumpNo.value}",
-      'nozzleNo': "${customController.nozzleNo.value}",
-      'productName':
-          '${customController.getProductNameByNozzleNum(int.parse(customController.nozzleNo.value!))}',
-      'transactionSeqNo': TrxSeqNo,
-      'amountVal': '${customController.amountVal.value}',
-      'volume': '${customController.volume.value}',
-      'unitPrice': '${customController.unitPrice.value}',
-      'AuthorisationApplicationSender':
-          '${customController.AuthorisationApplicationSender.value}',
-      'End_Date': '${customController.endTimeStamp.value}',
-      'POS': '${customController.AuthorisationApplicationSender.value}',
-    });
+    // print("AvailableTrxTempList${AvailableTrxTempList}");
 
     // Get.snackbar(
     //   'AvailableTrxList',
@@ -320,12 +275,99 @@ xsi:noNamespaceSchemaLocation="FDC_GetFuelSaleTrxDetailsByNo_Request.xsd">
     //   AvailableTrxListener!.cancel();
     //   print("AvailableTrxListener stopped.");
     // }
-    print("AvailableTrxTempList${AvailableTrxTempList}");
-    AvailableTrxTempList.sort((a, b) {
-      final aSeq = int.tryParse(a['transactionSeqNo'] as String) ?? 0;
-      final bSeq = int.tryParse(b['transactionSeqNo'] as String) ?? 0;
-      return bSeq.compareTo(aSeq); // For descending order
-    });
-    AvailableTrxList.value = AvailableTrxTempList;
+    // print("AvailableTrxTempList${AvailableTrxTempList}");
+    // AvailableTrxTempList.sort((a, b) {
+    //   final aSeq = int.tryParse(a['transactionSeqNo'] as String) ?? 0;
+    //   final bSeq = int.tryParse(b['transactionSeqNo'] as String) ?? 0;
+    //   return bSeq.compareTo(aSeq); // For descending order
+    // });
+    // AvailableTrxList.value = AvailableTrxTempList;
+    // if (TrxListener != null) {
+    //   TrxListener!.cancel();
+    //   TrxListener = null;
+    // }
+  }
+
+  void showExtractedValuesPopup(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: const Color.fromARGB(255, 24, 24, 24),
+          titlePadding: EdgeInsets.zero,
+          title: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(7),
+              color: const Color(0xFF186937),
+            ),
+            width: double.infinity,
+            padding: const EdgeInsets.all(16),
+            child: Text(
+              'log'.tr,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 25,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                const SizedBox(height: 30),
+                Obx(() {
+                  return Text(
+                    messagelog.value,
+                    style: TextStyle(color: Colors.white, fontSize: 7),
+                  );
+                })
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment
+                  .spaceEvenly, // Distribute space evenly between buttons
+              children: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(); // Close the dialog
+                  },
+                  child: Container(
+                    width: 75,
+                    height: 50,
+                    decoration: BoxDecoration(
+                        color: const Color(0xFF2B2B2B),
+                        borderRadius: BorderRadius.circular(7)),
+                    child: Center(
+                      child: Text('Cancel'.tr,
+                          style: TextStyle(color: Colors.white, fontSize: 20)),
+                    ),
+                  ),
+                ),
+                TextButton(
+                  onPressed: () {
+                    messagelog.value = "";
+                    // Close the dialog
+                  },
+                  child: Container(
+                    width: 75,
+                    height: 50,
+                    decoration: BoxDecoration(
+                        color: const Color(0xFF2B2B2B),
+                        borderRadius: BorderRadius.circular(7)),
+                    child: Center(
+                      child: Text('clear'.tr,
+                          style: TextStyle(color: Colors.white, fontSize: 20)),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        );
+      },
+    );
   }
 }

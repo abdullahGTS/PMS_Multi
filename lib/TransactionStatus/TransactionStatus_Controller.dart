@@ -33,7 +33,7 @@ class TransactionStatusController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
-
+    print("pumpsssssssssssssssss${Get.arguments['pumpName']}");
     Get.closeAllSnackbars();
     GetAllTransaction(Get.arguments['pumpName']);
     // getTrxStatus(Get.arguments['pumpName']);

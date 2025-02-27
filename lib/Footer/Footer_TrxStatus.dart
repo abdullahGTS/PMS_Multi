@@ -56,6 +56,7 @@ class FooterTrxStatus extends StatelessWidget {
                   //     .getTrxStatus(Get.arguments['pumpName']);
                   // Get.offAllNamed("/TransactionStatus",
                   //     arguments: {'pumpName': Get.arguments['pumpName']});
+
                   await transactionStatusController.GetAllTransaction(
                       Get.arguments['pumpName']);
                 },
@@ -64,92 +65,95 @@ class FooterTrxStatus extends StatelessWidget {
               ), // Spacer to push the logo to the center
               const Spacer(), // Spacer to push the fuel icon to the right
               GestureDetector(
-                  onTap: () async {
-                    await transactionStatusController.GetAllTransaction(
-                        Get.arguments['pumpName']);
-                    // await Future.delayed(Duration(milliseconds: 200));
-                    await allpumpcont.checkFueling(Get.arguments['pumpName']);
+                  onTap: transactionStatusController.AvailableTrxList.isEmpty
+                      ? () async {
+                          await transactionStatusController.GetAllTransaction(
+                              Get.arguments['pumpName']);
+                          // await Future.delayed(Duration(milliseconds: 200));
+                          await allpumpcont
+                              .checkFueling(Get.arguments['pumpName']);
 
-                    allpumpcont.xmlDataPumpListener =
-                        customController.xmlData.listen((data) async {
-                      var document = XmlDocument.parse(data);
+                          allpumpcont.xmlDataPumpListener =
+                              customController.xmlData.listen((data) async {
+                            var document = XmlDocument.parse(data);
 
-                      var serviceResponse =
-                          document.getElement('ServiceResponse');
-                      if (serviceResponse != null) {
-                        var RequestType =
-                            serviceResponse.getAttribute('RequestType');
-                        var overallResult =
-                            serviceResponse.getAttribute('OverallResult');
-                        if (RequestType == 'GetFPState' &&
-                            overallResult == "Success") {
-                          var pumpNo = document
-                              .findAllElements('DeviceClass')
-                              .first
-                              .getAttribute('DeviceID');
-                          var status = document
-                              .findAllElements('DeviceState')
-                              .first
-                              .text;
-                          print('pumpNo-----------: $pumpNo');
-                          print('status-----------: $status');
+                            var serviceResponse =
+                                document.getElement('ServiceResponse');
+                            if (serviceResponse != null) {
+                              var RequestType =
+                                  serviceResponse.getAttribute('RequestType');
+                              var overallResult =
+                                  serviceResponse.getAttribute('OverallResult');
+                              if (RequestType == 'GetFPState' &&
+                                  overallResult == "Success") {
+                                var pumpNo = document
+                                    .findAllElements('DeviceClass')
+                                    .first
+                                    .getAttribute('DeviceID');
+                                var status = document
+                                    .findAllElements('DeviceState')
+                                    .first
+                                    .text;
+                                print('pumpNo-----------: $pumpNo');
+                                print('status-----------: $status');
 
-                          if (status == 'FDC_FUELLING' ||
-                              status == 'FDC_AUTHORISED' ||
-                              status == 'FDC_STARTED') {
-                            Get.snackbar(
-                              ("Alert").tr,
-                              ("Sorry_the_pump").tr +
-                                  " ${pumpNo} " +
-                                  ("is_in_progress").tr,
-                              backgroundColor: Colors.red,
-                              colorText: Colors.white,
-                            );
-                            // Get.closeAllSnackbars();
-                            customController.checkFueling.value = "";
-                            allpumpcont.xmlDataPumpListener!.cancel();
-                            allpumpcont.xmlDataPumpListener = null;
-                          } else {
-                            print(
-                                "customController.pumpNo.value ${customController.pumpNo.value}-${Get.arguments['pumpName']}----${transactionStatusController.AvailableTrxList.value.isNotEmpty}--${transactionStatusController.AvailableTrxTempList.isNotEmpty}");
-                            print(
-                                "customController.argument.value${Get.arguments['pumpName']}");
-                            print(
-                                "pumpNocustomController${transactionStatusController.AvailableTrxList.value.isNotEmpty}");
-                            customController.pumpNo.value = pumpNo!;
+                                if (status == 'FDC_FUELLING' ||
+                                    status == 'FDC_AUTHORISED' ||
+                                    status == 'FDC_STARTED') {
+                                  Get.snackbar(
+                                    ("Alert").tr,
+                                    ("Sorry_the_pump").tr +
+                                        " ${pumpNo} " +
+                                        ("is_in_progress").tr,
+                                    backgroundColor: Colors.red,
+                                    colorText: Colors.white,
+                                  );
+                                  // Get.closeAllSnackbars();
+                                  customController.checkFueling.value = "";
+                                  allpumpcont.xmlDataPumpListener!.cancel();
+                                  allpumpcont.xmlDataPumpListener = null;
+                                } else {
+                                  print(
+                                      "customController.pumpNo.value ${customController.pumpNo.value}-${Get.arguments['pumpName']}----${transactionStatusController.AvailableTrxList.value.isNotEmpty}--${transactionStatusController.AvailableTrxTempList.isNotEmpty}");
+                                  print(
+                                      "customController.argument.value${Get.arguments['pumpName']}");
+                                  print(
+                                      "pumpNocustomController${transactionStatusController.AvailableTrxList.value.isNotEmpty}");
+                                  customController.pumpNo.value = pumpNo!;
 
-                            if (transactionStatusController
-                                    .AvailableTrxTempList.isNotEmpty &&
-                                pumpNo == Get.arguments['pumpName']) {
-                              // if (transactionStatusController
-                              //         .AvailableTrxList.value.isNotEmpty &&
-                              //     pumpNo == Get.arguments['pumpName']) {
-                              // allpumpcont.xmlDataPumpListener?.cancel();
-                              Get.snackbar(
-                                ("Alert").tr,
-                                ("You_should_pay_transaction_first").tr,
-                                backgroundColor: Colors.red,
-                                colorText: Colors.white,
-                              );
-                              transactionStatusController.GetAllTransaction(
-                                  pumpNo);
-                              // Get.offAllNamed("/TransactionStatus",
-                              //     arguments: {'pumpName': pumpNo});
-                              allpumpcont.xmlDataPumpListener!.cancel();
-                              allpumpcont.xmlDataPumpListener = null;
-                            } else {
-                              allpumpcont.xmlDataPumpListener!.cancel();
-                              allpumpcont.xmlDataPumpListener = null;
-                              Get.toNamed("/Nozzles",
-                                  arguments: {'pumpName': pumpNo});
+                                  if (transactionStatusController
+                                          .AvailableTrxTempList.isNotEmpty &&
+                                      pumpNo == Get.arguments['pumpName']) {
+                                    // if (transactionStatusController
+                                    //         .AvailableTrxList.value.isNotEmpty &&
+                                    //     pumpNo == Get.arguments['pumpName']) {
+                                    // allpumpcont.xmlDataPumpListener?.cancel();
+                                    Get.snackbar(
+                                      ("Alert").tr,
+                                      ("You_should_pay_transaction_first").tr,
+                                      backgroundColor: Colors.red,
+                                      colorText: Colors.white,
+                                    );
+                                    transactionStatusController
+                                        .GetAllTransaction(pumpNo);
+                                    // Get.offAllNamed("/TransactionStatus",
+                                    //     arguments: {'pumpName': pumpNo});
+                                    allpumpcont.xmlDataPumpListener!.cancel();
+                                    allpumpcont.xmlDataPumpListener = null;
+                                  } else {
+                                    allpumpcont.xmlDataPumpListener!.cancel();
+                                    allpumpcont.xmlDataPumpListener = null;
+                                    Get.toNamed("/Nozzles",
+                                        arguments: {'pumpName': pumpNo});
+                                  }
+                                }
+                                // allpumpcont.xmlDataPumpListener!.cancel();
+                                // allpumpcont.xmlDataPumpListener = null;
+                              }
                             }
-                          }
-                          // allpumpcont.xmlDataPumpListener!.cancel();
-                          // allpumpcont.xmlDataPumpListener = null;
+                          });
                         }
-                      }
-                    });
-                  },
+                      : null,
                   child: _buildCircleIcon(Icons.local_gas_station,
                       Colors.white) // Fuel on the right
                   ),

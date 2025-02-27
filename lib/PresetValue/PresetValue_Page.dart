@@ -142,6 +142,7 @@ class PresetvaluePage extends StatelessWidget {
         onTap: () {
           presetcontrol.showExtractedValuesPopup(context);
           presetcontrol.value = isFullTank ? '9999.9' : text;
+          presetcontrol.dropdownvalue = "Liter";
         },
         child: Card(
           color: themeController.isDarkMode.value
@@ -265,55 +266,58 @@ class PresetvaluePage extends StatelessWidget {
   }
 
   Widget buildStandardRow() {
-    return Row(
-      children: [
-        Expanded(
-          flex: 1,
-          child: Card(
-            color: const Color.fromARGB(255, 24, 24, 24),
-            child: Padding(
-              padding: const EdgeInsets.only(left: 20.0, top: 5.0),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        children: [
+          Expanded(
+            flex: 1,
+            child: Card(
+              color: const Color.fromARGB(255, 24, 24, 24),
+              child: Padding(
+                padding: const EdgeInsets.only(left: 20.0, top: 5.0),
+                child: Container(
+                  height: 40,
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                      left: 20.0,
+                    ),
+                    child: Text(
+                      ("Liter").tr,
+                      style: TextStyle(color: Colors.white, fontSize: 20),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 1,
+            child: Card(
+              color: const Color(0xFF176E38),
               child: Container(
-                // height: 40,
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                    left: 20.0,
+                margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                child: TextField(
+                  controller: presetcontrol.presetvalueController,
+                  decoration: const InputDecoration(
+                    hintText: '20',
+                    hintStyle: TextStyle(color: Colors.white54, fontSize: 15),
+                    filled: true,
+                    fillColor: Color(0xFF176E38),
+                    border: InputBorder.none,
                   ),
-                  child: Text(
-                    ("Liter").tr,
-                    style: TextStyle(color: Colors.white, fontSize: 20),
-                  ),
+                  enabled: !presetcontrol.isInputDisabled.value,
+                  style: const TextStyle(color: Colors.white),
+                  keyboardType: TextInputType.number,
+                  // onChanged: (value) {
+                  //   presetcontrol.updateValue();
+                  // },
                 ),
               ),
             ),
           ),
-        ),
-        Expanded(
-          flex: 1,
-          child: Card(
-            color: const Color(0xFF176E38),
-            child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 5.0),
-              child: TextField(
-                controller: presetcontrol.presetvalueController,
-                decoration: const InputDecoration(
-                  hintText: '20',
-                  hintStyle: TextStyle(color: Colors.white54, fontSize: 15),
-                  filled: true,
-                  fillColor: Color(0xFF176E38),
-                  border: InputBorder.none,
-                ),
-                enabled: !presetcontrol.isInputDisabled.value,
-                style: const TextStyle(color: Colors.white),
-                keyboardType: TextInputType.number,
-                // onChanged: (value) {
-                //   presetcontrol.updateValue();
-                // },
-              ),
-            ),
-          ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 

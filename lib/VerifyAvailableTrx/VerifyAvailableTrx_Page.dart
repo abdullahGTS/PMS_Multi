@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 
 import '../CustomAppbar/CustomAppbar.dart';
 import '../CustomAppbar/CustomAppbar_Controller.dart';
+import '../Local/Local_Controller.dart';
 import '../Shared/drawer.dart';
 import 'package:intl/intl.dart';
 
@@ -16,6 +17,8 @@ class VerifyavailabletrxPage extends StatelessWidget {
   // final customController = Get.put(CustomAppbarController());
   final customController = Get.find<CustomAppbarController>();
   var themeController = Get.find<ThemeController>();
+
+  final localController = Get.find<LocalController>();
 
   // final verifyController = Get.find<VerifyController>();
   final List<TextEditingController> _otpControllers =
@@ -74,7 +77,9 @@ class VerifyavailabletrxPage extends StatelessWidget {
                   height: 672,
                 ),
                 Container(
-                  margin: const EdgeInsets.only(left: 14),
+                  margin: localController.getCurrentLang()?.languageCode == "ar"
+                      ? EdgeInsets.only(right: 14, left: 14)
+                      : EdgeInsets.only(left: 14),
                   width: MediaQuery.of(context).size.width * 0.93,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16), // Rounded corners

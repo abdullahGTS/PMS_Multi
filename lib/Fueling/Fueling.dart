@@ -111,6 +111,47 @@ class FuelingPage extends StatelessWidget {
                                   style: TextStyle(
                                       fontSize: 30, color: Colors.white),
                                 ),
+                                // const SizedBox(height: 20),
+                                // Padding(
+                                //   padding: const EdgeInsets.symmetric(
+                                //       horizontal: 40),
+                                //   child: Row(
+                                //     mainAxisAlignment: MainAxisAlignment.center,
+                                //     children: [
+                                //       Expanded(
+                                //         flex: 2,
+                                //         child: Text(
+                                //           ('timeout').tr,
+                                //           style: TextStyle(
+                                //               fontSize: 30,
+                                //               color: Colors.white),
+                                //         ),
+                                //       ),
+                                //       Expanded(
+                                //         flex: 1,
+                                //         child: Text(
+                                //           "${loadingController.timeoutCounter.value}",
+                                //           style: TextStyle(
+                                //               fontSize: 30,
+                                //               color: themeController
+                                //                       .isDarkMode.value
+                                //                   ? Color(0xFFE9ECEF)
+                                //                   : Color(0xFF2B2B2B),
+                                //               fontWeight: FontWeight.bold),
+                                //         ),
+                                //       ),
+                                //       Expanded(
+                                //         flex: 1,
+                                //         child: Text(
+                                //           ('sec').tr,
+                                //           style: TextStyle(
+                                //               fontSize: 30,
+                                //               color: Colors.white),
+                                //         ),
+                                //       ),
+                                //     ],
+                                //   ),
+                                // ),
                               ],
                             )
                           : Column(
@@ -160,6 +201,47 @@ class FuelingPage extends StatelessWidget {
                                   style: TextStyle(
                                       fontSize: 30, color: Colors.white),
                                 ),
+                                // const SizedBox(height: 20),
+                                // Padding(
+                                //   padding: const EdgeInsets.symmetric(
+                                //       horizontal: 40),
+                                //   child: Row(
+                                //     mainAxisAlignment: MainAxisAlignment.center,
+                                //     children: [
+                                //       Expanded(
+                                //         flex: 2,
+                                //         child: Text(
+                                //           ('timeout').tr,
+                                //           style: TextStyle(
+                                //               fontSize: 30,
+                                //               color: Colors.white),
+                                //         ),
+                                //       ),
+                                //       Expanded(
+                                //         flex: 1,
+                                //         child: Text(
+                                //           "${loadingController.timeoutCounter.value}",
+                                //           style: TextStyle(
+                                //               fontSize: 30,
+                                //               color: themeController
+                                //                       .isDarkMode.value
+                                //                   ? Color(0xFFE9ECEF)
+                                //                   : Color(0xFF2B2B2B),
+                                //               fontWeight: FontWeight.bold),
+                                //         ),
+                                //       ),
+                                //       Expanded(
+                                //         flex: 1,
+                                //         child: Text(
+                                //           ('sec').tr,
+                                //           style: TextStyle(
+                                //               fontSize: 30,
+                                //               color: Colors.white),
+                                //         ),
+                                //       ),
+                                //     ],
+                                //   ),
+                                // ),
                               ],
                             ),
                     );

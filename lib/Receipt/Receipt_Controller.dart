@@ -44,7 +44,7 @@ class ReceiptController extends GetxController {
       paymentTypeName.value = 'Calibration';
       // print("paymantTypeName${paymantTypeName}");
     }
-    Get.closeAllSnackbars();
+    // Get.closeAllSnackbars();
   }
 
   @override
@@ -114,10 +114,7 @@ class ReceiptController extends GetxController {
             ('Nozzle No' + ':'), customController.nozzleNo.value.toString()),
         '',
         alignLeftRight(
-            ('Product Name' + ':'),
-            customController.getProductName(
-                    int.parse(customController.productNo.value)) ??
-                ""),
+            ('Product Name' + ':'), customController.productName.value ?? ""),
         '',
         alignLeftRight(('Payment Type' + ':'), paymentTypeName.value),
         '',
@@ -164,6 +161,8 @@ class ReceiptController extends GetxController {
       print("An error occurred during printing: $e");
     } finally {
       // customController.amountVal.value = 0.0;
+      customController.TipsValue.value = "0";
+      customController.issupervisormaiar.value = false;
       Get.offAllNamed("/Home");
     }
   }

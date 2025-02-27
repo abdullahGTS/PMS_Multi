@@ -87,33 +87,40 @@ class NozzelsPage extends StatelessWidget {
                 ),
               ),
               SizedBox(
-                child: CustomAppBar(),
-                width: MediaQuery.of(context).size.width * 0.99,
-              ),
-              SizedBox(
                 height: 672,
+                child: Container(
+                  width: screenWidth,
+                  padding: const EdgeInsets.only(
+                      top: 210, bottom: 100, left: 5, right: 5),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        // Dynamically build a row for nozzles in this pump
+                        if (nozzles.isNotEmpty)
+                          buildNozzlesRow(context, pumpnum, nozzles),
+                        const SizedBox(height: 20),
+                      ],
+                    ),
+                  ),
+                ),
               ),
               Positioned(
                 // right: 100,
+                top: 0,
+                // bottom: 0,
+                child: SizedBox(
+                  child: CustomAppBar(),
+                  width: MediaQuery.of(context).size.width * 0.99,
+                ),
+              ),
+              Positioned(
+                right: 0,
+                left: 0,
                 // top: 0,
                 bottom: 0,
                 child: SizedBox(
                   child: FooterNozzlesView(),
                   width: MediaQuery.of(context).size.width * 0.99,
-                ),
-              ),
-              Container(
-                height: screenHeight,
-                width: screenWidth,
-                padding: const EdgeInsets.only(top: 185, left: 10, right: 10),
-                child: Column(
-                  children: [
-                    const SizedBox(height: 20),
-                    // Dynamically build a row for nozzles in this pump
-                    if (nozzles.isNotEmpty)
-                      buildNozzlesRow(context, pumpnum, nozzles),
-                    const SizedBox(height: 20),
-                  ],
                 ),
               ),
             ],

@@ -97,22 +97,31 @@ class ChoosePaymentController extends GetxController {
           } else {
             print("Transaction Successful: $response");
             customController.paymentType.value = 2;
-
-            if (response['cardNo'] == 'Unknown') {
-              customController.stanNumber.value = 0;
-              return false;
+            if (response['rspCode'] == 0) {
+              if (response['cardNo'] == 'Unknown') {
+                customController.stanNumber.value = 0;
+                return false;
+              } else {
+                print('customController.stanNumber.value ${response['stan']}');
+                print('customController.stanNumber.value ${response}');
+                customController.stanNumber.value = response['stan'];
+                customController.voucherNo.value = response['voucherNo'];
+                customController.ecrRef.value = response['ecrRef'];
+                customController.batchNo.value = response['batchNo'];
+                print(
+                    'customController.stanNumber.value ${customController.stanNumber.value}');
+                customController.saveTransaction(2);
+                // got to receipt
+                Get.toNamed('/Receipt');
+              }
             } else {
-              print('customController.stanNumber.value ${response['stan']}');
-              print('customController.stanNumber.value ${response}');
-              customController.stanNumber.value = response['stan'];
-              customController.voucherNo.value = response['voucherNo'];
-              customController.ecrRef.value = response['ecrRef'];
-              customController.batchNo.value = response['batchNo'];
-              print(
-                  'customController.stanNumber.value ${customController.stanNumber.value}');
-              customController.saveTransaction(2);
-              // got to receipt
-              Get.toNamed('/Receipt');
+              Get.snackbar(
+                'Transaction Fail',
+                '[${response['rspCode']}]' + ' - ' + '${response['rspMsg']}',
+                snackPosition: SnackPosition.TOP,
+                backgroundColor: Colors.red,
+                colorText: Colors.white,
+              );
             }
           }
         }

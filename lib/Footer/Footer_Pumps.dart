@@ -3,12 +3,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../CustomAppbar/CustomAppbar_Controller.dart';
 import '../Theme/Theme_Controller.dart';
 
 class FooterPumpsView extends StatelessWidget {
   var pumps = "";
   var themeController = Get.find<ThemeController>();
   var color = Color.fromARGB(255, 24, 24, 24);
+  final customController = Get.find<CustomAppbarController>();
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +41,12 @@ class FooterPumpsView extends StatelessWidget {
                 onTap: () {
                   // Navigate to the verification page
                   // Navigator.pushNamed(context, '/verify');
-                  Get.toNamed("/verify");
+                  if (customController.issupervisormaiar.value) {
+                    customController.issupervisormaiar.value = false;
+                    Get.offAllNamed("/Mair");
+                  } else {
+                    Get.toNamed("/verify");
+                  }
                 },
                 child: _buildCircleIcon(Icons.arrow_back_rounded,
                     Colors.white), // Fuel on the right

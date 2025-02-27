@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class MaiarInput extends StatelessWidget {
+class VerifyShiftReprotInput extends StatelessWidget {
   final List<TextEditingController> controllers;
   final List<FocusNode> focusNodes;
   final void Function(String) onSubmit;
 
-  const MaiarInput({
+  const VerifyShiftReprotInput({
     super.key,
     required this.controllers,
     required this.focusNodes,

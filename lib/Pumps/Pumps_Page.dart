@@ -62,59 +62,67 @@ class PumpsPage extends StatelessWidget {
                 ),
               ),
               SizedBox(
-                child: CustomAppBar(),
-                width: MediaQuery.of(context).size.width * 0.99,
-              ),
-              SizedBox(
                 height: 672,
+                child: Container(
+                  width: screenWidth,
+                  padding: const EdgeInsets.only(top: 210, bottom: 100),
+                  child: Center(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          // SizedBox(height: 220),
+                          for (int i = 0;
+                              i < customController.config['pumps'].length;
+                              i += 2)
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                // First card in the row
+                                buildPumpCard(
+                                  context,
+                                  customController.config['pumps'][i]
+                                          ['pump_number']
+                                      .toString(),
+                                  customController.config['pumps'][i]
+                                          ['nozzles_count']
+                                      .toString(),
+                                ),
+                                // Second card in the row (if available)
+                                if (i + 1 <
+                                    customController.config['pumps'].length)
+                                  buildPumpCard(
+                                    context,
+                                    customController.config['pumps'][i + 1]
+                                            ['pump_number']
+                                        .toString(),
+                                    customController.config['pumps'][i + 1]
+                                            ['nozzles_count']
+                                        .toString(),
+                                  ),
+                              ],
+                            ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
               ),
               Positioned(
                 // right: 100,
-                // top: 0,
+                top: 0,
+                // bottom: 0,
+                child: SizedBox(
+                  child: CustomAppBar(),
+                  width: MediaQuery.of(context).size.width * 0.99,
+                ),
+              ),
+              Positioned(
+                right: 0,
+                left: 0,
                 bottom: 0,
                 child: SizedBox(
                   child: FooterPumpsView(),
                   width: MediaQuery.of(context).size.width * 0.99,
-                ),
-              ),
-              Container(
-                height: screenHeight,
-                width: screenWidth,
-                padding: const EdgeInsets.only(top: 10),
-                child: Center(
-                  child: Column(
-                    children: [
-                      SizedBox(height: 220),
-                      for (int i = 0;
-                          i < customController.config['pumps'].length;
-                          i += 2)
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            // First card in the row
-                            buildPumpCard(
-                              context,
-                              customController.config['pumps'][i]['pump_number']
-                                  .toString(),
-                              customController.config['pumps'][i]
-                                      ['nozzles_count']
-                                  .toString(),
-                            ),
-                            // Second card in the row (if available)
-                            if (i + 1 < customController.config['pumps'].length)
-                              buildPumpCard(
-                                context,
-                                customController.config['pumps'][i + 1]
-                                        ['pump_number']
-                                    .toString(),
-                                customController.config['pumps'][i + 1]
-                                        ['nozzles_count']
-                                    .toString(),
-                              ),
-                          ],
-                        ),
-                    ],
-                  ),
                 ),
               ),
             ],
@@ -137,7 +145,6 @@ class PumpsPage extends StatelessWidget {
 
         if (customController.issupervisormaiar.value) {
           await allpumpcont.checkFueling(pumpName);
-
           allpumpcont.xmlDataPumpListener =
               customController.xmlData.listen((data) async {
             var document = XmlDocument.parse(data);
@@ -147,6 +154,10 @@ class PumpsPage extends StatelessWidget {
               var RequestType = serviceResponse.getAttribute('RequestType');
               var overallResult = serviceResponse.getAttribute('OverallResult');
               if (RequestType == 'GetFPState' && overallResult == "Success") {
+                if (allpumpcont.xmlDataPumpListener != null) {
+                  allpumpcont.xmlDataPumpListener!.cancel();
+                  allpumpcont.xmlDataPumpListener = null;
+                }
                 var pumpNo = document
                     .findAllElements('DeviceClass')
                     .first
@@ -160,11 +171,13 @@ class PumpsPage extends StatelessWidget {
                     status == 'FDC_STARTED') {
                   Get.snackbar(
                     ("Alert").tr,
-                    ("Sorry_the_pump").tr + "${pumpNo}" + ("is_in_progress").tr,
+                    ("Sorry_the_pump").tr +
+                        " ${pumpNo} " +
+                        ("is_in_progress").tr,
                     backgroundColor: Colors.red,
                     colorText: Colors.white,
                   );
-                  Get.closeAllSnackbars();
+                  // Get.closeAllSnackbars();
                   customController.checkFueling.value = "";
                   // var posNumber = await customController.dbHelper
                   //     .getTrxStatuspending(pumpNo!);
@@ -175,17 +188,103 @@ class PumpsPage extends StatelessWidget {
                   //   Get.offAllNamed("/Pumps");
                   // }
                 } else {
-                  customController.pumpNo.value = pumpNo!;
-                  allpumpcont.xmlDataPumpListener!.cancel();
-                  allpumpcont.xmlDataPumpListener = null;
-                  Get.toNamed("/Nozzles", arguments: {'pumpName': pumpNo});
+                  // check for void and avail
+                  var transactions =
+                      await customController.fetchTransactionsByshiftchecking(
+                          prefs.getInt('shift_id') ?? 0);
+
+                  // Check if any transaction has a status of 'void'
+                  bool hasVoidTransaction = transactions.any(
+                      (transaction) => transaction['statusvoid'] == 'progress');
+                  // print("hasVoidTransaction${hasVoidTransaction}");
+                  if (hasVoidTransaction) {
+                    Get.snackbar(
+                      "Error".tr,
+                      "You_have_to_pay_the_void_transactions_first".tr,
+                      backgroundColor: Colors.red,
+                      colorText: Colors.white,
+                    );
+                  } else {
+                    allpumpcont.availableTrxListener =
+                        customController.xmlData.listen((data) async {
+                      var document = XmlDocument.parse(data);
+                      var serviceResponse =
+                          document.getElement('ServiceResponse');
+                      if (serviceResponse != null) {
+                        var RequestType =
+                            serviceResponse.getAttribute('RequestType');
+                        var OverallResult =
+                            serviceResponse.getAttribute('OverallResult');
+                        if (RequestType == 'GetAvailableFuelSaleTrxs' &&
+                            OverallResult == 'Success') {
+                          if (allpumpcont.availableTrxListener != null) {
+                            allpumpcont.availableTrxListener!.cancel();
+                            allpumpcont.availableTrxListener = null;
+                          }
+                          var allClasses =
+                              document.findAllElements('DeviceClass');
+                          print('DeviceClass----->${allClasses}');
+                          allClasses.forEach((element) {
+                            var errorCode =
+                                element.findAllElements('ErrorCode').first.text;
+                            if (errorCode == 'ERRCD_OK') {
+                              allpumpcont.avail_flag = false;
+                            } else {
+                              allpumpcont.avail_flag = true;
+                            }
+                          });
+                          if (allpumpcont.avail_flag) {
+                            customController.pumpNo.value = pumpNo!;
+                            Get.toNamed("/Nozzles",
+                                arguments: {'pumpName': pumpNo});
+                          } else {
+                            Get.snackbar(
+                              "Error".tr,
+                              "You_have_to_pay_the_available_transactions_first"
+                                  .tr,
+                              backgroundColor: Colors.red,
+                              colorText: Colors.white,
+                            );
+                          }
+                        }
+                      }
+                    });
+                    await allpumpcont.GetAllTransaction();
+                    await Future.delayed(Duration(seconds: 1));
+                  }
                 }
               }
             }
           });
         } else {
-          Get.offAllNamed("/TransactionStatus",
-              arguments: {'pumpName': pumpName});
+          var transactions = await customController
+              .fetchTransactionsByshift(prefs.getInt('shift_id') ?? 0);
+          print("transactions${customController.filteredTransactions}");
+
+// Check if transactions is null or empty
+
+          // Find the first transaction where statusvoid is "complete"
+          var completedTransaction =
+              customController.filteredTransactions.firstWhere(
+            (transaction) => transaction["statusvoid"].toString() == "progress",
+            orElse: () => null, // Return null if no transaction matches
+          );
+// Check if a completed transaction was found
+          if (completedTransaction == null) {
+            // Navigate to the TransactionStatus screen
+            Get.offAllNamed(
+              "/TransactionStatus",
+              arguments: {'pumpName': pumpName},
+            );
+          } else {
+            // Show a SnackBar if no completed transaction is found
+            Get.snackbar(
+              ("Alert").tr,
+              ("You_have_to_pay_the_void_transactions_first").tr,
+              backgroundColor: Colors.red,
+              colorText: Colors.white,
+            );
+          }
         }
         // await allpumpcont.checkFueling(pumpName);
 

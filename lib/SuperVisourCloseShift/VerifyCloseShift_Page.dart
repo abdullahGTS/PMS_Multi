@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 
 import '../CustomAppbar/CustomAppbar.dart';
 import '../CustomAppbar/CustomAppbar_Controller.dart';
+import '../Local/Local_Controller.dart';
 import '../Shared/drawer.dart';
 import 'package:intl/intl.dart';
 
@@ -18,6 +19,8 @@ class VerifycloseshiftPage extends StatelessWidget {
   final customController = Get.find<CustomAppbarController>();
   final shiftController = Get.put(VerifycloseshiftController());
   var themeController = Get.find<ThemeController>();
+  final localController = Get.find<LocalController>();
+
   var color = Color.fromARGB(255, 24, 24, 24);
 
   // final verifyController = Get.find<VerifyController>();
@@ -74,7 +77,9 @@ class VerifycloseshiftPage extends StatelessWidget {
                   width: MediaQuery.of(context).size.width * 0.99,
                 ),
                 Container(
-                  margin: const EdgeInsets.only(left: 14),
+                  margin: localController.getCurrentLang()?.languageCode == "ar"
+                      ? EdgeInsets.only(right: 14,left: 14)
+                      : EdgeInsets.only(left: 14),
                   width: MediaQuery.of(context).size.width * 0.93,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16), // Rounded corners
@@ -277,13 +282,13 @@ class VerifycloseshiftPage extends StatelessWidget {
                 var endShift =
                     customController.config.value['shift_data']['endshift'];
                 if (statusShift == "opened") {
-                  await customController.sendShiftsToApi();
+                  // await customController.sendShiftsToApi();
 
                   await customController.sendCloseShift();
                 } else {
                   await customController.dbHelper
                       .updateIsPortalShift(int.parse(numShift), "true");
-                  await customController.sendShiftsToApi();
+                  // await customController.sendShiftsToApi();
                   await customController.sendCloseShift();
                 }
               } else {
@@ -390,13 +395,13 @@ class VerifycloseshiftPage extends StatelessWidget {
               var endShift =
                   customController.config.value['shift_data']['endshift'];
               if (statusShift == "opened") {
-                await customController.sendShiftsToApi();
+                // await customController.sendShiftsToApi();
 
                 await customController.sendCloseShift();
               } else {
                 await customController.dbHelper
                     .updateIsPortalShift(int.parse(numShift), "true");
-                await customController.sendShiftsToApi();
+                // await customController.sendShiftsToApi();
                 await customController.sendCloseShift();
               }
             } else {

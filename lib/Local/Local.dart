@@ -184,7 +184,7 @@ class Messages implements Translations {
           'not_correct_Total': 'not correct Total',
           'Please_make_sure_the_total_amount_is_greater_than_the_fueling_amount':
               'Please make sure the total amount is greater than the fueling amount',
-          'not_correct_Tips_the_max_tips': 'not correct Tips the max tips',
+          'not_correct_Tips_the_max_tips': 'Tips not correct the max tips',
           'Void': 'Void',
           'Re_print': 'Re-print',
           'voucherNo': 'voucherNo',
@@ -206,7 +206,11 @@ class Messages implements Translations {
           'Close_Pending': 'Close Pending...',
           'Close_Processing': 'Close Processing...',
           'You_have_to_pay_the_void_transactions_first':
-              'You have to pay the transactions void first'
+              'You have to pay the transactions void first',
+          'timeout': 'Timeout',
+          'sec': 'sec.',
+          'Skip': 'Skip',
+          'theme': 'theme'
         },
         'ar': {
           'Stannumber_not_found': 'لا يوجد ستان',
@@ -410,6 +414,10 @@ class Messages implements Translations {
           'Close_Processing': 'إغلاق الورديّة قيد التنفيذ',
           'You_have_to_pay_the_void_transactions_first':
               'يجب أن تدفع المعاملات الملغاة أولا',
+          'timeout': 'المهلة',
+          'sec': 'ثانية',
+          'Skip': 'تخطي',
+          'theme': 'المظهر'
         }
       };
 }

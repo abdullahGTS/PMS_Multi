@@ -400,18 +400,63 @@ class Receipt extends StatelessWidget {
                           ],
                         ),
                         const SizedBox(height: 10),
-                        ElevatedButton(
-                          onPressed: () async {
-                            await receiptController.printReceipt();
-                          }, // Call printReceipt on button press
-                          child: Text(
-                            "Print_Receipt".tr,
-                            style: TextStyle(
-                              color: themeController.isDarkMode.value
-                                  ? Colors.white
-                                  : color,
+                        Row(
+                          children: [
+                            Expanded(
+                              flex: 1,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      themeController.isDarkMode.value
+                                          ? color
+                                          : Color(0xFFF25961).withOpacity(0.8),
+
+                                  // Set the background color
+                                ),
+                                onPressed: () async {
+                                  receiptController.customController
+                                      .issupervisormaiar.value = false;
+
+                                  Get.offAllNamed("/Home");
+                                },
+                                child: Text(
+                                  "Skip".tr,
+                                  style: TextStyle(
+                                    color: themeController.isDarkMode.value
+                                        ? Colors.white
+                                        : color,
+                                  ),
+                                ),
+                              ),
                             ),
-                          ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Expanded(
+                              flex: 2,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      themeController.isDarkMode.value
+                                          ? Colors.white
+                                          : const Color(0xED166E36),
+
+                                  // Set the background color
+                                ),
+                                onPressed: () async {
+                                  await receiptController.printReceipt();
+                                }, // Call printReceipt on button press
+                                child: Text(
+                                  "Print_Receipt".tr,
+                                  style: TextStyle(
+                                    color: themeController.isDarkMode.value
+                                        ? color
+                                        : Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                         // ElevatedButton(
                         //   onPressed: () async {

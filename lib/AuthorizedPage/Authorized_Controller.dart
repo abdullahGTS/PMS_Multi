@@ -27,21 +27,21 @@ class AuthorizedController extends GetxController
   void onInit() {
     super.onInit();
     // checkFueling(customController.pumpNo.value);
-    textValue.value = Get.arguments['presetValue'] ?? 'Unknown';
-    print("textValuetextValue ${textValue.value}");
-    print("customControllerpump-------- ${customController.pumpNo.value}");
-    checkFueling(customController.pumpNo.value);
-    customController.checkFueling.listen((data) {
-      var temp = customController.parseXmlFuelingData(data);
-      print('tempAuthorizedController------->${temp[0]}');
+    // textValue.value = Get.arguments['presetValue'] ?? 'Unknown';
+    // print("textValuetextValue ${textValue.value}");
+    // print("customControllerpump-------- ${customController.pumpNo.value}");
+    // checkFueling(customController.pumpNo.value);
+    // customController.checkFueling.listen((data) {
+    //   var temp = customController.parseXmlFuelingData(data);
+    //   print('tempAuthorizedController------->${temp[0]}');
 
-      if (temp[0] == true) {
-        Get.toNamed('/Fueling');
-      } else {
-        checkFueling(customController.pumpNo.value);
-      }
-      // if(temp[1]==)
-    });
+    //   if (temp[0] == true) {
+    //     Get.toNamed('/Fueling');
+    //   } else {
+    //     checkFueling(customController.pumpNo.value);
+    //   }
+    //   // if(temp[1]==)
+    // });
     // Timer.periodic(const Duration(seconds: 5), (timer) async {
     //   checkFueling(customController.pumpNo.value);
     // });

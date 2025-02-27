@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../CustomAppbar/CustomAppbar.dart';
+import '../Local/Local_Controller.dart';
 import '../Shared/drawer.dart';
 import '../Theme/Theme_Controller.dart';
 import 'Transactions_Controller.dart';
@@ -11,6 +12,7 @@ class Transactions extends StatelessWidget {
   final alltransController = Get.find<TransactionsController>();
   var themeController = Get.find<ThemeController>();
   var color = Color.fromARGB(255, 24, 24, 24);
+  final localController = Get.find<LocalController>();
 
   @override
   Widget build(BuildContext context) {
@@ -82,6 +84,75 @@ class Transactions extends StatelessWidget {
                                       elevation: 5,
                                       child: Column(
                                         children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                top: 8.0,
+                                                left: 8.0,
+                                                right: 8.0,
+                                                bottom: 5.0),
+                                            child: Row(
+                                              children: [
+                                                Expanded(
+                                                  // flex: 1,
+                                                  child: Row(
+                                                    children: [
+                                                      Expanded(
+                                                          flex: 1,
+                                                          child: Align(
+                                                            alignment: localController
+                                                                        .getCurrentLang()
+                                                                        ?.languageCode ==
+                                                                    "ar"
+                                                                ? Alignment
+                                                                    .centerRight
+                                                                : Alignment
+                                                                    .centerLeft,
+                                                            child: Icon(
+                                                              Icons
+                                                                  .calendar_month_rounded,
+                                                              color:
+                                                                  Colors.white,
+                                                              size: 20,
+                                                            ),
+                                                          )),
+                                                      Expanded(
+                                                        flex: 4,
+                                                        child: Align(
+                                                          alignment: localController
+                                                                      .getCurrentLang()
+                                                                      ?.languageCode ==
+                                                                  "ar"
+                                                              ? Alignment
+                                                                  .centerRight
+                                                              : Alignment
+                                                                  .centerLeft,
+                                                          child: Text(
+                                                            "Start_Date".tr,
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontSize: 16),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  // flex: 2,
+                                                  child: Align(
+                                                    alignment:
+                                                        Alignment.centerRight,
+                                                    child: Text(
+                                                        "${transaction['startTimeStamp']}",
+                                                        style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 16)),
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          ),
                                           Row(children: [
                                             Expanded(
                                               child: Padding(
@@ -536,143 +607,225 @@ class Transactions extends StatelessWidget {
                                                   )),
                                             ),
                                           ]),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                top: 8.0,
+                                                left: 8.0,
+                                                right: 8.0,
+                                                bottom: 5.0),
+                                            child: Row(
+                                              children: [
+                                                Expanded(
+                                                  // flex: 1,
+                                                  child: Row(
+                                                    children: [
+                                                      Expanded(
+                                                          flex: 1,
+                                                          child: Align(
+                                                            alignment: localController
+                                                                        .getCurrentLang()
+                                                                        ?.languageCode ==
+                                                                    "ar"
+                                                                ? Alignment
+                                                                    .centerRight
+                                                                : Alignment
+                                                                    .centerLeft,
+                                                            child: Icon(
+                                                              Icons
+                                                                  .calendar_month_rounded,
+                                                              color:
+                                                                  Colors.white,
+                                                              size: 20,
+                                                            ),
+                                                          )),
+                                                      Expanded(
+                                                        flex: 4,
+                                                        child: Align(
+                                                          alignment: localController
+                                                                      .getCurrentLang()
+                                                                      ?.languageCode ==
+                                                                  "ar"
+                                                              ? Alignment
+                                                                  .centerRight
+                                                              : Alignment
+                                                                  .centerLeft,
+                                                          child: Text(
+                                                            "End_Date".tr,
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontSize: 16),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  // flex: 2,
+                                                  child: Align(
+                                                    alignment:
+                                                        Alignment.centerRight,
+                                                    child: Text(
+                                                        "${transaction['endTimeStamp']}",
+                                                        style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 16)),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
                                           Row(
                                             children: [
                                               Expanded(
-                                                child: transaction[
-                                                            'payment_type'] ==
-                                                        'Bank'
-                                                    ? transaction[
-                                                                'statusvoid'] ==
-                                                            "complete"
-                                                        ? Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .symmetric(
-                                                                    horizontal:
-                                                                        20,
-                                                                    vertical:
-                                                                        5),
-                                                            child: Row(
-                                                              children: [
-                                                                Expanded(
-                                                                  child:
-                                                                      ElevatedButton(
-                                                                    style: ElevatedButton
-                                                                        .styleFrom(
-                                                                      backgroundColor:
-                                                                          const Color(
-                                                                              0xFF2B2B2B),
-                                                                    ),
-                                                                    onPressed:
-                                                                        () {
-                                                                      alltransController
-                                                                          .showVoidConfirmationDialog(
-                                                                        context,
-                                                                        transaction[
-                                                                            'Stannumber'],
-                                                                        double.parse(
-                                                                            transaction['amount']),
-                                                                        transaction[
-                                                                            'transactionSeqNo'],
-                                                                        transaction[
-                                                                            'ecrRef'],
-                                                                      );
-                                                                    },
-                                                                    child: Text(
-                                                                      "Void".tr,
-                                                                      style: TextStyle(
-                                                                          color:
-                                                                              Colors.white),
-                                                                    ),
-                                                                  ),
+                                                  child: transaction[
+                                                              'statusvoid'] ==
+                                                          "complete"
+                                                      ? Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .symmetric(
+                                                                  horizontal:
+                                                                      20,
+                                                                  vertical: 5),
+                                                          child: Row(
+                                                            children: [
+                                                              transaction['payment_type'] ==
+                                                                      'Bank'
+                                                                  ? Expanded(
+                                                                      child:
+                                                                          ElevatedButton(
+                                                                        style: ElevatedButton
+                                                                            .styleFrom(
+                                                                          backgroundColor:
+                                                                              const Color(0xFF2B2B2B),
+                                                                        ),
+                                                                        onPressed:
+                                                                            () {
+                                                                          alltransController
+                                                                              .showVoidConfirmationDialog(
+                                                                            context,
+                                                                            transaction['Stannumber'],
+                                                                            double.parse(transaction['amount']),
+                                                                            transaction['transactionSeqNo'],
+                                                                            transaction['ecrRef'],
+                                                                          );
+                                                                        },
+                                                                        child:
+                                                                            Text(
+                                                                          "Void"
+                                                                              .tr,
+                                                                          style:
+                                                                              TextStyle(color: Colors.white),
+                                                                        ),
+                                                                      ),
+                                                                    )
+                                                                  : transaction[
+                                                                              'payment_type'] ==
+                                                                          'Bank'
+                                                                      ? SizedBox(
+                                                                          width:
+                                                                              10,
+                                                                        )
+                                                                      : SizedBox(),
+                                                              transaction['payment_type'] ==
+                                                                      'Bank'
+                                                                  ? SizedBox(
+                                                                      width: 10,
+                                                                    )
+                                                                  : SizedBox(),
+                                                              transaction['payment_type'] ==
+                                                                      'Bank'
+                                                                  ? Expanded(
+                                                                      child:
+                                                                          ElevatedButton(
+                                                                        style: ElevatedButton
+                                                                            .styleFrom(
+                                                                          backgroundColor:
+                                                                              const Color(0xFF2B2B2B),
+                                                                        ),
+                                                                        onPressed:
+                                                                            () {
+                                                                          alltransController.reprint(
+                                                                              transaction['ecrRef'],
+                                                                              transaction['voucherNo']);
+                                                                        },
+                                                                        child:
+                                                                            Text(
+                                                                          "Re_print"
+                                                                              .tr,
+                                                                          style:
+                                                                              TextStyle(color: Colors.white),
+                                                                        ),
+                                                                      ),
+                                                                    )
+                                                                  : Expanded(
+                                                                      child:
+                                                                          ElevatedButton(
+                                                                        style: ElevatedButton
+                                                                            .styleFrom(
+                                                                          backgroundColor:
+                                                                              const Color(0xFF2B2B2B),
+                                                                        ),
+                                                                        onPressed:
+                                                                            () {
+                                                                          alltransController
+                                                                              .printReceipt();
+                                                                        },
+                                                                        child:
+                                                                            Text(
+                                                                          "Re_print"
+                                                                              .tr,
+                                                                          style:
+                                                                              TextStyle(color: Colors.white),
+                                                                        ),
+                                                                      ),
+                                                                    )
+                                                            ],
+                                                          ),
+                                                        )
+                                                      : transaction[
+                                                                  'statusvoid'] ==
+                                                              "progress"
+                                                          ? Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .symmetric(
+                                                                      horizontal:
+                                                                          20,
+                                                                      vertical:
+                                                                          5),
+                                                              child:
+                                                                  ElevatedButton(
+                                                                style: ElevatedButton
+                                                                    .styleFrom(
+                                                                  backgroundColor:
+                                                                      const Color(
+                                                                          0xFF2B2B2B),
                                                                 ),
-                                                                SizedBox(
-                                                                  width: 10,
-                                                                ),
-                                                                Expanded(
-                                                                  child:
-                                                                      ElevatedButton(
-                                                                    style: ElevatedButton
-                                                                        .styleFrom(
-                                                                      backgroundColor:
-                                                                          const Color(
-                                                                              0xFF2B2B2B),
-                                                                    ),
-                                                                    onPressed:
-                                                                        () {
-                                                                      alltransController.reprint(
-                                                                          transaction[
-                                                                              'ecrRef'],
-                                                                          transaction[
-                                                                              'voucherNo']);
-                                                                      // alltransController
-                                                                      //     .showVoidConfirmationDialog(
-                                                                      //   context,
-                                                                      //   transaction[
-                                                                      //       'Stannumber'],
-                                                                      //   double.parse(
-                                                                      //       transaction[
-                                                                      //           'amount']),
-                                                                      //   transaction[
-                                                                      //       'transactionSeqNo'],
-                                                                      // );
-                                                                    },
-                                                                    child: Text(
-                                                                      "Re_print"
-                                                                          .tr,
-                                                                      style: TextStyle(
-                                                                          color:
-                                                                              Colors.white),
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          )
-                                                        : transaction[
-                                                                    'statusvoid'] ==
-                                                                "progress"
-                                                            ? Padding(
-                                                                padding: const EdgeInsets
-                                                                    .symmetric(
-                                                                    horizontal:
-                                                                        20,
-                                                                    vertical:
-                                                                        5),
-                                                                child:
-                                                                    ElevatedButton(
-                                                                  style: ElevatedButton
-                                                                      .styleFrom(
-                                                                    backgroundColor:
-                                                                        const Color(
-                                                                            0xFF2B2B2B),
-                                                                  ),
-                                                                  onPressed:
-                                                                      () {
-                                                                    // Initialize the PreSaleValueController
+                                                                onPressed: () {
+                                                                  // Initialize the PreSaleValueController
 
-                                                                    // Navigate to the /ChoosePaymentaftervoid page and pass presalecontroller.value as an argument
-                                                                    alltransController
-                                                                        .resetTransaction(
-                                                                            transaction);
-                                                                    Get.toNamed(
-                                                                        '/ResetPayment');
-                                                                  },
-                                                                  child: Text(
-                                                                    "Set_Transaction"
-                                                                        .tr
-                                                                        .tr
-                                                                        .tr, // Or any other label you'd prefer
-                                                                    style: TextStyle(
-                                                                        color: Colors
-                                                                            .white),
-                                                                  ),
+                                                                  // Navigate to the /ChoosePaymentaftervoid page and pass presalecontroller.value as an argument
+                                                                  alltransController
+                                                                      .resetTransaction(
+                                                                          transaction);
+                                                                  Get.toNamed(
+                                                                      '/ResetPayment');
+                                                                },
+                                                                child: Text(
+                                                                  "Set_Transaction"
+                                                                      .tr
+                                                                      .tr
+                                                                      .tr, // Or any other label you'd prefer
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .white),
                                                                 ),
-                                                              )
-                                                            : SizedBox()
-                                                    : SizedBox(),
-                                              )
+                                                              ),
+                                                            )
+                                                          : SizedBox())
                                             ],
                                           ),
                                         ],

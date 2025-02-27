@@ -67,6 +67,8 @@ class DatabaseHelper {
           voucherNo INTEGER,
           ecrRef TEXT,
           batchNo INTEGER,
+          startTimeStamp TEXT,
+          endTimeStamp TEXT,
           shift_id INTEGER,
           FOREIGN KEY (shift_id) REFERENCES shifts (id) ON DELETE CASCADE ON UPDATE CASCADE
 

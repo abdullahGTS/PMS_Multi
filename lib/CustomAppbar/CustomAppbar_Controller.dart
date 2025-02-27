@@ -193,7 +193,7 @@ class CustomAppbarController extends GetxController {
     }
   }
 
-  Future<void> fetchTransactionsByshift(int shift) async {
+  fetchTransactionsByshift(int shift) async {
     try {
       final dbHelper = DatabaseHelper();
       List<Map<String, dynamic>> data = await dbHelper.fetchDataByShift(shift);
@@ -255,7 +255,7 @@ class CustomAppbarController extends GetxController {
   }
 
   Future<void> fetchToken() async {
-    final baseUrl = 'https://41.33.226.46:24433/adminpanal/pos/get/token/api/';
+    final baseUrl = 'https://41.33.226.46/adminpanal/pos/get/token/api/';
     print("Starting fetchToken...------------->");
     print("Starting fetchToken...------------->${isconnect.value}");
 
@@ -263,7 +263,7 @@ class CustomAppbarController extends GetxController {
       // Get the Android ID
       // DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
       // AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-      // String? androidId = androidInfo.id;
+      // String? androidId = androidInfo.id;rrr[;]
       // androidId_id = androidId;
 
       // if (androidId == null) {
@@ -339,7 +339,7 @@ class CustomAppbarController extends GetxController {
         fetchToken();
 
         sendtaxreid();
-        sendShiftsToApi();
+        // sendShiftsToApi();
         sendTransactionsToApi();
       } else {
         await readConfigFromFile();
@@ -384,7 +384,7 @@ class CustomAppbarController extends GetxController {
     var last_shift = await dbHelper.lastShift();
     print("last_shiftsupervisor${last_shift?['supervisor']}");
 
-    final baseUrl = 'https://41.33.226.46:24433/adminpanal/pos/config/api/';
+    final baseUrl = 'https://41.33.226.46/adminpanal/pos/config/api/';
 
     try {
       final url = Uri.parse(baseUrl);
@@ -567,18 +567,6 @@ class CustomAppbarController extends GetxController {
       xmlString = utf8.decode(msg.sublist(6)); // Adjust this index as necessary
       xmlData.value = xmlString;
 
-      // Get.snackbar(
-      //   'Fusion Response',
-      //   '',
-      //   snackPosition: SnackPosition.TOP,
-      //   backgroundColor: Colors.black,
-      //   colorText: Colors.white,
-      //   messageText: Text(
-      //     xmlString,
-      //     style: TextStyle(
-      //         fontSize: 12, color: Colors.white), // Set message font size
-      //   ),
-      // );
       print("Decoded msg: $xmlString");
       // xmlData.value = xmlString;
       // Get.snackbar(
@@ -1359,6 +1347,9 @@ class CustomAppbarController extends GetxController {
         voucherNo: voucherNo.value,
         ecrRef: ecrRef.value,
         batchNo: batchNo.value,
+        startTimeStamp: startTimeStamp.value,
+        endTimeStamp: endTimeStamp.value,
+
         // Set the TipsValue from the TipsController
       );
       print("fuelSale${fuelSale}");
@@ -1436,8 +1427,7 @@ xsi:noNamespaceSchemaLocation="FDC_ClearFuelSaleTrx_Request.xsd">
     try {
       var result = await dbHelper.lastShift();
       // Send POST request
-      const baseUrl =
-          'https://41.33.226.46:24433/merchantpanal/pos/transaction/api/';
+      const baseUrl = 'https://41.33.226.46/merchantpanal/pos/transaction/api/';
       final url = Uri.parse('$baseUrl');
       // DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
       // AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
@@ -1487,7 +1477,7 @@ xsi:noNamespaceSchemaLocation="FDC_ClearFuelSaleTrx_Request.xsd">
       var result = await dbHelper.getAllShiftsData();
 
       const baseUrl =
-          'https://41.33.226.46:24433/merchantpanal/pos/transactions/api/';
+          'https://41.33.226.46/merchantpanal/pos/transactions/api/';
       final url = Uri.parse('$baseUrl');
       // DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
       // AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
@@ -1605,7 +1595,8 @@ xsi:noNamespaceSchemaLocation="FDC_ClearFuelSaleTrx_Request.xsd">
     var result = await dbHelper.getFuelSalesWithUuidNotGenerated();
     List<int> taxRequestList =
         result.map((row) => row['taxRequestID'] as int).toList();
-
+    taxRequestList = taxRequestList.where((id) => id != 0).toList();
+    print("taxRequestList${taxRequestList}");
     // Prepare the list of taxRequestID
 
     final baseUrl = 'https://41.33.226.46:14433/get/outputs/';
@@ -1625,6 +1616,7 @@ xsi:noNamespaceSchemaLocation="FDC_ClearFuelSaleTrx_Request.xsd">
       );
 
       if (response.statusCode == 200) {
+        print("taxxxxxxxxxxxxxxxxxx");
         print("sucess${response.body}");
         var responseData = jsonDecode(response.body);
 
@@ -1682,6 +1674,7 @@ xsi:noNamespaceSchemaLocation="FDC_ClearFuelSaleTrx_Request.xsd">
         print("Data sent successfully: ${response.body}");
         var result = json.decode(response.body);
         print("authintcatePosauthintcatePos${result['access_token']}");
+        print("authintcatePosauthintcatePos${result}");
         var posauth = PosAuth(
             andriod_id: SerialNumber.value,
             pos_serial: posserial,
@@ -1817,7 +1810,7 @@ xsi:noNamespaceSchemaLocation="FDC_ClearFuelSaleTrx_Request.xsd">
 
       // await fetchLastShift();
 
-      const baseUrl = 'https://41.33.226.46:24433/merchantpanal/pos/shift/api/';
+      const baseUrl = 'https://41.33.226.46/merchantpanal/pos/shift/api/';
       final url = Uri.parse(baseUrl);
       final prefs = await SharedPreferences.getInstance();
 
@@ -1929,8 +1922,7 @@ xsi:noNamespaceSchemaLocation="FDC_ClearFuelSaleTrx_Request.xsd">
       print("Prepared shifts list: $shiftsList");
 
       // Send POST request
-      const baseUrl =
-          'https://41.33.226.46:24433/merchantpanal/pos/shifts/api/';
+      const baseUrl = 'https://41.33.226.46/merchantpanal/pos/shifts/api/';
       final url = Uri.parse(baseUrl);
 
       final response = await http.post(
@@ -1986,7 +1978,7 @@ xsi:noNamespaceSchemaLocation="FDC_ClearFuelSaleTrx_Request.xsd">
   sendtoupdateistaxed() async {
     print('Token: $tokenofapi');
     const baseUrl =
-        'https://41.33.226.46:24433/merchantpanal/pos/transactions/update/istaxed/api/';
+        'https://41.33.226.46/merchantpanal/pos/transactions/update/istaxed/api/';
     // final url = Uri.parse('$baseUrl');
     // DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
     // AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
@@ -2064,7 +2056,7 @@ xsi:noNamespaceSchemaLocation="FDC_ClearFuelSaleTrx_Request.xsd">
 
       // Send POST request
       const baseUrl =
-          'https://41.33.226.46:24433/merchantpanal/pos/shift/close/request/api/';
+          'https://41.33.226.46/merchantpanal/pos/shift/close/request/api/';
       final url = Uri.parse(baseUrl);
 
       var close_shift_req = {

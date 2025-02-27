@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 
 import '../CustomAppbar/CustomAppbar_Controller.dart';
 import 'package:intl/intl.dart';
-
+import 'package:xml/xml.dart';
 import '../FusionConnection/tcpSocket.dart';
 
 class PumpsController extends GetxController {
@@ -14,6 +14,8 @@ class PumpsController extends GetxController {
   // var pumpState = true.obs;
   // var pumpStateNumber = 0.obs;
   var xmlDataPumpListener;
+  var availableTrxListener;
+  var avail_flag = false;
 
   @override
   void onInit() async {
@@ -21,7 +23,6 @@ class PumpsController extends GetxController {
     super.onInit();
 
     Get.closeAllSnackbars();
-    
   }
 
   @override
@@ -36,6 +37,35 @@ class PumpsController extends GetxController {
     xmlDataPumpListener = null;
 
     super.dispose();
+  }
+
+  GetAllTransaction() async {
+    print("teeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+    print("id1${customController.iD}");
+    // Increment RequestID
+    customController.iD++;
+    print("id2${customController.iD}");
+
+    // Get the current time formatted for the XML
+    String currentTime =
+        DateFormat("yyyy-MM-dd'T'HH:mm:ss").format(DateTime.now());
+
+    String xmlContentreq = '''
+<?xml version="1.0" encoding="utf-8" ?>
+<ServiceRequest RequestType="GetAvailableFuelSaleTrxs" ApplicationSender="${customController.SerialNumber.value.substring(customController.SerialNumber.value.length - 5)}"
+WorkstationID="PMS" RequestID="${customController.iD}" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:noNamespaceSchemaLocation="FDC_GetAvailableFuelSaleTrxs_Request.xsd">
+<POSdata>
+<POSTimeStamp>$currentTime</POSTimeStamp>
+<DeviceClass Type="FP" DeviceID="*">
+</DeviceClass>
+</POSdata>
+</ServiceRequest>
+''';
+    print("xmlContentreqcheckFueling${xmlContentreq}");
+
+    customController.socketConnection
+        .sendMessage(customController.getXmlHeader(xmlContentreq));
   }
 
   checkFueling(pumpName) {
